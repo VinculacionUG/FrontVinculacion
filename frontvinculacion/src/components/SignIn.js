@@ -9,9 +9,9 @@ const SignIn = () => {
   const [password, setPassword] = useState('');
 
   const handleSubmit = async () => {    
-    try {
+    try{
       // const response = await fetch('https://www.fema.somee.com/Auth/login'
-      const response = await fetch('http://localhost:7040/Auth/login', {
+      const response = await fetch('https://www.fema.somee.com/Auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -28,7 +28,7 @@ const SignIn = () => {
         Alert.alert('Error', 'Credenciales incorrectas. Por favor, inténtalo de nuevo.');
       }
     } catch (error) {
-      console.console('Error al procesar la solicitud:', error.message);
+      console.log('Error al procesar la solicitud:', error.message);
       Alert.alert('Error', 'Ha ocurrido un error al iniciar sesión. Por favor, inténtalo de nuevo más tarde.');
     }
   };
@@ -67,6 +67,10 @@ const SignIn = () => {
             <Text style={styles.buttonText}>Iniciar Sesión</Text>
           </TouchableOpacity>
         </View>
+        <TouchableOpacity style={[styles.goBackButton, styles.horizontalPadding]} onPress={() => navigation.goBack()}>
+          <MaterialCommunityIcons name="arrow-left" size={24} color="white" />
+          <Text style={styles.goBackButtonText}>Regresar</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -117,15 +121,35 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#001f3f',
-    padding: 10,
+    padding: 8,
     borderRadius: 5,
     marginTop: 24,
     width: '100%',
+    justifyContent: 'center',
   },
   buttonText: {
     color: 'white',
     marginLeft: 10,
   },
+  goBackButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#001f3f',
+    padding: 8,
+    borderRadius: 5,
+    marginTop: 10,
+    width: '100%',
+    justifyContent: 'center',
+  },
+  goBackButtonText: {
+    color: 'white',
+    marginLeft: 10,
+  },
+  horizontalPadding: {
+    paddingHorizontal: 20, // Ajusta este valor para cambiar el espacio horizontal del botón
+  },
 });
 
 export default SignIn;
+
+

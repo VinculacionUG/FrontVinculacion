@@ -20,10 +20,10 @@ const Start = () => {
         {/* Este View actúa como un contenedor y estará en la parte inferior */}
         <View style={styles.bottomContainer}>
           <View style={styles.formContainer}>
-            <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-              <MaterialIcons name="lock-open" size={24} color="white" />
-              <Text style={styles.buttonText}>Iniciar Sesión</Text>
-            </TouchableOpacity>
+          <TouchableOpacity style={[styles.button, styles.centeredButton]} onPress={handleSubmit}>
+             <MaterialIcons name="lock-open" size={20} color="white" /> {/* Tamaño del icono reducido */}
+                <Text style={styles.buttonText}>Iniciar Sesión</Text>
+             </TouchableOpacity>
             <Text style={styles.bodyText}>
               No tienes una cuenta?{' '}
               <Text style={styles.linkText} onPress={() => navigation.navigate('Register')}>
@@ -50,8 +50,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'blue',
     padding: 10,
-    borderRadius: 5,
     width: '100%',
+    borderRadius: 40, // Ajusta este valor para cambiar la forma del botón
+    paddingHorizontal:30, // Ajusta este valor para cambiar el tamaño horizontal del botón
+    paddingVertical: 10, // Ajusta este valor para cambiar el tamaño vertical del botón
+    justifyContent: 'center',
+
   },
   buttonText: {
     color: 'white',
@@ -74,6 +78,10 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     height: '100%',
+  },
+  centeredButton: {
+    justifyContent: 'center',
+    // Puedes agregar más estilos específicos si lo deseas
   },
 });
 
