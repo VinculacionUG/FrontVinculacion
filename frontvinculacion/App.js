@@ -13,6 +13,8 @@ import FormularioFema3p2 from './src/components/FormularioFema3p2';
 import FormularioFema4 from './src/components/FormularioFema4';
 import FormularioFema5 from './src/components/FormularioFema5';
 import RecoveryPassword from './src/components/RecoveryPassword';
+import Editar from './src/components/Editar';
+import Ajuste from './src/components/Ajuste'; // Importa la pantalla de Ajustes
 
 const Stack = createNativeStackNavigator();
 
@@ -31,12 +33,16 @@ const App = () => {
         <Stack.Screen name="FormularioFema4" component={FormularioFema4} options={{ headerShown: false }} />
         <Stack.Screen name="FormularioFema5" component={FormularioFema5} options={{ headerShown: false }} />
         <Stack.Screen name="RecoveryPassword" component={RecoveryPassword} options={{ headerShown: false }} />
+        <Stack.Screen name="Editar" component={Editar} options={{ headerShown: false }} />
+        <Stack.Screen name="Ajuste" component={Ajuste} options={{ headerShown: false }} /> 
       </Stack.Navigator>
     </NavigationContainer>
   );
 };
 
 export default App;
+
+
 
 /*const styles = StyleSheet.create({
   container: {
