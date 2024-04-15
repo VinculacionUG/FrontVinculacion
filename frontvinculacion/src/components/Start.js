@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     width: '100%',
     borderRadius: 40, // Ajusta este valor para cambiar la forma del botón
     paddingHorizontal:30, // Ajusta este valor para cambiar el tamaño horizontal del botón
-    paddingVertical: 10, // Ajusta este valor para cambiar el tamaño vertical del botón
+    paddingVertical: 15, // Ajusta este valor para cambiar el tamaño vertical del botón
     justifyContent: 'center',
 
   },

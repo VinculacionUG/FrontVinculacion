@@ -10,7 +10,6 @@ const SignIn = () => {
 
   const handleSubmit = async () => {    
     try{
-      // const response = await fetch('https://www.fema.somee.com/Auth/login'
       const response = await fetch('https://www.fema.somee.com/Auth/login', {
         method: 'POST',
         headers: {
@@ -25,7 +24,12 @@ const SignIn = () => {
       if (response.ok) {
         navigation.navigate('Dashboard');
       } else {
-        Alert.alert('Error', 'Credenciales incorrectas. Por favor, inténtalo de nuevo.');
+        const responseData = await response.json(); // Obtener el mensaje de error del cuerpo de la respuesta
+        if (responseData && responseData.error === 'invalid_password') {
+          Alert.alert('Error', 'Contraseña inválida. Por favor, inténtalo de nuevo.');
+        } else {
+          Alert.alert('Error', 'Credenciales incorrectas. Por favor, inténtalo de nuevo.');
+        }
       }
     } catch (error) {
       console.log('Error al procesar la solicitud:', error.message);
@@ -151,5 +155,6 @@ const styles = StyleSheet.create({
 });
 
 export default SignIn;
+
 
 
