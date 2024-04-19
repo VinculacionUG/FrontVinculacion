@@ -7,11 +7,12 @@ const SignIn = () => {
   const navigation = useNavigation();
   const [nombre, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  //const [showPassword, setShowPassword] = useState(false); // Nueva variable de estado
 
   const handleSubmit = async () => {    
     try {
-      // const response = await fetch('https://www.fema.somee.com/Auth/login'
-      const response = await fetch('http://localhost:7040/Auth/login', {
+      const response = await fetch('https://www.fema.somee.com/Auth/login',{
+      //const response = await fetch('http://localhost:7040/Auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -25,7 +26,12 @@ const SignIn = () => {
       if (response.ok) {
         navigation.navigate('Dashboard');
       } else {
-        Alert.alert('Error', 'Credenciales incorrectas. Por favor, inténtalo de nuevo.');
+        const responseData = await response.json(); // Obtener el mensaje de error del cuerpo de la respuesta
+        if (responseData && responseData.error === 'invalid_password') {
+          Alert.alert('Error', 'Contraseña inválida. Por favor, inténtalo de nuevo.');
+        } else {
+          Alert.alert('Error', 'Credenciales incorrectas. Por favor, inténtalo de nuevo.');
+        }
       }
     } catch (error) {
       console.console('Error al procesar la solicitud:', error.message);
@@ -35,6 +41,11 @@ const SignIn = () => {
 
   return (
     <View style={styles.container}>
+      
+      <TouchableOpacity style={styles.goBackButton} onPress={() => navigation.goBack()}>
+        <MaterialCommunityIcons name="arrow-left" size={24} color="white" />
+      </TouchableOpacity>
+
       <MaterialIcons name="description" size={60} color="white" style={styles.icon} />
       <View style={styles.paper}>
         <View style={styles.headingContainer}>
@@ -45,7 +56,7 @@ const SignIn = () => {
             placeholder="Usuario"
             keyboardType="email-address"
             autoCapitalize="none"
-            style={styles.input}
+            style={[styles.input, { color: nombre ? 'black' : 'gray' }]}
             value={nombre}
             onChangeText={setEmail}
           />
@@ -53,9 +64,9 @@ const SignIn = () => {
             ¿Olvidaste tu nombre de usuario?
           </Text>
           <TextInput
-            placeholder="Password"
+            placeholder="Constraseña"
             secureTextEntry
-            style={styles.input}
+            style={[styles.input, { color: password ? 'black' : 'gray' }]}
             value={password}
             onChangeText={setPassword}
           />
@@ -78,6 +89,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#001f3f',
+    position: 'relative',
   },
   icon: {
     marginBottom: 20,
@@ -102,16 +114,20 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   input: {
+    //color: 'gray',
     height: 40,
     borderColor: 'gray',
     borderWidth: 1,
     marginBottom: 10,
     paddingHorizontal: 10,
+    borderRadius: 5,
   },
   forgotLink: {
     color: '#001f3f',
     textDecorationLine: 'underline',
-    marginTop: 5,
+    //marginTop: 2,
+    //marginEnd: 5,
+    marginBottom: 15,
   },
   button: {
     flexDirection: 'row',
@@ -121,11 +137,52 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginTop: 24,
     width: '100%',
+    justifyContent: 'center',
   },
   buttonText: {
     color: 'white',
     marginLeft: 10,
+    textAlign: 'center',
   },
+
+  goBackButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#001f3f',
+    padding: 8,
+    borderRadius: 5,
+    marginTop: 10,
+    width: '100%',
+    justifyContent: 'center',
+  },
+  goBackButtonText: {
+    color: 'white',
+    marginLeft: 10,
+  },
+  horizontalPadding: {
+    paddingHorizontal: 20, // Ajusta este valor para cambiar el espacio horizontal del botón
+  },
+  
+  goBackButton: {
+    position: 'absolute',
+    top: 20,
+    left: 20,
+    zIndex: 1, // Asegura que la flecha esté sobre otros elementos
+  },
+
+  passwordContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  passwordInput: {
+    //marginBottom: 10,
+    //marginTop:10,
+    flex: 1,
+  },
+  passwordVisibilityButton: {
+    paddingHorizontal: 10,
+  },
+
 });
 
 export default SignIn;
