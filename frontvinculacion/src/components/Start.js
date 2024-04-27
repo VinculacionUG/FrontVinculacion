@@ -20,7 +20,7 @@ const Start = () => {
         {/* Este View actúa como un contenedor y estará en la parte inferior */}
         <View style={styles.bottomContainer}>
           <View style={styles.formContainer}>
-            <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+            <TouchableOpacity style={[styles.button, styles.centeredButton]} onPress={handleSubmit}>
               <MaterialIcons name="lock-open" size={24} color="white" />
               <Text style={styles.buttonText}>Iniciar Sesión</Text>
             </TouchableOpacity>
@@ -50,8 +50,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'blue',
     padding: 10,
-    borderRadius: 5,
+    borderRadius: 40,
     width: '100%',
+    paddingHorizontal:30, // Ajusta este valor para cambiar el tamaño horizontal del botón
+    paddingVertical: 15, // Ajusta este valor para cambiar el tamaño vertical del botón
+    justifyContent: 'center',
   },
   buttonText: {
     color: 'white',
@@ -74,6 +77,10 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     height: '100%',
+  },
+  centeredButton: {
+    justifyContent: 'center',
+    // Puedes agregar más estilos específicos si lo deseas
   },
 });
 
