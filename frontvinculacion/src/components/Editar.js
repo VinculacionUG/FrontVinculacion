@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
-
-// Importar ícono del paquete Expo
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import Icon from 'react-native-vector-icons/Ionicons'; // Importa el icono desde la biblioteca de iconos
 
-// Función para buscar el edificio en la base de datos
+// Función para buscar el edificio en la base de datos por nombre
 const buscarEnBaseDeDatosPorNombre = async (nombreEdificio) => {
   // Lógica para buscar el edificio en la base de datos usando el nombre
-  // Aquí simulamos una búsqueda asincrónica ficticia
+  // Aquí puedes implementar la lógica real para buscar en la base de datos
   return new Promise((resolve, reject) => {
+    // Simulación de búsqueda asincrónica ficticia
     setTimeout(() => {
       const edificio = {
-        nombre: nombreEdificio,
+        nombre: 'Nombre del edificio',
         direccion: 'Dirección del edificio',
+        fecha: 'Fecha del formulario',
         // Agregar más detalles del edificio si es necesario
       };
       resolve(edificio);
@@ -20,7 +21,23 @@ const buscarEnBaseDeDatosPorNombre = async (nombreEdificio) => {
   });
 };
 
-
+// Función para buscar el edificio en la base de datos por código
+const buscarEnBaseDeDatosPorCodigo = async (codigoFormulario) => {
+  // Lógica para buscar el edificio en la base de datos usando el código
+  // Aquí puedes implementar la lógica real para buscar en la base de datos
+  return new Promise((resolve, reject) => {
+    // Simulación de búsqueda asincrónica ficticia
+    setTimeout(() => {
+      const edificio = {
+        nombre: 'Nombre del edificio',
+        direccion: 'Dirección del edificio',
+        fecha: 'Fecha del formulario',
+        // Agregar más detalles del edificio si es necesario
+      };
+      resolve(edificio);
+    }, 1000); // Simular una demora de 1 segundo para la búsqueda
+  });
+};
 
 const Editar = ({ navigation }) => {
   const [busquedaNombre, setBusquedaNombre] = useState('');
@@ -43,52 +60,48 @@ const Editar = ({ navigation }) => {
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Editar FEMA P-154</Text>
 
-      {/* Texto y búsqueda por nombre */}
-      <View>
-        <Text style={styles.inputLabel}>Nombre del edificio</Text>
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder="Nombre del edificio"
-            value={busquedaNombre}
-            onChangeText={(text) => setBusquedaNombre(text)}
-          />
-          <TouchableOpacity style={styles.searchButton} onPress={buscarEdificioPorNombre}>
-            <MaterialCommunityIcons name="magnify" size={24} color="white" />
-          </TouchableOpacity>
-        </View>
+      {/* Texto y búsqueda por nombre del edificio */}
+      <View style={styles.searchContainer}>
+        <TextInput
+          style={styles.input}
+          placeholder="Nombre del edificio"
+          value={busquedaNombre}
+          onChangeText={(text) => setBusquedaNombre(text)}
+        />
+        <TouchableOpacity style={[styles.searchButton, styles.transparentButton]} onPress={buscarEdificioPorNombre}>
+          <MaterialCommunityIcons name="magnify" size={24} color="black" />
+        </TouchableOpacity>
       </View>
 
-      {/* Texto y búsqueda por código */}
-      <View>
-        <Text style={styles.inputLabel}>Código del edificio</Text>
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder="Código del edificio"
-            value={busquedaCodigo}
-            onChangeText={(text) => setBusquedaCodigo(text)}
-          />
-          <TouchableOpacity style={styles.searchButton} onPress={buscarEdificioPorCodigo}>
-            <MaterialCommunityIcons name="magnify" size={24} color="white" />
-          </TouchableOpacity>
-        </View>
+      {/* Texto y búsqueda por código del formulario */}
+      <View style={styles.searchContainer}>
+        <TextInput
+          style={styles.input}
+          placeholder="Código del formulario"
+          value={busquedaCodigo}
+          onChangeText={(text) => setBusquedaCodigo(text)}
+        />
+        <TouchableOpacity style={[styles.searchButton, styles.transparentButton]} onPress={buscarEdificioPorCodigo}>
+          <MaterialCommunityIcons name="magnify" size={24} color="black" />
+        </TouchableOpacity>
       </View>
 
       {/* Mostrar detalles del edificio encontrado */}
       <View style={styles.edificioEncontradoContainer}>
         {edificioEncontrado && (
-          <>
-            <Text>Nombre: {edificioEncontrado.nombre}</Text>
-            <Text>Dirección: {edificioEncontrado.direccion}</Text>
-            {/* Agregar más detalles según sea necesario */}
-          </>
+          <View style={styles.formularioHeader}>
+            <MaterialCommunityIcons name="file-document" size={24} color="black" />
+            <Text style={styles.formularioTitle}>FEMA P-154</Text>
+            <Text style={styles.formularioFecha}>{edificioEncontrado.fecha}</Text>
+            <TouchableOpacity style={[styles.editButton, styles.transparentButton]} onPress={() => navigation.navigate('Editar2', { edificio: edificioEncontrado })}>
+              <MaterialCommunityIcons name="pencil" size={24} color="black" />
+            </TouchableOpacity>
+          </View>
         )}
       </View>
 
-      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-        <MaterialCommunityIcons name="arrow-left" size={24} color="white" />
-        <Text style={styles.backButtonText}>Regresar</Text>
+      <TouchableOpacity style={[styles.backButton, styles.transparentButton]} onPress={() => navigation.goBack()}>
+        <MaterialCommunityIcons name="exit-to-app" size={24} color="black" />
       </TouchableOpacity>
     </ScrollView>
   );
@@ -106,15 +119,11 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     textAlign: 'center',
   },
-  inputContainer: {
+  searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
     marginBottom: 16,
-  },
-  inputLabel: {
-    fontSize: 16,
-    marginLeft: 8,
-    fontWeight: 'bold',
   },
   input: {
     flex: 1,
@@ -123,28 +132,25 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     paddingHorizontal: 10,
     borderRadius: 10,
+    marginRight: 10,
   },
   searchButton: {
-    backgroundColor: 'blue',
     borderRadius: 10,
     padding: 10,
-    marginLeft: 10,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  transparentButton: {
+    backgroundColor: 'rgba(0, 0, 0, 0.0)', // Fondo transparente con opacidad del 0%
   },
   backButton: {
-    backgroundColor: 'gray',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 12,
     borderRadius: 10,
-    marginBottom: 12,
-  },
-  backButtonText: {
-    color: 'white',
-    fontSize: 18,
-    marginLeft: 8,
+    padding: 12,
+    alignItems: 'center',
+    marginBottom: 24,
+    position: 'absolute',
+    right: 16, // Posiciona el botón en la esquina superior derecha
+    top: 16, // Puedes ajustar la posición vertical según tus necesidades
   },
   edificioEncontradoContainer: {
     marginTop: 16,
@@ -153,9 +159,39 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     borderRadius: 10,
   },
+  formularioHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  formularioTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginLeft: 8,
+    flex: 1,
+  },
+  formularioFecha: {
+    fontSize: 16,
+    color: 'gray',
+  },
+  editButton: {
+    borderRadius: 50,
+    padding: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });
 
 export default Editar;
+
+
+
+
+
+
+
+
+
 
 
 
