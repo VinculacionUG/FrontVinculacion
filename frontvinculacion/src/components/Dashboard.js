@@ -12,13 +12,23 @@ const Dashboard = () => {
   const handleFormularioPress = () => {
     navigation.navigate('FormularioFema');
   };
+
+  const handleLogout = () => {
+    // Aquí va la lógica para cerrar sesión
+    // Por ejemplo, limpiar el almacenamiento de tokens o redireccionar a la pantalla de inicio de sesión
+    navigation.navigate('Start');
+  };
   
   return (
     <View style={styles.container}>
+      <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+        <MaterialCommunityIcons name="logout" size={25} color="#001f3f" />
+        <Text style={styles.normalText}>Cerrar Sesión</Text>
+      </TouchableOpacity>
       <View style={styles.profileContainer}>
-        {/* Icono de perfil (puedes reemplazarlo con tu propio icono) */}
-        <MaterialCommunityIcons name="account" size={60} color="#001f3f" />
-        <Text style={styles.username}>Nombre de Usuario</Text>
+        {/* Icono de perfil  */}
+        <MaterialCommunityIcons name="account" size={70} color="#001f3f" />
+        <Text style={styles.username}>Nombre de Usuario{'\n\n'}</Text>
       </View>
       <View style={styles.cardsContainer}>
         {/* Mini Cards */}
@@ -26,7 +36,7 @@ const Dashboard = () => {
           style={styles.card}
           onPress={() => handleCardPress('Ajuste')}
         >
-          <MaterialCommunityIcons name="account-settings" size={30} color="#001f3f" />
+          <MaterialCommunityIcons name="account-settings" size={40} color="#001f3f" />
           <Text style={styles.cardText}>Ajuste</Text>
         </TouchableOpacity>
 
@@ -34,7 +44,7 @@ const Dashboard = () => {
           style={styles.card}
           onPress={() => handleCardPress('Perfil')}
         >
-          <MaterialCommunityIcons name="account-circle" size={30} color="#001f3f" />
+          <MaterialCommunityIcons name="account-circle" size={40} color="#001f3f" />
           <Text style={styles.cardText}>Perfil</Text>
         </TouchableOpacity>
 
@@ -42,7 +52,7 @@ const Dashboard = () => {
           style={styles.card}
           onPress={handleFormularioPress}
         >
-          <MaterialCommunityIcons name="newspaper-check" size={30} color="#001f3f" />
+          <MaterialCommunityIcons name="newspaper-check" size={40} color="#001f3f" />
           <Text style={styles.cardText}>FEMA</Text>
         </TouchableOpacity>
 
@@ -50,7 +60,7 @@ const Dashboard = () => {
           style={styles.card}
           onPress={() => handleCardPress('Editar')}
         >
-          <MaterialCommunityIcons name="pencil" size={30} color="#001f3f" />
+          <MaterialCommunityIcons name="pencil" size={40} color="#001f3f" />
           <Text style={styles.cardText}>Editar</Text>
         </TouchableOpacity>
 
@@ -58,7 +68,7 @@ const Dashboard = () => {
           style={styles.card}
           onPress={() => handleCardPress('Consultar')}
         >
-          <MaterialCommunityIcons name="magnify" size={30} color="#001f3f" />
+          <MaterialCommunityIcons name="magnify" size={40} color="#001f3f" />
           <Text style={styles.cardText}>Consultar</Text>
         </TouchableOpacity>
 
@@ -66,9 +76,48 @@ const Dashboard = () => {
           style={styles.card}
           onPress={() => handleCardPress('PDF')}
         >
-          <MaterialCommunityIcons name="file-pdf-box" size={30} color="#001f3f" />
+          <MaterialCommunityIcons name="file-pdf-box" size={40} color="#001f3f" />
           <Text style={styles.cardText}>PDF</Text>
         </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.card}
+          onPress={() => handleCardPress('CreateUser')}
+        >
+          <MaterialCommunityIcons name="account-plus" size={36} color="#001f3f"/>
+          <Text style= {styles.cardText}>Crear Usuario</Text>
+          
+        </TouchableOpacity>
+
+{/*
+        <TouchableOpacity
+          style={styles.card}
+          //onPress={() => handleCardPress('Register')}
+          onPress={() => handleCardPress('Register')}
+        >
+          <MaterialCommunityIcons name="file-document" size={40} color="#001f3f"/>
+          <Text style= {styles.cardText}>Registro - PRUEBA</Text>
+          
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.card}
+          onPress={() => handleCardPress('PasswordUpdate')}
+        >
+          <MaterialCommunityIcons name="key" size={40} color="#001f3f"/>
+          <Text style= {styles.cardText}>Actualización contraseña - PRUEBA</Text>
+          
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.card}
+          onPress={() => handleCardPress('EditProfile')}
+        >
+          <MaterialCommunityIcons name="pencil" size={40} color="#001f3f"/>
+          {/*<Text style= {[styles.cardText, { width: 120 }]}>Crear Usuario</Text>/}
+          <Text style= {styles.cardText}>Editar perfil - PRUEBA</Text>
+          
+        </TouchableOpacity>*/}
       </View>
     </View>
   );
@@ -85,9 +134,10 @@ const styles = StyleSheet.create({
   profileContainer: {
     alignItems: 'center',
     marginBottom: 20,
+    marginTop: 75,
   },
   username: {
-    fontSize: 18,
+    fontSize: 20,
     marginTop: 8,
   },
   cardsContainer: {
@@ -97,13 +147,32 @@ const styles = StyleSheet.create({
   },
   card: {
     backgroundColor: '#e0e0e0',
-    borderRadius: 8,
-    padding: 16,
+    borderRadius: 18,
+    padding: 25,
     margin: 8,
     alignItems: 'center',
+    width: 80, // Ancho del contenedor
+    height: 115, // Altura del contenedor
   },
   cardText: {
-    marginTop: 8,
+    //fontWeight: 'bold',
+    marginTop: 6,
+    fontSize: 13,
+    textAlign: 'center',
+  },
+  logoutButton: {
+    position: 'absolute',
+    top: 20,
+    right: 20,
+    alignItems: 'center',
+  },
+  normalText: {
+    fontSize: 12,
+    //fontWeight: 'bold',
+    justifyContent: 'flex-end', // Alineación vertical
+    //textAlign: 'center',
+    marginBottom: 16,
+    color: '#001f3f',
   },
 });
 
