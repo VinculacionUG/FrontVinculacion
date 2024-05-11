@@ -16,6 +16,7 @@ import RecoveryPassword from './src/components/RecoveryPassword';
 import Editar from './src/components/Editar';
 import Ajuste from './src/components/Ajuste'; // Importa la pantalla de Ajustes
 import Editar2 from './src/components/Editar2';
+import Consultar from './src/components/Consultar';
 
 const Stack = createNativeStackNavigator();
 
@@ -37,6 +38,7 @@ const App = () => {
         <Stack.Screen name="Editar" component={Editar} options={{ headerShown: false }} />
         <Stack.Screen name="Ajuste" component={Ajuste} options={{ headerShown: false }} /> 
         <Stack.Screen name="Editar2" component={Editar2} options={{ headerShown: false }}/>
+        <Stack.Screen name="Consultar" component={Consultar} options={{ headerShown: false }}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
