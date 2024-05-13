@@ -10,8 +10,8 @@ const SignIn = () => {
 
   const handleSubmit = async () => {    
     try {
-      // const response = await fetch('https://www.fema.somee.com/Auth/login'
-      const response = await fetch('http://localhost:7040/Auth/login', {
+      const response = await fetch('https://www.fema.somee.com/Auth/login', {
+      // const response = await fetch('http://localhost:7040/Auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -62,7 +62,9 @@ const SignIn = () => {
           <Text style={styles.forgotLink} onPress={() => navigation.navigate('RecoveryPassword')}>
             ¿Olvidaste tu contraseña?
           </Text>
-          <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+          {/* x problemas de coneccion, saltamos la autenticacion */}
+          {/* <TouchableOpacity style={styles.button} onPress={handleSubmit}>  */}
+          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Dashboard')}>
             <MaterialCommunityIcons name="lock-open" size={24} color="white" />
             <Text style={styles.buttonText}>Iniciar Sesión</Text>
           </TouchableOpacity>

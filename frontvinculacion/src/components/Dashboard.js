@@ -12,7 +12,10 @@ const Dashboard = () => {
   const handleFormularioPress = () => {
     navigation.navigate('FormularioFema');
   };
-  
+  const handlePerfilPress = () => {
+    navigation.navigate('Perfil');
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.profileContainer}>
@@ -32,7 +35,8 @@ const Dashboard = () => {
 
         <TouchableOpacity
           style={styles.card}
-          onPress={() => handleCardPress('Perfil')}
+          // onPress={() => handleCardPress('Perfil')}
+          onPress={handlePerfilPress}
         >
           <MaterialCommunityIcons name="account-circle" size={30} color="#001f3f" />
           <Text style={styles.cardText}>Perfil</Text>
