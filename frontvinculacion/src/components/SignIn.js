@@ -50,7 +50,7 @@ const SignIn = () => {
       console.log('Error solicitud PRUEBA');
     }
   };
-
+//cambios actuales
   return (
     <View style={styles.container}>
       
