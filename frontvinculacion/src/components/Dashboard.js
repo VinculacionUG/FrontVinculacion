@@ -42,7 +42,8 @@ const Dashboard = () => {
 
         <TouchableOpacity
           style={styles.card}
-          onPress={() => handleCardPress('Perfil')}
+          // onPress={() => handleCardPress('Perfil')}
+          onPress={handlePerfilPress}
         >
           <MaterialCommunityIcons name="account-circle" size={40} color="#001f3f" />
           <Text style={styles.cardText}>Perfil</Text>
