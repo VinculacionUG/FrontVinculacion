@@ -13,7 +13,7 @@ const Advertencia = ({ mensaje }) => (
     </View>
   </View>
 );
-
+//hola
 const Ajuste = () => {
   const navigation = useNavigation();
 
