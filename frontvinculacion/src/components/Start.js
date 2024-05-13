@@ -14,22 +14,22 @@ const Start = () => {
     <ImageBackground
       source={require('../image/vulnerabilidad.jpg')}
       style={styles.backgroundImage}
-      resizeMode="cover"
+      resizeMode="cover"      
     >
       <View style={styles.container}>
-        {/* Este View actúa como un contenedor y estará en la parte inferior */}
+        <Text style={styles.heading}>FEMA{'\n'}Vulnerabilidades Sísmicas</Text>
         <View style={styles.bottomContainer}>
           <View style={styles.formContainer}>
-          <TouchableOpacity style={[styles.button, styles.centeredButton]} onPress={handleSubmit}>
-             <MaterialIcons name="lock-open" size={20} color="white" /> {/* Tamaño del icono reducido */}
-                <Text style={styles.buttonText}>Iniciar Sesión</Text>
-             </TouchableOpacity>
-            <Text style={styles.bodyText}>
+            <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+              {/*<MaterialIcons name="lock-open" size={24} color="white" />*/}
+              <Text style={styles.buttonText}>Iniciar Sesión</Text>
+            </TouchableOpacity>
+            {/*<Text style={styles.bodyText}>
               No tienes una cuenta?{' '}
               <Text style={styles.linkText} onPress={() => navigation.navigate('Register')}>
                 Regístrate
               </Text>
-            </Text>
+            </Text>*/}
           </View>
         </View>
       </View>
@@ -41,25 +41,43 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
+    backgroundImage: 'linear-gradient(to bottom, rgba(0,0,255,0.1), rgba(0,0,100,0.3))', //Degradado, doble color
+  },
+
+  backgroundImage: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+  },
+  heading: {
+    //fontStyle: 'fantasy',
+    fontSize: 25,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 24,
+    color: 'white',
+    marginTop: 200,
   },
   formContainer: {
     padding: 16,
   },
   button: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'center', 
     backgroundColor: 'blue',
     padding: 10,
+    borderRadius: 40,
     width: '100%',
-    borderRadius: 40, // Ajusta este valor para cambiar la forma del botón
-    paddingHorizontal:30, // Ajusta este valor para cambiar el tamaño horizontal del botón
-    paddingVertical: 15, // Ajusta este valor para cambiar el tamaño vertical del botón
+    paddingHorizontal:30, 
+    paddingVertical: 15, 
     justifyContent: 'center',
-
+    marginBottom: 30,
   },
   buttonText: {
     color: 'white',
     marginLeft: 10,
+    fontSize: 15,
+    fontWeight: 'bold',
   },
   bodyText: {
     marginTop: 16,
@@ -73,15 +91,6 @@ const styles = StyleSheet.create({
   bottomContainer: {
     flex: 1,
     justifyContent: 'flex-end',
-  },
-  backgroundImage: {
-    flex: 1,
-    width: '100%',
-    height: '100%',
-  },
-  centeredButton: {
-    justifyContent: 'center',
-    // Puedes agregar más estilos específicos si lo deseas
   },
 });
 

@@ -8,9 +8,7 @@ const RecoveryPassword = () => {
   const [correo, setCorreo] = useState('');
 
   const handleSendEmail = async () => {    
-    if (
-        !correo 
-      ) {
+    if (!correo) {
         Alert.alert('¡Revise correo porfavor, esta incompleto!');
         return;  
       }
@@ -40,6 +38,11 @@ const RecoveryPassword = () => {
 
   return (
     <View style={styles.container}>
+
+      <TouchableOpacity style={styles.goBackButton} onPress={() => navigation.goBack()}>
+        <MaterialCommunityIcons name="arrow-left" size={24} color="white" />
+      </TouchableOpacity>
+
       <MaterialCommunityIcons name="lock-reset" size={60} color="white" style={styles.icon} />
       <View style={styles.paper}>
         <View style={styles.headingContainer}>
@@ -50,7 +53,7 @@ const RecoveryPassword = () => {
             placeholder="Correo electrónico"
             keyboardType="email-address"
             autoCapitalize="none"
-            style={styles.input}
+            style={[styles.input, { color: correo ? 'black' : 'gray' }]}
             value={correo}
             onChangeText={setCorreo}
           />
@@ -81,7 +84,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderColor: '#001f3f',
     borderWidth: 2,
-    borderRadius: 10,
+    borderRadius: 25,
   },
   headingContainer: {
     alignItems: 'center',
@@ -94,24 +97,35 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   input: {
+    backgroundColor: 'rgba(0, 31, 63, 0.05)',
+    color: 'gray',
     height: 40,
     borderColor: 'gray',
     borderWidth: 1,
     marginBottom: 10,
     paddingHorizontal: 10,
+    borderRadius: 10,
   },
   button: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#001f3f',
     padding: 10,
-    borderRadius: 5,
+    borderRadius: 20,
     marginTop: 24,
     width: '100%',
+    justifyContent: 'center',
   },
   buttonText: {
     color: 'white',
     marginLeft: 10,
+    textAlign: 'center',
+},
+  goBackButton: {
+    position: 'absolute',
+    top: 20,
+    left: 20,
+    zIndex: 1,
   },
 });
 
