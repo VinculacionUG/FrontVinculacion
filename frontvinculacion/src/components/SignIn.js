@@ -6,12 +6,19 @@ import { useNavigation } from '@react-navigation/native';
 const SignIn = () => {
   const navigation = useNavigation();
   const [nombre, setEmail] = useState('');
+  //const [usuario, setusuario] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false); // Nueva variable de estado
 
   const handleSubmit = async () => {    
     try {
-      const response = await fetch('https://www.fema.somee.com/Auth/login', {
-      // const response = await fetch('http://localhost:7040/Auth/login', {
+      if (!nombre || !password) {
+        Alert.alert('Error', 'Por favor completa todos los campos.');
+        console.log('Campos vacíos PRUEBA');
+        return;
+      }
+      const response = await fetch('https://www.fema.somee.com/Auth/login',{
+      //const response = await fetch('http://localhost:7040/Auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -23,18 +30,34 @@ const SignIn = () => {
       });
 
       if (response.ok) {
+        //navigation.navigate('PasswordUpdate');
+        //navigation.navigate('Register');
         navigation.navigate('Dashboard');
       } else {
-        Alert.alert('Error', 'Credenciales incorrectas. Por favor, inténtalo de nuevo.');
+        const responseData = await response.json(); // Obtener el mensaje de error del cuerpo de la respuesta
+        if (responseData && responseData.error === 'invalid_password') {
+          console.log('Contraseña Invalida PRUEBA');
+          Alert.alert('Error', 'Contraseña inválida. Por favor, inténtalo de nuevo.');
+                } else {
+          console.log('Credenciales incorrectas PRUEBA');
+          Alert.alert('Error', 'Credenciales incorrectas. Por favor, inténtalo de nuevo.');
+        }
       }
     } catch (error) {
-      console.console('Error al procesar la solicitud:', error.message);
+      //console.console('Error al procesar la solicitud:', error.message);
+      console.error('Error al procesar la solicitud:', error.message);
       Alert.alert('Error', 'Ha ocurrido un error al iniciar sesión. Por favor, inténtalo de nuevo más tarde.');
+      console.log('Error solicitud PRUEBA');
     }
   };
-
+//cambios
   return (
     <View style={styles.container}>
+      
+      <TouchableOpacity style={styles.goBackButton} onPress={() => navigation.goBack()}>
+        <MaterialCommunityIcons name="arrow-left" size={24} color="white" />
+      </TouchableOpacity>
+
       <MaterialIcons name="description" size={60} color="white" style={styles.icon} />
       <View style={styles.paper}>
         <View style={styles.headingContainer}>
@@ -45,27 +68,48 @@ const SignIn = () => {
             placeholder="Usuario"
             keyboardType="email-address"
             autoCapitalize="none"
-            style={styles.input}
+            style={[styles.input, { color: nombre ? 'black' : 'gray' }]}
             value={nombre}
-            onChangeText={setEmail}
+            //onChangeText={setEmail}
+            onChangeText={text => {
+              // Filtrar caracteres no deseados
+              const filteredText = text.replace(/[^a-zA-Z0-9]/g, ''); // Solo permite letras y números
+              setEmail(filteredText);
+            }}
           />
-          <Text style={styles.forgotLink} onPress={() => navigation.navigate('ForgotUsername')}>
+          {/*<Text style={styles.forgotLink} onPress={() => navigation.navigate('ForgotUsername')}>*/}
+          <Text style={styles.forgotLink} onPress={() => navigation.navigate('RecoveryPassword')}>
             ¿Olvidaste tu nombre de usuario?
           </Text>
+          
+        <View style={styles.inputContainer}>  
           <TextInput
-            placeholder="Password"
-            secureTextEntry
-            style={styles.input}
+            placeholder="Constraseña"
+            //secureTextEntry
+            secureTextEntry={!showPassword} // Utiliza el estado showPassword para alternar la visibilidad de la contraseña
+            //style={[styles.input, {width: '100%', color: password ? 'black' : 'gray' }]}      
+            style={[styles.input, { color: password ? 'black' : 'gray' }]}      
             value={password}
-            onChangeText={setPassword}
+            //onChangeText={setPassword}
+            onChangeText={text => {
+              // Filtrar caracteres no deseados
+              const filteredText = text.replace(/[^a-zA-Z0-9]/g, ''); // Solo permite letras y números
+              setPassword(filteredText);
+            }}
           />
+          {/* Icono de ojo para alternar la visibilidad de la contraseña */}
+          {/*<TouchableOpacity style={styles.passwordVisibilityButton}*/}
+          {/*<TouchableOpacity style={[styles.normalText, {marginBottom: 15, marginRight: 5, marginLeft: 10}]} onPress={() => setShowPassword(!showPassword)}>  */}      
+          <TouchableOpacity style={styles.normalText} onPress={() => setShowPassword(!showPassword)}>        
+              <MaterialCommunityIcons name={showPassword ? 'eye-off' : 'eye'} size={24} color="black" style={styles.eyeIcon} />
+            </TouchableOpacity>
+        </View>
+
           <Text style={styles.forgotLink} onPress={() => navigation.navigate('RecoveryPassword')}>
             ¿Olvidaste tu contraseña?
           </Text>
-          {/* x problemas de coneccion, saltamos la autenticacion */}
-          {/* <TouchableOpacity style={styles.button} onPress={handleSubmit}>  */}
-          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Dashboard')}>
-            <MaterialCommunityIcons name="lock-open" size={24} color="white" />
+          <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+            {/*<MaterialCommunityIcons name="lock-open" size={24} color="white" />*/}
             <Text style={styles.buttonText}>Iniciar Sesión</Text>
           </TouchableOpacity>
         </View>
@@ -80,6 +124,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#001f3f',
+    position: 'relative',
   },
   icon: {
     marginBottom: 20,
@@ -91,7 +136,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderColor: '#001f3f',
     borderWidth: 2,
-    borderRadius: 10,
+    borderRadius: 25,
   },
   headingContainer: {
     alignItems: 'center',
@@ -104,30 +149,102 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   input: {
+    //color: 'gray',
+    backgroundColor: 'rgba(0, 31, 63, 0.05)',
     height: 40,
     borderColor: 'gray',
     borderWidth: 1,
-    marginBottom: 10,
+    marginBottom: 16,
     paddingHorizontal: 10,
+    //borderRadius: 40,
+    borderRadius: 10,
+    width: '100%',
+    paddingRight: 42,
   },
   forgotLink: {
     color: '#001f3f',
     textDecorationLine: 'underline',
-    marginTop: 5,
+    //marginTop: 2,
+    //marginEnd: 5,
+    marginBottom: 15,
   },
   button: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#001f3f',
-    padding: 10,
-    borderRadius: 5,
-    marginTop: 24,
+    padding: 12,
+    borderRadius: 20,
+    marginTop: 20,
     width: '100%',
+    justifyContent: 'center',
+    //marginBottom: 10,
   },
   buttonText: {
     color: 'white',
+    //marginLeft: 10,
+    textAlign: 'center',
+  },
+  eyeIcon: {
+    transform: [{ translateX: -35 }], //sobreponer el ojo horizontalmente
+    marginRight: -50, 
+  },
+  goBackButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#001f3f',
+    padding: 8,
+    borderRadius: 5,
+    marginTop: 10,
+    width: '100%',
+    justifyContent: 'center',
+  },
+  goBackButtonText: {
+    color: 'white',
     marginLeft: 10,
   },
+  horizontalPadding: {
+    paddingHorizontal: 20, // Ajusta este valor para cambiar el espacio horizontal del botón
+  },
+  
+  goBackButton: {
+    position: 'absolute',
+    top: 20,
+    left: 20,
+    zIndex: 1, // Asegura que la flecha esté sobre otros elementos
+  },
+
+  passwordContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  passwordInput: {
+    //marginBottom: 10,
+    //marginTop:10,
+    flex: 1,
+  },
+  normalText: {
+    //fontSize: 24,
+    //fontWeight: 'bold',
+    //justifyContent: 'flex-start', // Alineación vertical
+    //textAlign: 'right',
+    marginBottom: 16,
+    //marginRight: 50,
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    //marginRight: 25,
+    //justifyContent: 'left',
+    //marginLeft: 10,
+    //justifyContent: 'flex-start'
+    //marginBottom: 16,
+    //marginEnd: 20,
+  },
+  passwordVisibilityButton: {
+    paddingHorizontal: 10,
+  },
+
 });
 
 export default SignIn;
