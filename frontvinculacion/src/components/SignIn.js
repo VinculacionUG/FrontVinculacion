@@ -110,7 +110,7 @@ const SignIn = () => {
           </Text>
           <TouchableOpacity style={styles.button} onPress={handleSubmit}>
             {/*<MaterialCommunityIcons name="lock-open" size={24} color="white" />*/}
-            <Text style={styles.buttonText}>Iniciar Sesión</Text>
+            <Text style={styles.buttonText}onPress={() => navigation.navigate('Dashboard')} >Iniciar Sesión</Text>
           </TouchableOpacity>
         </View>
       </View>

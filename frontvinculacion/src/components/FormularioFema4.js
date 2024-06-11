@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { CheckBox } from 'react-native-elements';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const FormularioFema4 = ({ route, navigation }) => {
   const { params } = route;
@@ -108,106 +109,118 @@ const FormularioFema4 = ({ route, navigation }) => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <View>
-        <Text style={styles.title}>Formulario FEMA P-154</Text>
-        <Text style={styles.subtitle}>Extensión de la revisión</Text>
+      <Text style={styles.title}>Formulario FEMA P-154</Text>
+      <Text style={[styles.subtitle, styles.blackText, styles.centerText]}>Extensión de la revisión</Text>
 
-        <View style={styles.pickerContainer}>
-          <Picker
-            style={[styles.input, styles.picker]}
-            selectedValue={revisionExterior}
-            onValueChange={(itemValue) => setRevisionExterior(itemValue)}
-          >
-            <Picker.Item label="Exterior" value="exterior" />
-          </Picker>
-
-          <Picker
-            style={[styles.input, styles.picker]}
-            selectedValue={revisionInterior}
-            onValueChange={(itemValue) => setRevisionInterior(itemValue)}
-          >
-            <Picker.Item label="Interior" value="interior" />
-          </Picker>
-
-          <Picker
-            style={[styles.input, styles.picker]}
-            selectedValue={revisionPlanos}
-            onValueChange={(itemValue) => setRevisionPlanos(itemValue)}
-          >
-            <Picker.Item label="Revisión planos: Sí" value="si" />
-            <Picker.Item label="Revisión planos: No" value="no" />
-          </Picker>
-        </View>
+      <View style={styles.row}>
+        <Text style={styles.inputLabel}>Exterior:</Text>
+        <View style={{ width: 65 }} /> 
+        <Picker
+          style={[styles.input, styles.picker]}
+          selectedValue={revisionExterior}
+          onValueChange={(itemValue) => setRevisionExterior(itemValue)}
+        >
+          <Picker.Item label="Parcial" value="Parcial" />
+          <Picker.Item label="Todos los Lados" value="Todos los Lados" />
+          <Picker.Item label="Aéreo" value="Aéreo" />
+        </Picker>
       </View>
 
+      <View style={styles.row}>
+        <Text style={styles.inputLabel}>Interior:</Text>
+        <View style={{ width: 65 }} /> 
+        <Picker
+          style={[styles.input, styles.picker]}
+          selectedValue={revisionInterior}
+          onValueChange={(itemValue) => setRevisionInterior(itemValue)}
+        >
+          <Picker.Item label="NO" value="NO" />
+          <Picker.Item label="Visible" value="Visible" />
+          <Picker.Item label="Ingreso" value="Ingreso" />
+        </Picker>
+      </View>
 
-      <View style={styles.part2}>
+      <View style={styles.row}>
+        <Text style={styles.inputLabel}>Revisión planos:</Text>
+        <View style={{ width: 5 }} /> 
+        <Picker
+          style={[styles.input, styles.picker]}
+          selectedValue={revisionPlanos}
+          onValueChange={(itemValue) => setRevisionPlanos(itemValue)}
+        >
+          <Picker.Item label="Sí" value="si" />
+          <Picker.Item label="No" value="no" />
+        </Picker>
+      </View>
+
+      <View style={styles.part1}>
+        <Text style={styles.inputLabel}>Fuente del tipo de suelo:</Text>
         <TextInput
           style={styles.input}
-          placeholder="Fuente del tipo de suelo"
           value={fuenteTipoSuelo}
           onChangeText={(text) => setFuenteTipoSuelo(text)}
         />
+      </View>
 
+      <View style={styles.part1}>
+        <Text style={styles.inputLabel}>Fuente de Peligros Geológicos</Text>
         <TextInput
           style={styles.input}
-          placeholder="Fuente de peligros geológicos 1"
           value={fuentePeligrosGeologicos1}
           onChangeText={(text) => setFuentePeligrosGeologicos1(text)}
         />
+      </View>
 
+      <View style={styles.part1}>
+        <Text style={styles.inputLabel}>Contacto de la Persona</Text>
         <TextInput
           style={styles.input}
-          placeholder="Fuente de peligros geológicos 2"
           value={fuentePeligrosGeologicos2}
           onChangeText={(text) => setFuentePeligrosGeologicos2(text)}
         />
       </View>
 
       <View>
-        <Text style={styles.subtitle}>Otros Peligros</Text>
-
-        <CheckBox
-          title="¿Hay peligros que desencadenan una evaluación estructural detallada?"
-          checked={evaluacionDetallada}
-          onPress={() => setEvaluacionDetallada(!evaluacionDetallada)}
-        />
-
+        <Text style={[styles.subtitle, styles.centerText]}>Otros Peligros</Text>
+        <Text style={[styles.subtitle, styles.boldRedText, styles.centerText]}>¿Hay peligros que desencadenan una evaluación estructural detallada?</Text>
         <CheckBox
           title="Posible golpeteo entre edificios"
           checked={checkBox1}
           onPress={() => setCheckBox1(!checkBox1)}
+          containerStyle={styles.transparentCheckBox}
         />
-
         <CheckBox
           title="Riesgo de caída de edificios adyacentes más altos"
           checked={checkBox2}
           onPress={() => setCheckBox2(!checkBox2)}
+          containerStyle={styles.transparentCheckBox}
         />
-
         <CheckBox
           title="Peligro geológico o Suelo tipo F"
           checked={checkBox3}
           onPress={() => setCheckBox3(!checkBox3)}
+          containerStyle={styles.transparentCheckBox}
         />
-
         <CheckBox
           title="Daños significativos/deterioro del sistema estructural"
           checked={checkBox4}
           onPress={() => setCheckBox4(!checkBox4)}
+          containerStyle={styles.transparentCheckBox}
         />
-
+               </View>
+        <View style={{ marginBottom: 50 }}></View> {/* Espacio de 1 centímetro entre los CheckBox y los botones */}
+        
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.prevButton} onPress={() => navigation.goBack()}>
-            <Text style={styles.nextButtonText}>←</Text>
+            <MaterialCommunityIcons name="arrow-left" size={24} color="white" />
+            <Text style={styles.buttonText}>Regresar</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
-            <Text style={styles.nextButtonText}>→</Text>
+            <Text style={styles.buttonText}>Siguiente</Text>
+            <MaterialCommunityIcons name="arrow-right" size={24} color="white" />
           </TouchableOpacity>
         </View>
-
-      </View>
-    </ScrollView>
+      </ScrollView>
   );
 };
 
@@ -216,14 +229,30 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     padding: 16,
     backgroundColor: 'white',
+    paddingBottom: 50, 
   },
-  pickerContainer: {
-    justifyContent: 'space-between', 
-  }, picker: {
-    flex: 1,  
-    marginRight: 10,  
-  },part2:{
-    marginTop:30
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  inputLabel: {
+    fontSize: 16,
+    marginRight: 4,
+    fontWeight: 'normal',
+  },
+  picker: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    borderRadius: 5,
+    justifyContent: 'center',
+    width: 150,
+  },
+  part1: {
+    height: 75,
+    justifyContent: 'center',
+    marginBottom: 16,
   },
   title: {
     fontSize: 24,
@@ -237,42 +266,76 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   input: {
+    flex: 1,
     height: 40,
     borderColor: 'gray',
     borderWidth: 1,
-    marginBottom: 16,
     paddingHorizontal: 10,
+    borderRadius: 5,
+    marginBottom: 16,
   },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 20,
+    marginTop: 20, 
+    paddingHorizontal: 16,
+    paddingBottom: 20, 
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: 'white',
+    borderTopColor: 'lightgray',
   },
   prevButton: {
-    flex: 1,
+    backgroundColor: 'navy',
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginHorizontal: 8,
-    cursor: 'pointer',
-    backgroundColor: 'lightgray',
+    paddingVertical: 12,
+    borderRadius: 10,
+    paddingHorizontal: 24,
   },
   nextButton: {
-    flex: 1,
+    backgroundColor: 'navy',
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginHorizontal: 8,
-    cursor: 'pointer',
-    backgroundColor: 'lightblue',
+    paddingVertical: 12,
+    borderRadius: 10,
+    paddingHorizontal: 24,
   },
-  nextButtonText: {
-    fontSize: 20,
+  buttonText: {
+    color: 'white',
+    fontSize: 18,
+    marginLeft: 8,
+  },
+  transparentCheckBox: {
+    backgroundColor: 'transparent',
+    borderWidth: 0,
+  },
+  blackText: {
+    color: 'black',
+  },
+  boldRedText: {
+    color: 'red',
+    fontWeight: 'bold',
+  },
+  centerText: {
+    textAlign: 'center',
   },
 });
 
 export default FormularioFema4;
+
+
+          
+  
+
+
+
+
+
+
+    
+
