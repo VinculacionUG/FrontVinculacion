@@ -13,10 +13,28 @@ const CreateUser = () => {
   const [nombre2, setNombre2] = useState('');
   const [apellido1, setApellido1] = useState('');
   const [apellido2, setApellido2] = useState('');
+  const [correo, setCorreo] = useState('');
+  const [sexo, setSexo] = useState('');
   const [rol, setRol] = useState('');
   const [usuario, setUsuario] = useState('');
   const [clave, setClave] = useState('');
   const [showPassword, setShowPassword] = useState(false); //Poner ojo dentro del cuadro
+
+  const [correoValido, setCorreoValido] = useState(false); // Agrega el estado correoValido
+
+  // Función para validar el correo electrónico
+  const validarCorreo = (email) => {
+    // Expresión regular para validar el formato del correo electrónico
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
+
+  // Función para manejar cambios en el campo de correo electrónico
+  const handleChangeCorreo = (text) => {
+    setCorreo(text); // Actualiza el estado del correo electrónico
+    setCorreoValido(validarCorreo(text)); // Verifica si el correo electrónico es válido y actualiza el estado correspondiente
+  };
+
 
   const handleChange = (name, value) => {////
     setFormState({
@@ -51,6 +69,8 @@ const CreateUser = () => {
       !cedula ||
       !nombre1 ||
       !apellido1 ||
+      !correo ||
+      !sexo ||
       !rol ||
       !usuario ||
       !clave
@@ -74,6 +94,8 @@ const CreateUser = () => {
           "nombre2": "",
           "apellido1": apellido1,
           "apellido2": "",
+          "correo": correo,
+          "sexo": sexo,
           "rol": rol,
           "estado": true,
           "userName": usuario,
@@ -120,6 +142,7 @@ const CreateUser = () => {
       <View style={styles.formContainer}>
         <Text style={styles.heading}>Creación de Usuario</Text>
 
+        {/*
         <View style={styles.inputContainer}>  
           <Text style={[styles.normalText,{marginRight: 1}]}>Administrador encargado: </Text>
           <TextInput
@@ -134,6 +157,7 @@ const CreateUser = () => {
         </View>
 
         <View style={styles.line} />
+        */}
 
         <View style={styles.inputContainer}>
           <Text style={styles.normalText}>Tipo de documento: </Text>
@@ -155,9 +179,11 @@ const CreateUser = () => {
           </Picker>
         </View>
 
+        {/*
+
         {showCedulaInput && (
           <View style={styles.inputContainer}>  
-            {/*<View style={{ flex: 1 }}> {/* Este contenedor se expandirá para llenar el espacio restante */}
+            {/*<View style={{ flex: 1 }}> {/* Este contenedor se expandirá para llenar el espacio restante /}
             <Text style={[styles.normalText, {marginRight: 0, }]}>Nº Documento: </Text>
             <TextInput
               name="numDocumento"
@@ -171,11 +197,30 @@ const CreateUser = () => {
                 const numericValue = text.replace(/[^0-9]/g, '');
                 // Actualizar el estado con el valor filtrado
                 setCedula(numericValue);
-              }}*/
+              }}/
             />    
           </View>
           //</View>
         )}
+
+        */}
+
+        <View style={styles.inputContainer}>  
+          <Text style={[styles.normalText, {marginRight: 35}]}>Nº Documento: </Text>
+          <TextInput
+            name="numDocumento"
+            style={[styles.input, {width: '100%', paddingRight: 42}]}
+            keyboardType="numeric" // Esta línea permite ingresar solo números
+            value={cedula}
+            //onChangeText={setCedula}
+            onChangeText={(text) => {
+                // Filtrar los caracteres no numéricos utilizando una expresión regular
+                const numericValue = text.replace(/[^0-9]/g, '');
+                // Actualizar el estado con el valor filtrado
+                setCedula(numericValue);
+            }}
+          />
+        </View>
 
         <View style={styles.inputContainer}>  
           <Text style={styles.normalText}>Nombres: </Text>
@@ -197,6 +242,48 @@ const CreateUser = () => {
           />
         </View>
 
+       
+
+        <View style={styles.inputContainer}>  
+          <Text style={[styles.normalText, {marginRight: 75}]}>Email: </Text>
+          <TextInput
+            name="email"
+            style={styles.input}
+            value={correo}
+            //onChangeText={setCorreo}
+            onChangeText={handleChangeCorreo} // Usa la función handleChangeCorreo para manejar cambios en el correo electrónico
+          />
+          {/* Muestra un mensaje de error si el correo no es válido /}
+          {!correoValido && <Text style={styles.errorText}>Correo electrónico inválido</Text>}*/}
+          
+
+        </View>
+        {!correoValido && correo.trim() !== '' && (
+            //<Text style={styles.errorText}>Correo electrónico inválido</Text>
+
+              //<View style={styles.inputContainer}>  
+              <View style={[styles.inputContainer, { justifyContent: 'flex-end' }]}> 
+                <View style={{ marginTop: -12 , marginBottom: 10}}>
+                <Text style={{ color: 'red' }}>
+                <MaterialCommunityIcons name="alert-circle" size={20} color="red" /> Correo electrónico inválido</Text>
+              </View>
+              </View>
+            )}
+
+        <View style={styles.inputContainer}>
+        {/*<View style={[styles.inputContainer, { justifyContent: 'flex-start' }]}> */}
+          <Text style={styles.normalText}>Sexo: </Text>
+          <Picker
+            selectedValue={sexo}
+            onValueChange={setSexo}
+            style={[styles.picker, { color: sexo ? 'black' : 'gray' }]}
+          >
+            <Picker.Item label="Seleccione" value="" />
+            <Picker.Item label="Masculino" value="Masculino" />
+            <Picker.Item label="Femenino" value="Femenino" />
+          </Picker>
+        </View>
+
         <View style={styles.inputContainer}>
           <Text style={styles.normalText}>Rol del usuario: </Text>
           <Picker
@@ -210,11 +297,13 @@ const CreateUser = () => {
             <Picker.Item label="Inspector" value="Inspector" />
           </Picker>
         </View>
-  
+
+        {/*
+
         <View style={styles.line} />
 
         <View style={styles.inputContainer}>  
-          <Text style={styles.normalText}>Usuario: </Text>
+          <Text style={[styles.normalText, {marginRight: 50}]}>Usuario: </Text>
           <TextInput
             name="username"
             placeholder="Por defecto"
@@ -241,8 +330,9 @@ const CreateUser = () => {
           <TouchableOpacity style={[styles.normalText, {marginBottom: 15, marginRight: 5, marginLeft: 10}]} onPress={() => setShowPassword(!showPassword)}>
             <MaterialCommunityIcons name={showPassword ? 'eye-off' : 'eye'} size={24} color="black" style={styles.eyeIcon} />
           </TouchableOpacity>
-        {/*</View>*/}
         </View>
+
+        */}
 
         {/* Botón de envío */}
         <TouchableOpacity style={styles.button} onPress={handleSubmit}>
