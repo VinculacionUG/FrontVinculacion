@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity,Alert } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { CheckBox } from 'react-native-elements';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const FormularioFema5 = ({ route, navigation }) => {
   // Obtener datos de las pantallas anteriores
@@ -152,8 +153,7 @@ const FormularioFema5 = ({ route, navigation }) => {
         checked={checkBox4}
         onPress={() => setCheckBox4(!checkBox4)}
       />
-
-      <Text>¿Se requiere una evaluación detallada de elementos no estructurales?</Text>
+      <Text style={styles.inputLabelred}>¿Se requiere una evaluación detallada de elementos no estructurales?</Text>
       <Picker
         style={styles.input}
         selectedValue={evaluacionDetalladaElementosNoEstructurales}
@@ -164,8 +164,8 @@ const FormularioFema5 = ({ route, navigation }) => {
         <Picker.Item label="No, no existe peligro de elementos no estructurales" value="noPeligroElementos" />
         <Picker.Item label="No, se sabe" value="noSabe" />
       </Picker>
-
-      <Text>¿Se requiere de una inspección de Nivel 2?</Text>
+     
+      <Text style={styles.inputLabelred}>¿Se requiere de una inspección de Nivel 2?</Text>      
       <Picker
         style={styles.input}
         selectedValue={inspeccionNivel2}
@@ -177,11 +177,13 @@ const FormularioFema5 = ({ route, navigation }) => {
 
       {/* Botones de Navegación */}
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.prevButton} onPress={() => navigation.goBack()}>
-          <Text style={styles.nextButtonText}>←</Text>
-        </TouchableOpacity>
+      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+        <MaterialCommunityIcons name="arrow-left" size={24} color="white" />
+        <Text style={styles.ButtonText}>Regresar</Text>
+      </TouchableOpacity>
+
         <TouchableOpacity style={styles.guardarButton} onPress={handleGuardar}>
-          <Text style={styles.nextButtonText}>Guardar</Text>
+          <Text style={styles.ButtonText}>Guardar</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
@@ -202,6 +204,7 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 18,
+    fontWeight: 'bold',
     marginBottom: 16,
     textAlign: 'center',
   },
@@ -211,6 +214,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 16,
     paddingHorizontal: 10,
+  },
+  inputLabelred: {
+    fontSize: 16,
+    marginLeft: 8,     
+    color: 'red',
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -228,20 +236,52 @@ const styles = StyleSheet.create({
     cursor: 'pointer',
     backgroundColor: 'lightgray',
   },
-  guardarButton: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginHorizontal: 8,
-    cursor: 'pointer',
-    backgroundColor: 'green',
-  },
+//  guardarButton: {
+//    flex: 1,
+//    alignItems: 'center',
+//    justifyContent: 'center',
+//    height: 40,
+//    borderColor: 'gray',
+//    borderWidth: 1,
+//    marginHorizontal: 8,
+//    cursor: 'pointer',
+//    backgroundColor: 'green',
+///  },
+
   nextButtonText: {
     fontSize: 20,
   },
+  backButton: {
+    backgroundColor: 'blue',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    borderRadius: 10,
+    marginBottom: 12,
+    paddingHorizontal: 24,
+    },
+    guardarButton: {
+      backgroundColor: 'blue',
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingVertical: 12,
+      borderRadius: 10,
+      marginBottom: 12,
+      paddingHorizontal: 24,
+      },
+  
+  backButtonText: {
+    color: 'white',
+    fontSize: 18,
+    marginLeft: 8,
+  },
+  ButtonText: {
+    color: 'white',
+    fontSize: 18,
+    marginLeft: 8,
+  },    
 });
 
 export default FormularioFema5;
