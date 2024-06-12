@@ -18,8 +18,8 @@ const Register = () => {
   const [correo, setCorreo] = useState('');
   const [celular, setCelular] = useState('');
   const [sexo, setSexo] = useState('');
-  //const [fechaNacimiento, setFechaNacimiento] = useState('');
-  const [fechaNacimiento, setFechaNacimiento] = useState(new Date());
+  const [fechaNacimiento, setFechaNacimiento] = useState('');
+  //const [fechaNacimiento, setFechaNacimiento] = useState(new Date());
   const [usuario, setUsuario] = useState('');
   const [clave, setClave] = useState('');
   const [day, setDay] = useState('');
@@ -36,6 +36,22 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   //const [formState, setFormState] = useState({});
+
+  const [correoValido, setCorreoValido] = useState(false); // Agrega el estado correoValido
+
+  // Función para validar el correo electrónico
+  const validarCorreo = (email) => {
+    // Expresión regular para validar el formato del correo electrónico
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
+
+  // Función para manejar cambios en el campo de correo electrónico
+  const handleChangeCorreo = (text) => {
+    setCorreo(text); // Actualiza el estado del correo electrónico
+    setCorreoValido(validarCorreo(text)); // Verifica si el correo electrónico es válido y actualiza el estado correspondiente
+  };
+
 
   const handleChange = (name, value) => {////
     setFormState({
@@ -55,6 +71,8 @@ const Register = () => {
       setPasswordMatchError(false);
     }
   };
+
+  
 
   // Función para manejar cambios en el campo de confirmar contraseña
   const handleConfirmPasswordChange = (text) => {
@@ -142,6 +160,29 @@ const Register = () => {
       );
     };*/
 
+  // Función para validar la fecha de nacimiento
+  const validarFechaNacimiento = () => {
+    const selectedDay = parseInt(day);
+    const selectedMonth = parseInt(month) - 1;
+    const selectedYear = parseInt(year);
+
+    // Verificar si la fecha es válida
+    const selectedDate = new Date(selectedYear, selectedMonth, selectedDay);
+    const currentDate = new Date();
+
+    if (
+      isNaN(selectedDay) ||
+      isNaN(selectedMonth) ||
+      isNaN(selectedYear) ||
+      selectedDate >= currentDate //||
+      //selectedYear < 1900 // Verificar si el año es menor a 1900
+    ) {
+      return false;
+    }
+
+    return true;
+  };
+
   const handleSubmit = async () => {
     // Verificar campos vacíos
     if (
@@ -170,6 +211,18 @@ const Register = () => {
       return;  
     }
 
+    // Verificar la validez del correo electrónico
+    if (!validarCorreo(correo)) {
+      Alert.alert('Correo electrónico inválido');
+      return;
+    }
+
+    // Verificar la validez de la fecha de nacimiento
+    if (!validarFechaNacimiento()) {
+      Alert.alert('Fecha de nacimiento inválida');
+      return;
+    }
+
     // Convertir los valores de día, mes y año a números enteros
     const selectedDay = parseInt(day);
     const selectedMonth = parseInt(month) - 1; // Los meses comienzan desde 0 en JavaScript (enero es 0)
@@ -182,7 +235,8 @@ const Register = () => {
     }
 
     // Crear la fecha completa
-    const selectedDate = new Date(selectedYear, selectedMonth, selectedDay);
+    //const selectedDate = new Date(selectedYear, selectedMonth, selectedDay);
+    const selectedDate = new Date(selectedDay, selectedMonth, selectedYear);
     console.log('Fecha seleccionada:', selectedDate);
     setSelectedDate(formattedDate);
 
@@ -261,18 +315,43 @@ const Register = () => {
           />
         </View>
 
+{/*
         <View style={styles.inputContainer}>  
           <Text style={styles.normalText}>Email: </Text>
           <TextInput
             name="email"
             style={styles.input}
             value={correo}
-            onChangeText={setCorreo}
+            //onChangeText={setCorreo}
+            onChangeText={handleChangeCorreo} // Usa la función handleChangeCorreo para manejar cambios en el correo electrónico
           />
-        </View>
+          {/* Muestra un mensaje de error si el correo no es válido /}
+          {!correoValido && <Text style={styles.errorText}>Correo electrónico inválido</Text>}/}
+          
 
+        </View>
+        {!correoValido && correo.trim() !== '' && (
+            //<Text style={styles.errorText}>Correo electrónico inválido</Text>
+
+              //<View style={styles.inputContainer}>  
+              <View style={[styles.inputContainer, { justifyContent: 'flex-end' }]}> 
+                <View style={{ marginTop: -12 , marginBottom: 10}}>
+                <Text style={{ color: 'red' }}>
+                <MaterialCommunityIcons name="alert-circle" size={20} color="red" /> Correo electrónico inválido</Text>
+              </View>
+              </View>
+            )}*/}
+{/*
+        {passwordMatchError && (
+          //<View style={styles.inputContainer}>  
+          <View style={[styles.inputContainer, { justifyContent: 'flex-end' }]}> 
+            <Text style={{ color: 'red' }}>
+            <MaterialCommunityIcons name="alert-circle" size={20} color="red" /> Correo electrónico inválido</Text>
+          </View>
+        )}
+*/}
         <View style={styles.inputContainer}>  
-          <Text style={styles.normalText}>Teléfono: </Text>
+          <Text style={styles.normalText}>Celular: </Text>
           <TextInput
             //placeholder="Teléfono"
             name="telefono"
@@ -281,8 +360,26 @@ const Register = () => {
             //style={[styles.input, { color: apellido1 ? 'black' : 'gray' }]}
             //onChangeText={setCelular}
             onChangeText={(text) => {
-              const numericValue = text.replace(/[^0-9+]/, ''); // Filtrar los caracteres no numéricos utilizando una expresión regular
-              setCelular(numericValue); // Actualizar el estado con el valor filtrado
+              //const numericValue = text.replace(/[^0-9+]/g, ''); // Filtrar los caracteres no numéricos utilizando una expresión regular
+              //const numericValue = text.replace(/^\+[^0-9+]/g, ''); // Filtrar los caracteres no numéricos utilizando una expresión regular
+              //setCelular(numericValue); // Actualizar el estado con el valor filtrado
+              
+              //let formattedText = text.trim(); // Elimina los espacios en blanco al principio y al final
+              // Verifica si el primer carácter es un "+" y si los caracteres restantes son números
+              //if (/^\+[0-9]*$/.test(formattedText)) {
+              //    setCelular(formattedText); // Actualiza el estado solo si el texto es válido
+              //}
+
+              let formattedText = text.trim(); // Elimina los espacios en blanco al principio y al final
+              // Verifica si el texto no está vacío y si el primer carácter no es un "+"
+              if (formattedText && formattedText[0] !== '+') {
+                  formattedText = '+' + formattedText; // Agrega el "+" al principio del texto
+              }
+              // Verifica si el texto cumple con el patrón deseado
+              if (/^\+[0-9]*$/.test(formattedText)) {
+                  formattedText = formattedText.slice(0, 13);
+                  setCelular(formattedText); // Actualiza el estado solo si el texto es válido
+              }
             }}
           />
         </View>
@@ -347,17 +444,44 @@ const Register = () => {
               value={year}
               //onChangeText={setYear}
               onChangeText={(text) => {
-                const numericValue = text.replace(/[^0-9+]/, ''); // Filtrar los caracteres no numéricos 
+                const numericValue = text.replace(/[^0-9]/g, ''); // Filtrar los caracteres no numéricos 
                 const intValue = parseInt(numericValue, 10); // Convertir el valor a un número entero
-                if (numericValue.length <= 4) { // Filtrar la cantidad de números
-                  setYear(numericValue);
+                const currentYear = new Date().getFullYear(); // Obtener el año actual
+                const minYear = 1000; // Año mínimo permitido
+
+                //if (numericValue.length <= 4 && intValue >= minYear && intValue <= currentYear) { // Filtrar la cantidad de números
+                //if (numericValue.length <= 4 || (intValue >= 1500 && intValue <= 2023)) { // Filtrar la cantidad de números
+                if (numericValue.length <= 4 || intValue <= 2020) { // Filtrar la cantidad de números
+                    setYear(numericValue); // Actualizar el estado con el año válido
                 }
+
+/*                if (
+                  (numericValue === '' || (intValue >= 1 && intValue <= 2023)) &&  // Verificar si el valor está dentro del rango permitido (1 - 31)
+                  numericValue.length <= 4                                       // Filtrar la cantidad de números
+                ) {
+                  setYear(numericValue);                                            // Actualizar el estado con el valor filtrado
+               }*/
+                // Verificar si el año es un número y está dentro del rango permitido (desde el año 1000 hasta el año actual)
+                //if (!isNaN(intValue) && numericValue.length <= 4 && intValue >= 1000 && intValue <= currentYear) {
+                //  setYear(numericValue); // Actualizar el estado con el año válido
+                //}
                 }}
                 //style={styles.input}
               style={[styles.input, { width: '12%', color: year ? 'black' : 'gray' }]}
             />
           </View>
+{/*
+                {!validarFechaNacimiento() && (
+            <View style={[styles.inputContainer, { justifyContent: 'flex-end' }]}>
+              <Text style={{ color: 'red' }}>
+                <MaterialCommunityIcons name="alert-circle" size={20} color="red" /> Fecha de nacimiento inválida
+              </Text>
+            </View>
+          )}*/}
+
         </View>
+
+                  
 
 {/*
 

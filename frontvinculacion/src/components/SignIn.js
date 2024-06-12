@@ -73,14 +73,14 @@ const SignIn = () => {
             //onChangeText={setEmail}
             onChangeText={text => {
               // Filtrar caracteres no deseados
-              const filteredText = text.replace(/[^a-zA-Z0-9]/g, ''); // Solo permite letras y números
+              const filteredText = text.replace(/[^0-9]/g, ''); // Solo permite números
               setEmail(filteredText);
             }}
           />
           {/*<Text style={styles.forgotLink} onPress={() => navigation.navigate('ForgotUsername')}>*/}
-          <Text style={styles.forgotLink} onPress={() => navigation.navigate('RecoveryPassword')}>
+          {/*<Text style={styles.forgotLink} onPress={() => navigation.navigate('RecoveryPassword')}>
             ¿Olvidaste tu nombre de usuario?
-          </Text>
+          </Text>*/}
           
         <View style={styles.inputContainer}>  
           <TextInput
@@ -92,9 +92,11 @@ const SignIn = () => {
             value={password}
             //onChangeText={setPassword}
             onChangeText={text => {
-              // Filtrar caracteres no deseados
-              const filteredText = text.replace(/[^a-zA-Z0-9]/g, ''); // Solo permite letras y números
-              setPassword(filteredText);
+              if (text.length <= 50) { // Máx 50
+                // Filtrar caracteres no deseados
+                const filteredText = text.replace(/[^a-zA-Z0-9]/g, ''); // Solo permite letras y números
+                setPassword(filteredText);
+              }
             }}
           />
           {/* Icono de ojo para alternar la visibilidad de la contraseña */}
@@ -110,7 +112,8 @@ const SignIn = () => {
           </Text>
           <TouchableOpacity style={styles.button} onPress={handleSubmit}>
             {/*<MaterialCommunityIcons name="lock-open" size={24} color="white" />*/}
-            <Text style={styles.buttonText}>Iniciar Sesión</Text>
+            <Text style={styles.buttonText} onPress={() => navigation.navigate('Dashboard')} >Iniciar Sesión</Text>
+            {/*<Text style={styles.buttonText}>Iniciar Sesión</Text>*/}
           </TouchableOpacity>
         </View>
       </View>
@@ -151,10 +154,10 @@ const styles = StyleSheet.create({
   input: {
     //color: 'gray',
     backgroundColor: 'rgba(0, 31, 63, 0.05)',
-    height: 40,
+    height: 45,
     borderColor: 'gray',
     borderWidth: 1,
-    marginBottom: 16,
+    marginBottom: 18,
     paddingHorizontal: 10,
     //borderRadius: 40,
     borderRadius: 10,

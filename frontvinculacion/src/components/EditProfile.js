@@ -37,6 +37,22 @@ const EditProfile = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   //const [formState, setFormState] = useState({});
+  
+  const [correoValido, setCorreoValido] = useState(false); // Agrega el estado correoValido
+
+   // Función para validar el correo electrónico
+   const validarCorreo = (email) => {
+    // Expresión regular para validar el formato del correo electrónico
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
+
+  // Función para manejar cambios en el campo de correo electrónico
+  const handleChangeCorreo = (text) => {
+    setCorreo(text); // Actualiza el estado del correo electrónico
+    setCorreoValido(validarCorreo(text)); // Verifica si el correo electrónico es válido y actualiza el estado correspondiente
+  };
+
 
   const handleChange = (name, value) => {////
     setFormState({
@@ -233,21 +249,49 @@ const EditProfile = () => {
       </TouchableOpacity>
 
       <View style={styles.formContainer}>
-        <Text style={styles.heading}>Perfil</Text>
+        <Text style={styles.heading}>Actualizar Perfil</Text>
+
+        <View style={styles.profileContainer}>
+          {/* Icono de perfil  */}
+          <MaterialCommunityIcons name="account" size={70} color="#001f3f" />
+          <Text style={styles.username}>Nombre de Usuario{'\n\n'}</Text>
+        </View>
+
+        <View style={styles.inputContainer}>
+          <Text style={styles.normalText}>Tipo de documento: </Text>
+          <Picker
+            selectedValue={tipoDocumento}
+            onValueChange={(itemValue, itemIndex) => {
+              setTipoDocumento(itemValue);
+              if (itemValue === 'Cedula' || itemValue === 'Pasaporte') {
+                setShowCedulaInput(true);
+              } else {
+                setShowCedulaInput(false);
+              }
+            }}
+            style={[styles.picker, {width: '50%', color: tipoDocumento ? 'black' : 'gray' }]}
+          >
+            <Picker.Item label="Seleccione" value="" />
+            <Picker.Item label="Cédula" value="Cedula" />
+            <Picker.Item label="Pasaporte" value="Pasaporte" />
+          </Picker>
+        </View>
 
         <View style={styles.inputContainer}>  
             {/*<View style={{ flex: 1 }}> {/* Este contenedor se expandirá para llenar el espacio restante */}
             <Text style={styles.normalText}>Nº Documento:</Text>
             <TextInput
               //name="numDocumento"
-              placeholder="0952517282"
+              //placeholder="0952517282"
               //style={styles.input}        
               //style={[styles.input, { flex: 1 }]} // Ajusta el ancho del input aquí
-              style={styles.input } // Ajusta el ancho del input aquí
+              //style={styles.input } // Ajusta el ancho del input aquí
               //style={[styles.input, { color: cedula ? 'black' : 'gray' }]}
+              style={[styles.input, { color: cedula ? 'black' : 'gray' }]}
               keyboardType="numeric"
               value={cedula}
               onChangeText={setCedula}
+              editable={false} // Deshabilitar la edición del TextInput
             />    
           </View>
 
@@ -255,7 +299,7 @@ const EditProfile = () => {
           <Text style={styles.normalText}>Nombres: </Text>
           <TextInput
             name="nombre"
-            placeholder="Cristopher"
+            //placeholder="Cristopher"
             style={styles.input}
             //style={[styles.input, { color: nombre1 ? 'black' : 'gray' }]}
             //style={[styles.picker, { color: nombre1 ? 'black' : 'gray' }]}
@@ -268,7 +312,7 @@ const EditProfile = () => {
           <Text style={styles.normalText}>Apellidos: </Text>
           <TextInput
             name="apellido"
-            placeholder="Borbor"
+            //placeholder="Borbor"
             style={styles.input}
             //style={[styles.input, { color: apellido1 ? 'black' : 'gray' }]}
             value={apellido1}
@@ -370,7 +414,7 @@ const EditProfile = () => {
           <Text style={styles.normalText}>Direccion: </Text>
           <TextInput
             name="direccion"
-            placeholder="17 y Alcedo"
+            //placeholder="17 y Alcedo"
             style={styles.input}
             //style={[styles.input, { color: apellido1 ? 'black' : 'gray' }]}
             value={direccion}
@@ -382,28 +426,52 @@ const EditProfile = () => {
           <Text style={styles.normalText}>Email: </Text>
           <TextInput
             name="email"
-            placeholder="cristopher@gmail.com"
+            //placeholder="cristopher@gmail.com"
             style={styles.input}
             //style={[styles.input, { color: correo ? 'black' : 'gray' }]}
             value={correo}
-            onChangeText={setCorreo}
+            //onChangeText={setCorreo}
+            onChangeText={handleChangeCorreo} // Usa la función handleChangeCorreo para manejar cambios en el correo electrónico
+
           />
+          
         </View>
+        {!correoValido && correo.trim() !== '' && (
+            //<Text style={styles.errorText}>Correo electrónico inválido</Text>
+
+              //<View style={styles.inputContainer}>  
+              <View style={[styles.inputContainer, { justifyContent: 'flex-end' }]}> 
+                <View style={{ marginTop: -12 , marginBottom: 10}}>
+                <Text style={{ color: 'red' }}>
+                <MaterialCommunityIcons name="alert-circle" size={20} color="red" /> Correo electrónico inválido</Text>
+              </View>
+              </View>
+            )}
 
         <View style={styles.inputContainer}>  
-          <Text style={styles.normalText}>Teléfono: </Text>
+          <Text style={styles.normalText}>Celular: </Text>
           <TextInput
             name="telefono"
-            placeholder="0990068113"
+            //placeholder="+593990068113"
             style={styles.input}
             //style={[styles.input, { color: celular ? 'black' : 'gray' }]}
             value={celular}
             //onChangeText={setCelular}
             onChangeText={(text) => {
               // Filtrar los caracteres no numéricos utilizando una expresión regular
-              const numericValue = text.replace(/[^0-9+]/, '');
+              //const numericValue = text.replace(/[^0-9+]/, '');
               // Actualizar el estado con el valor filtrado
-              setCelular(numericValue);
+              //setCelular(numericValue);
+              let formattedText = text.trim(); // Elimina los espacios en blanco al principio y al final
+              // Verifica si el texto no está vacío y si el primer carácter no es un "+"
+              if (formattedText && formattedText[0] !== '+') {
+                  formattedText = '+' + formattedText; // Agrega el "+" al principio del texto
+              }
+              // Verifica si el texto cumple con el patrón deseado
+              if (/^\+[0-9]*$/.test(formattedText)) {
+                  formattedText = formattedText.slice(0, 13);
+                  setCelular(formattedText); // Actualiza el estado solo si el texto es válido
+              }
             }}
           />
         </View>
@@ -503,7 +571,7 @@ const EditProfile = () => {
               onChangeText={(text) => {
                 const numericValue = text.replace(/[^0-9+]/, ''); // Filtrar los caracteres no numéricos 
                 const intValue = parseInt(numericValue, 10); // Convertir el valor a un número entero
-                if (numericValue.length <= 4) { // Filtrar la cantidad de números
+                if (numericValue.length <= 4 || intValue <= 2020) { // Filtrar la cantidad de números
                   setYear(numericValue);
                 }
                 }}
@@ -613,7 +681,7 @@ const EditProfile = () => {
         {/* Botón de envío */}
         <TouchableOpacity style={styles.button} onPress={handleSubmit}>
           <MaterialCommunityIcons size={24} color="white" />
-          <Text style={styles.buttonText}>Continuar</Text>
+          <Text style={styles.buttonText}>Guardar</Text>
         </TouchableOpacity>
         {/*<TouchableOpacity style={[styles.goBackButton, styles.horizontalPadding]} onPress={() => navigation.goBack()}>
           <MaterialCommunityIcons name="arrow-left" size={24} color="white" />
@@ -671,6 +739,11 @@ const styles = StyleSheet.create({
     //justifyContent: 'flex-start'
     //marginBottom: 16,
     //marginEnd: 20,
+  },
+  profileContainer: {
+    alignItems: 'center',
+    marginBottom: 20,
+    marginTop: 20,
   },
 
   picker: {
