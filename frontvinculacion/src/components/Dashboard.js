@@ -90,7 +90,7 @@ const Dashboard = () => {
           
         </TouchableOpacity>
 
-{/*
+
         <TouchableOpacity
           style={styles.card}
           //onPress={() => handleCardPress('Register')}
@@ -115,10 +115,10 @@ const Dashboard = () => {
           onPress={() => handleCardPress('EditProfile')}
         >
           <MaterialCommunityIcons name="pencil" size={40} color="#001f3f"/>
-          {/*<Text style= {[styles.cardText, { width: 120 }]}>Crear Usuario</Text>/}
+          {/*<Text style= {[styles.cardText, { width: 120 }]}>Crear Usuario</Text>*/}
           <Text style= {styles.cardText}>Editar perfil - PRUEBA</Text>
           
-        </TouchableOpacity>*/}
+        </TouchableOpacity>
       </View>
     </View>
   );

@@ -155,7 +155,7 @@ const PasswordUpdate = () => {
           {/*<View style={styles.inputWithIcon}> {/* Contenedor para el campo de entrada con icono */}
           <TextInput
             //name="password"
-            placeholder="Por defecto"
+            //placeholder="Por defecto"
             //secureTextEntry
             //secureTextEntry={true}
             secureTextEntry={!showOldPassword} // Cambiar a texto visible si showPassword es verdadero
@@ -168,12 +168,12 @@ const PasswordUpdate = () => {
             //onChangeText={handlePasswordChange}
             //onChangeText={text => setClave(text)}
             onChangeText={text => {
-              // Limitar la longitud del texto a 25 caracteres
-              if (text.length <= 25) {
+              // Limitar la longitud del texto a 50 caracteres
+              if (text.length <= 50) {
                 setClaveAntigua(text);
               }
             }}
-            maxLength={25} // Limita la longitud del texto a 25 caracteres
+            //maxLength={25} // Limita la longitud del texto a 25 caracteres
           />
           {/*<TouchableOpacity style={styles.normalText} onPress={() => setShowPassword(!showPassword)}>*/}
           {/*<TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.iconContainer}>*/}
@@ -201,8 +201,14 @@ const PasswordUpdate = () => {
             //style={[styles.input, { color: clave ? 'black' : 'gray' }]}
             value={clave}
             //onChangeText={setClave}
-            onChangeText={handlePasswordChange}
+            //onChangeText={handlePasswordChange}
             //onChangeText={text => setClave(text)}
+            onChangeText={text => {
+              // Limitar la longitud del texto a 50 caracteres
+              if (text.length <= 50) {
+                handlePasswordChange(text);
+              }
+            }}
           />
           {/*<TouchableOpacity style={styles.normalText} onPress={() => setShowPassword(!showPassword)}>*/}
           {/*<TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.iconContainer}>*/}
@@ -227,9 +233,15 @@ const PasswordUpdate = () => {
             style={[styles.input, {width: '100%', transform: [{ translateX: 17 }], color: confirmPassword ? 'black' : 'gray' }]}      
             //style={[styles.input, { color: clave ? 'black' : 'gray' }]}
             value={confirmPassword}
-            onChangeText={handleConfirmPasswordChange}
+            //onChangeText={handleConfirmPasswordChange}
             //onChangeText={handlePasswordChange}
             //onChangeText={text => setClave(text)}
+            onChangeText={text => {
+              // Limitar la longitud del texto a 50 caracteres
+              if (text.length <= 50) {
+                handleConfirmPasswordChange(text);
+              }
+            }}
           />
           {/*<TouchableOpacity style={styles.normalText} onPress={() => setShowPassword(!showPassword)}>*/}
           {/*<TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.iconContainer}>*/}

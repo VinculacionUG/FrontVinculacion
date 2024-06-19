@@ -27,6 +27,7 @@
     "react-native-checkbox": "^2.0.0",
     "react-native-datepicker": "^1.7.2",
     "react-native-elements": "^3.4.3",
+    "react-native-flags": "^1.0.0",
     "react-native-web": "~0.19.6"
   },
   "devDependencies": {
