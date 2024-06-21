@@ -32,6 +32,9 @@ const SignIn = () => {
       if (response.ok) {
         //navigation.navigate('PasswordUpdate');
         //navigation.navigate('Register');
+        const responseData = response.json();
+        console.log("Logs: ", responseData)
+        sessionStorage.setItem("nombre", responseData)
         navigation.navigate('Dashboard');
       } else {
         const responseData = await response.json(); // Obtener el mensaje de error del cuerpo de la respuesta
@@ -112,8 +115,8 @@ const SignIn = () => {
           </Text>
           <TouchableOpacity style={styles.button} onPress={handleSubmit}>
             {/*<MaterialCommunityIcons name="lock-open" size={24} color="white" />*/}
-            <Text style={styles.buttonText} onPress={() => navigation.navigate('Dashboard')} >Iniciar Sesión</Text>
-            {/*<Text style={styles.buttonText}>Iniciar Sesión</Text>*/}
+            {/* <Text style={styles.buttonText} onPress={() => navigation.navigate('Dashboard')} >Iniciar Sesión</Text> */}
+            <Text style={styles.buttonText}>Iniciar Sesión</Text>
           </TouchableOpacity>
         </View>
       </View>
