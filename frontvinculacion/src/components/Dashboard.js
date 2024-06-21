@@ -42,8 +42,7 @@ const Dashboard = () => {
 
         <TouchableOpacity
           style={styles.card}
-          // onPress={() => handleCardPress('Perfil')}
-          onPress={handlePerfilPress}
+          onPress={() => handleCardPress('Perfil')}
         >
           <MaterialCommunityIcons name="account-circle" size={40} color="#001f3f" />
           <Text style={styles.cardText}>Perfil</Text>
@@ -115,7 +114,7 @@ const Dashboard = () => {
           onPress={() => handleCardPress('EditProfile')}
         >
           <MaterialCommunityIcons name="pencil" size={40} color="#001f3f"/>
-          {/*<Text style= {[styles.cardText, { width: 120 }]}>Crear Usuario</Text>*/}
+          {/* {/<Text style= {[styles.cardText, { width: 120 }]}>Crear Usuario</Text>/} */}
           <Text style= {styles.cardText}>Editar perfil - PRUEBA</Text>
           
         </TouchableOpacity>
@@ -177,4 +176,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Dashboard;
+export default Dashboard;
