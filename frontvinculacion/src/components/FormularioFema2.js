@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
+import { CheckBox } from 'react-native-elements';
+//import { CheckBox, Button } from 'react-native-elements';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const FormularioFema2 = ({ route, navigation }) => {
@@ -14,7 +16,16 @@ const FormularioFema2 = ({ route, navigation }) => {
   const [ocupacion, setOcupacion] = useState('');
   const [tipoSuelo, setTipoSuelo] = useState('');
   const [comentario, setComentario] = useState('');
-
+  const [checkBox1, setCheckBox1] = useState(false);
+  const [checkBox2, setCheckBox2] = useState(false);
+  const [checkBox3, setCheckBox3] = useState(false);
+  const [checkBox4, setCheckBox4] = useState(false);
+  const [checkBox5, setCheckBox5] = useState(false);
+  const [checkBox6, setCheckBox6] = useState(false);
+  const [checkBox7, setCheckBox7] = useState(false);
+  const [checkBox8, setCheckBox8] = useState(false);
+  const [checkBox9, setCheckBox9] = useState(false);
+  
   const { params } = route;
   const {
     direccion,
@@ -55,8 +66,39 @@ const FormularioFema2 = ({ route, navigation }) => {
       ocupacion,
       tipoSuelo,
       comentario,
+      checkBox1,
+      checkBox2,
+      checkBox3,
+      checkBox4,
+      checkBox5,
+      checkBox6,
+      checkBox7,
+      checkBox8,
+      checkBox9,
     });
   };
+
+
+  //const FormularioCheckbox = () => {
+    const [selectedCheckbox, setSelectedCheckbox] = useState(null);
+  
+    const checkboxes = [
+      { id: 1, label: 'Asamblea' },
+      { id: 2, label: 'Industria' },
+      { id: 3, label: 'Herramientas' },
+      { id: 4, label: 'Comercial' },
+      { id: 5, label: 'Oficina' },
+      { id: 6, label: 'Almacén' },
+      { id: 7, label: 'Servicios Em.' },
+      { id: 8, label: 'Escuela' },
+      { id: 9, label: 'Residencia' },
+    ];
+  
+    const handleCheckboxChange = (id) => {
+      setSelectedCheckbox(id);
+    };
+
+
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -91,8 +133,11 @@ const FormularioFema2 = ({ route, navigation }) => {
         <TextInput
           style={[styles.input, { width: 50, height: 40 }]}
           value={anioConstruccion}
-          onChangeText={(text) => setAnioConstruccion(text)}
           maxLength={4}
+          onChangeText={(text) => {
+            const numericValue = text.replace(/[^0-9]/g, '');
+            setAnioConstruccion(numericValue);
+           }}
         />
         <View style={{ width: 10, height: 40 }} />
         <Text style={[styles.inputLabel, { height: 40, width: 150 }]}>Área total de piso (m2):</Text>
@@ -131,35 +176,60 @@ const FormularioFema2 = ({ route, navigation }) => {
       </View>
 
       <View style={styles.inputContainer}>
+        <Text style={styles.inputLabel }>Año de Construcción:</Text>
+        {/*        
         <Text style={[styles.inputLabel, { height: 40, width: 110, marginRight: 2 }]}>Año de Construcción:</Text>
-        <View style={{ width: 35, height: 60 }} />
+        <View style={{ width: 20, height: 20 }} />
+       */} 
+       
         <TextInput
-          style={[styles.input, { width: 90, height: 40 }]}
+          //style={[styles.input, { width: 20, height: 20 }]}
+          style={styles.inputText}
           value={anioConstruccion2}
-          onChangeText={(text) => setAnioConstruccion2(text)}
+          onChangeText={(text) => {
+            const numericValue = text.replace(/[^0-9]/g, '');
+            setAnioConstruccion2(numericValue);
+          }}
           maxLength={4}
         />
       </View>
+ {/*   */}
 
-      <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>Ocupación:</Text>
-        <View style={{ width: 62, height: 40 }} /> 
-        <Picker
-          style={styles.smallPicker}
-          selectedValue={ocupacion}
-          onValueChange={(itemValue) => setOcupacion(itemValue)}
-        >
-          <Picker.Item label="Asamblea" value="Asamblea" />
-          <Picker.Item label="Comercial" value="Comercial"/>
-          <Picker.Item label="Servicio Em." value="Servicio Em." />
-          <Picker.Item label="Industria" value="Industria" />
-          <Picker.Item label="Oficina" value="Oficina" />
-          <Picker.Item label="Escuela" value="Escuela" />
-          <Picker.Item label="Herramientas" value="Herramientas" />
-          <Picker.Item label="Almacen" value="lmacen" />
-          <Picker.Item label="Residencial" value="Residencial" />
-        </Picker>
+    <Text style={[styles.subtitle, styles.centerText]}>Ocupación:</Text>
+    <Text style={[styles.subtitle, styles.boldRedText, styles.centerText]}></Text>
+ 
+    <View style={styles.checkboxGrid}>
+        {checkboxes.map((checkbox) => (
+          <View key={checkbox.id} style={styles.checkboxContainer}>
+            <CheckBox
+              title={checkbox.label}
+              checked={selectedCheckbox === checkbox.id}
+              onPress={() => handleCheckboxChange(checkbox.id)}
+              containerStyle={styles.checkbox}
+            />
+          </View>
+        ))}
       </View>
+
+      {/*   
+      <Button
+        title="Guardar Datos"
+        onPress={() => {
+          if (selectedCheckbox !== null) {
+            const seleccionada = checkboxes.find(checkbox => checkbox.id === selectedCheckbox);
+            Alert.alert('Datos guardados', `Seleccionaste: ${seleccionada.label}`);
+          } else {
+            Alert.alert('Error', 'Debes seleccionar una opción');
+          }
+        }}    
+        buttonStyle={styles.button}
+      />   */}
+      {selectedCheckbox !== null && (
+        <Text style={styles.resultado}>
+          Seleccionaste: {checkboxes.find(checkbox => checkbox.id === selectedCheckbox).label}
+        </Text>
+      )}
+
 
       <View style={styles.inputContainer}>
         <Text style={styles.inputLabel}>Tipo de Ocupación:</Text>
@@ -265,7 +335,6 @@ const FormularioFema2 = ({ route, navigation }) => {
       justifyContent: 'center',
       width: 80, // Reducir el ancho del selector
     },
-
     backButton: {
       backgroundColor: 'navy',
       flexDirection: 'row',
@@ -298,6 +367,50 @@ const FormularioFema2 = ({ route, navigation }) => {
     multilineText: {
       minHeight: 100,
     },
+    CheckBoxContainer: {
+      flexGrow: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      paddingHorizontal: 0,
+      paddingVertical: 20,
+    },
+    checkboxGrid: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      paddingHorizontal: 0,
+      //justifyContent: 'space-between',
+    },
+    checkboxContainer: {
+      width: '30%',
+      padding: 0,
+    },
+    checkbox: {
+      backgroundColor: 'transparent',
+      borderWidth: 0,
+    },
+    button: {
+      marginTop: 20,
+      width: '100%',
+      backgroundColor: '#2196F3',
+    },
+    resultado: {
+      marginTop: 20,
+      fontSize: 18,
+      color: 'green',
+    },
+    inputText: {
+      flex: .20,
+      flexDirection: 'row',
+      borderWidth: 1,
+      borderColor: 'gray',
+      borderRadius: 5,
+      height: 40,
+      width: 0,
+      padding: 0,
+      paddingHorizontal: 10,
+      marginRight: 2,
+      //backgroundColor: 'red',
+    }, 
   });
   
   export default FormularioFema2;
