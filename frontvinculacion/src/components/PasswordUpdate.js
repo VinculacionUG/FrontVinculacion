@@ -6,7 +6,6 @@ import { Picker } from '@react-native-picker/picker';
 
 const PasswordUpdate = () => {
   const navigation = useNavigation();
-
   const [usuario, setUsuario] = useState('');
   const [clave, setClave] = useState('');
   const [claveAntigua, setClaveAntigua] = useState('');
@@ -14,7 +13,6 @@ const PasswordUpdate = () => {
   //Comparar contraseñas
   const [confirmPassword, setConfirmPassword] = useState('');//
   const [passwordMatchError, setPasswordMatchError] = useState(false);
-  //const [claveMatch, setClavedMatch] = useState(true);
 
   //Poner ojo dentro del cuadro
   const [showPassword, setShowPassword] = useState(false);
@@ -38,17 +36,7 @@ const PasswordUpdate = () => {
       setPasswordMatchError(false);
     }
   };
-/*
-  // Función para manejar cambios en el campo de contraseña
-  const handlePasswordChange = (text) => {
-    setClaveAntigua(text);
-    if (text !== confirmPassword) {   // Verificar si las contraseñas coinciden cuando se cambia la contraseña
-      setPasswordMatchError(true);
-    } else {
-      setPasswordMatchError(false);
-    }
-  };
-*/
+
   // Función para manejar cambios en el campo de confirmar contraseña
   const handleConfirmPasswordChange = (text) => {
     setConfirmPassword(text);
@@ -66,8 +54,6 @@ const PasswordUpdate = () => {
       !claveAntigua ||
       !clave ||
       !confirmPassword
-      //!confirmClave ||
-      //clave !== confirmPassword
     ) {
       /*if (clave != confirmPassword) {
         Alert.alert('Error', 'Las contraseñas no coinciden');
@@ -124,7 +110,6 @@ const PasswordUpdate = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-    {/*</View><View style={styles.container}>*/}
 
       <TouchableOpacity style={styles.goBackButton} onPress={() => navigation.goBack()}>
         <MaterialCommunityIcons name="arrow-left" size={24} color="#001f3f" />
@@ -139,70 +124,37 @@ const PasswordUpdate = () => {
           <TextInput
             name="username"
             placeholder="Por defecto"
-            //style={styles.input}
-            //style={[styles.input, { width: '100%', color: 'gray' }]}
             style={[styles.input, { color: 'gray' }]}
-            //style={[styles.input, { color: usuario ? 'black' : 'gray' }]}
-            //value={usuario}
-            //onChangeText={setUsuario}
             editable={false} // Deshabilitar la edición del TextInput
           />
         </View>
 
         <View style={styles.inputContainer}>  
-          {/*<Text style={styles.normalText}>Contraseña: </Text>*/}
           <Text style={[styles.normalText, {marginRight: 30, }]}>Contraseña actual: </Text>
-          {/*<View style={styles.inputWithIcon}> {/* Contenedor para el campo de entrada con icono */}
           <TextInput
-            //name="password"
-            //placeholder="Por defecto"
-            //secureTextEntry
-            //secureTextEntry={true}
             secureTextEntry={!showOldPassword} // Cambiar a texto visible si showPassword es verdadero
-            //style={styles.input}
-            //style={[styles.input, { width: '60%' }]} // Ajusta el ancho del input aquí
             style={[styles.input, {width: '100%', transform: [{ translateX: 17 }], color: claveAntigua ? 'black' : 'gray' }]}      
-            //style={[styles.input, { color: clave ? 'black' : 'gray' }]}
             value={claveAntigua}
-            //onChangeText={setClaveAntigua}
-            //onChangeText={handlePasswordChange}
-            //onChangeText={text => setClave(text)}
             onChangeText={text => {
               // Limitar la longitud del texto a 50 caracteres
               if (text.length <= 50) {
                 setClaveAntigua(text);
               }
             }}
-            //maxLength={25} // Limita la longitud del texto a 25 caracteres
           />
-          {/*<TouchableOpacity style={styles.normalText} onPress={() => setShowPassword(!showPassword)}>*/}
-          {/*<TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.iconContainer}>*/}
           <TouchableOpacity style={[styles.normalText, {marginBottom: 15, marginRight: 5, marginLeft: 10}]} onPress={() => setShowOldPassword(!showOldPassword)}>        
             <MaterialCommunityIcons name={showOldPassword ? 'eye-off' : 'eye'} size={24} color="black" style={styles.eyeIcon}/>
           </TouchableOpacity>
-        {/*</View>*/}
         </View>
 
         <View style={styles.line} />
 
         <View style={styles.inputContainer}>  
-          {/*<Text style={styles.normalText}>Contraseña: </Text>*/}
           <Text style={[styles.normalText, {marginRight: 30, }]}>Nueva contraseña: </Text>
-          {/*<View style={styles.inputWithIcon}> {/* Contenedor para el campo de entrada con icono */}
           <TextInput
-            //name="password"
-            //placeholder="Contraseña por defecto"
-            //secureTextEntry
-            //secureTextEntry={true}
             secureTextEntry={!showPassword} // Cambiar a texto visible si showPassword es verdadero
-            //style={styles.input}
-            //style={[styles.input, { width: '60%' }]} // Ajusta el ancho del input aquí
             style={[styles.input, {width: '100%', transform: [{ translateX: 17 }], color: clave ? 'black' : 'gray' }]}      
-            //style={[styles.input, { color: clave ? 'black' : 'gray' }]}
             value={clave}
-            //onChangeText={setClave}
-            //onChangeText={handlePasswordChange}
-            //onChangeText={text => setClave(text)}
             onChangeText={text => {
               // Limitar la longitud del texto a 50 caracteres
               if (text.length <= 50) {
@@ -210,32 +162,17 @@ const PasswordUpdate = () => {
               }
             }}
           />
-          {/*<TouchableOpacity style={styles.normalText} onPress={() => setShowPassword(!showPassword)}>*/}
-          {/*<TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.iconContainer}>*/}
           <TouchableOpacity style={[styles.normalText, {marginBottom: 15, marginRight: 5, marginLeft: 10}]} onPress={() => setShowPassword(!showPassword)}>        
             <MaterialCommunityIcons name={showPassword ? 'eye-off' : 'eye'} size={24} color="black" style={styles.eyeIcon}/>
           </TouchableOpacity>
-        {/*</View>*/}
         </View>
 
         <View style={styles.inputContainer}>  
-          {/*<Text style={styles.normalText}>Contraseña: </Text>*/}
           <Text style={[styles.normalText, {marginRight: 30, }]}>Confirmar contraseña: </Text>
-          {/*<View style={styles.inputWithIcon}> {/* Contenedor para el campo de entrada con icono */}
           <TextInput
-            //name="confirmPassword"
-            //placeholder="Contraseña por defecto"
-            //secureTextEntry
-            //secureTextEntry={true}
             secureTextEntry={!showConfirmPassword} // Cambiar a texto visible si showPassword es verdadero
-            //style={styles.input}
-            //style={[styles.input, { width: '60%' }]} // Ajusta el ancho del input aquí
             style={[styles.input, {width: '100%', transform: [{ translateX: 17 }], color: confirmPassword ? 'black' : 'gray' }]}      
-            //style={[styles.input, { color: clave ? 'black' : 'gray' }]}
             value={confirmPassword}
-            //onChangeText={handleConfirmPasswordChange}
-            //onChangeText={handlePasswordChange}
-            //onChangeText={text => setClave(text)}
             onChangeText={text => {
               // Limitar la longitud del texto a 50 caracteres
               if (text.length <= 50) {
@@ -243,16 +180,12 @@ const PasswordUpdate = () => {
               }
             }}
           />
-          {/*<TouchableOpacity style={styles.normalText} onPress={() => setShowPassword(!showPassword)}>*/}
-          {/*<TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.iconContainer}>*/}
           <TouchableOpacity style={[styles.normalText, {marginBottom: 15, marginRight: 5, marginLeft: 10}]} onPress={() => setShowConfirmPassword(!showConfirmPassword)}>        
             <MaterialCommunityIcons name={showConfirmPassword ? 'eye-off' : 'eye'} size={24} color="black" style={styles.eyeIcon}/>
           </TouchableOpacity>
-        {/*</View>*/}
         </View>
 
         {passwordMatchError && (
-          //<View style={styles.inputContainer}>  
           <View style={[styles.inputContainer, { justifyContent: 'flex-end' }]}> 
             <Text style={{ color: 'red' }}>
             <MaterialCommunityIcons name="alert-circle" size={20} color="red" /> Las contraseñas no coinciden</Text>
@@ -261,11 +194,9 @@ const PasswordUpdate = () => {
 
         {/* Botón de envío */}
         <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-          {/*<MaterialCommunityIcons size={24} color="white" />*/}
           <Text style={styles.buttonText}>Continuar</Text>
         </TouchableOpacity>
       </View>
-    {/*</View>*/}
      </ScrollView>
   );
 };
@@ -278,8 +209,6 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     backgroundColor: '#ffffff', // Cambiar al color deseado
-    //position: 'relative',
-    //paddingBottom: 20, // Espacio adicional en la parte inferior para evitar que el último elemento se oculte detrás del botón de navegación
   },
   formContainer: {
     width: '80%',
@@ -303,21 +232,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderRadius: 10,
     paddingRight: 42,
-    //marginLeft: 1,
-    //flex: 1, // Hace que el TextInput ocupe todo el espacio disponible
-    //textAlign: 'left', // Alinea el texto a la izquierda dentro del TextInput
   },
 
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    //marginRight: 25,
-    //justifyContent: 'left',
-    //marginLeft: 10,
-    //justifyContent: 'flex-start'
-    //marginBottom: 16,
-    //marginEnd: 20,
   },
 
   picker: {
@@ -331,9 +251,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
     marginLeft: 10,
     justifyContent: 'space-between',
-    //marginLeft: 50, // Ajusta el margen izquierdo
-    //color: 'gray',
-    //alignSelf: 'flex-start', // Alinea a la izquierda
   },
   birthdayContainer: {
     flexDirection: 'column',
@@ -376,18 +293,11 @@ const styles = StyleSheet.create({
   },
 
   normalText: {
-    //fontSize: 24,
-    //fontWeight: 'bold',
     justifyContent: 'center', // Alineación vertical
     //textAlign: 'center',
     marginBottom: 16,
     marginRight: 50,
   },
-
-  /*errorText: {
-    color: 'red',
-    marginBottom: 10,
-  },*/
    
   horizontalPadding: {
     paddingHorizontal: 20, // Ajusta este valor para cambiar el espacio horizontal del botón

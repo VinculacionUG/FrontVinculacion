@@ -30,28 +30,23 @@ const Register = () => {
   //Comparar contraseñas
   const [confirmPassword, setConfirmPassword] = useState('');//
   const [passwordMatchError, setPasswordMatchError] = useState(false);
-  //const [claveMatch, setClavedMatch] = useState(true);
 
-  //Poner ojo dentro del cuadro
+  //Ojo
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  //const [formState, setFormState] = useState({});
-
   const [correoValido, setCorreoValido] = useState(false); // Agrega el estado correoValido
 
-  // Función para validar el correo electrónico
+  // Validar el formato del correo electrónico
   const validarCorreo = (email) => {
-    // Expresión regular para validar el formato del correo electrónico
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(email);
   };
 
-  // Función para manejar cambios en el campo de correo electrónico
+  // Manejar cambios en el campo de correo electrónico
   const handleChangeCorreo = (text) => {
     setCorreo(text); // Actualiza el estado del correo electrónico
     setCorreoValido(validarCorreo(text)); // Verifica si el correo electrónico es válido y actualiza el estado correspondiente
   };
-
 
   const handleChange = (name, value) => {////
     setFormState({
@@ -61,7 +56,7 @@ const Register = () => {
     //setTipoDocumento(value);
   };
 
-  // Función para manejar cambios en el campo de contraseña
+  // Manejar cambios en el campo de contraseña
   const handlePasswordChange = (text) => {
     setClave(text);
     // Verificar si las contraseñas coinciden cuando se cambia la contraseña
@@ -72,93 +67,30 @@ const Register = () => {
     }
   };
 
-  
-
-  // Función para manejar cambios en el campo de confirmar contraseña
+  // Manejar cambios en el campo de confirmar contraseña
   const handleConfirmPasswordChange = (text) => {
     setConfirmPassword(text);
-    // Verificar si las contraseñas coinciden cuando se cambia la confirmación de la contraseña
-    if (text !== clave) {
+    if (text !== clave) { // Verificar si las contraseñas coinciden cuando se cambia la confirmación de la contraseña
       setPasswordMatchError(true);
     } else {
       setPasswordMatchError(false);
     }
   };
-/*
-  useEffect(() => {
-    // Función para mostrar la alerta al montar el componente
-    const showAlertOnMount = () => {
-      Alert.alert(
-        'Registro',
-        `¡Hola, ${nombre1} ${apellido1}! Completa el registro por favor!`,
-        [
-          {
-            text: 'OK',
-            onPress: () => console.log('OK Pressed')
-          }
-        ]
-      );
-    };
-    // Llama a la función para mostrar la alerta
-    showAlertOnMount();
-  }, []); // El array de dependencias está vacío para que el efecto se ejecute solo una vez al montar el componente
-*/
 
-{/*
-  // Función para mostrar el selector de fecha
-  const showDatePicker = async () => {
+  const handleDatePick = async () => {
     try {
       const { action, year, month, day } = await DatePickerAndroid.open({
-        // Configuración del selector de fecha
-        date: new Date(), // Fecha inicial
-        mode: 'spinner', // Modo de selección de fecha (spinner o calendar)
+        mode: 'spinner', 
+        date: new Date(), 
       });
       if (action !== DatePickerAndroid.dismissedAction) {
-        // Si el usuario selecciona una fecha
-        const selectedDate = new Date(year, month, day);
-        //setFechaNacimiento(selectedDate.toISOString()); // Almacena la fecha seleccionada
-        setFechaNacimiento(selectedDate); // Almacena la fecha seleccionada sin convertirla
+        // Si el usuario selecciona una fecha, actualiza el estado con la fecha seleccionada
+        setFechaNacimiento(`${year}-${month + 1}-${day}`);
       }
     } catch ({ code, message }) {
-      console.warn('Error al abrir el selector de fecha: ', message);
+      console.warn('No se pudo abrir el selector de fecha', message);
     }
   };
-*/}
-
-    const handleDatePick = async () => {
-      try {
-        const { action, year, month, day } = await DatePickerAndroid.open({
-          mode: 'spinner', // Opcional, muestra el selector de fecha en forma de cuadro de diálogo o spinner
-          date: new Date(), // Opcional, establece la fecha predeterminada
-        });
-        if (action !== DatePickerAndroid.dismissedAction) {
-          // Si el usuario selecciona una fecha, actualiza el estado con la fecha seleccionada
-          setFechaNacimiento(`${year}-${month + 1}-${day}`);
-        }
-      } catch ({ code, message }) {
-        console.warn('No se pudo abrir el selector de fecha', message);
-      }
-    };
-
-    /*
-    // Función para mostrar el selector de fecha
-    const showDatePicker = () => {
-      Alert.alert(
-        'Seleccionar Fecha de Nacimiento',
-        '',
-        [
-          {
-            text: 'Cancelar',
-            style: 'cancel',
-          },
-          {
-            text: 'Seleccionar',
-            onPress: () => console.log('Fecha seleccionada'),
-          },
-        ],
-        { cancelable: true }
-      );
-    };*/
 
   // Función para validar la fecha de nacimiento
   const validarFechaNacimiento = () => {
@@ -315,41 +247,7 @@ const Register = () => {
           />
         </View>
 
-{/*
-        <View style={styles.inputContainer}>  
-          <Text style={styles.normalText}>Email: </Text>
-          <TextInput
-            name="email"
-            style={styles.input}
-            value={correo}
-            //onChangeText={setCorreo}
-            onChangeText={handleChangeCorreo} // Usa la función handleChangeCorreo para manejar cambios en el correo electrónico
-          />
-          {/* Muestra un mensaje de error si el correo no es válido /}
-          {!correoValido && <Text style={styles.errorText}>Correo electrónico inválido</Text>}/}
-          
 
-        </View>
-        {!correoValido && correo.trim() !== '' && (
-            //<Text style={styles.errorText}>Correo electrónico inválido</Text>
-
-              //<View style={styles.inputContainer}>  
-              <View style={[styles.inputContainer, { justifyContent: 'flex-end' }]}> 
-                <View style={{ marginTop: -12 , marginBottom: 10}}>
-                <Text style={{ color: 'red' }}>
-                <MaterialCommunityIcons name="alert-circle" size={20} color="red" /> Correo electrónico inválido</Text>
-              </View>
-              </View>
-            )}*/}
-{/*
-        {passwordMatchError && (
-          //<View style={styles.inputContainer}>  
-          <View style={[styles.inputContainer, { justifyContent: 'flex-end' }]}> 
-            <Text style={{ color: 'red' }}>
-            <MaterialCommunityIcons name="alert-circle" size={20} color="red" /> Correo electrónico inválido</Text>
-          </View>
-        )}
-*/}
         <View style={styles.inputContainer}>  
           <Text style={styles.normalText}>Celular: </Text>
           <TextInput
@@ -357,19 +255,8 @@ const Register = () => {
             name="telefono"
             style={styles.input}
             value={celular}
-            //style={[styles.input, { color: apellido1 ? 'black' : 'gray' }]}
-            //onChangeText={setCelular}
             onChangeText={(text) => {
-              //const numericValue = text.replace(/[^0-9+]/g, ''); // Filtrar los caracteres no numéricos utilizando una expresión regular
-              //const numericValue = text.replace(/^\+[^0-9+]/g, ''); // Filtrar los caracteres no numéricos utilizando una expresión regular
-              //setCelular(numericValue); // Actualizar el estado con el valor filtrado
               
-              //let formattedText = text.trim(); // Elimina los espacios en blanco al principio y al final
-              // Verifica si el primer carácter es un "+" y si los caracteres restantes son números
-              //if (/^\+[0-9]*$/.test(formattedText)) {
-              //    setCelular(formattedText); // Actualiza el estado solo si el texto es válido
-              //}
-
               let formattedText = text.trim(); // Elimina los espacios en blanco al principio y al final
               // Verifica si el texto no está vacío y si el primer carácter no es un "+"
               if (formattedText && formattedText[0] !== '+') {
@@ -385,7 +272,6 @@ const Register = () => {
         </View>
 
         <View style={styles.inputContainer}>
-        {/*<View style={[styles.inputContainer, { justifyContent: 'flex-start' }]}> */}
           <Text style={styles.normalText}>Sexo: </Text>
           <Picker
             selectedValue={sexo}
@@ -449,52 +335,15 @@ const Register = () => {
                 const currentYear = new Date().getFullYear(); // Obtener el año actual
                 const minYear = 1000; // Año mínimo permitido
 
-                //if (numericValue.length <= 4 && intValue >= minYear && intValue <= currentYear) { // Filtrar la cantidad de números
-                //if (numericValue.length <= 4 || (intValue >= 1500 && intValue <= 2023)) { // Filtrar la cantidad de números
                 if (numericValue.length <= 4 || intValue <= 2020) { // Filtrar la cantidad de números
                     setYear(numericValue); // Actualizar el estado con el año válido
                 }
-
-/*                if (
-                  (numericValue === '' || (intValue >= 1 && intValue <= 2023)) &&  // Verificar si el valor está dentro del rango permitido (1 - 31)
-                  numericValue.length <= 4                                       // Filtrar la cantidad de números
-                ) {
-                  setYear(numericValue);                                            // Actualizar el estado con el valor filtrado
-               }*/
-                // Verificar si el año es un número y está dentro del rango permitido (desde el año 1000 hasta el año actual)
-                //if (!isNaN(intValue) && numericValue.length <= 4 && intValue >= 1000 && intValue <= currentYear) {
-                //  setYear(numericValue); // Actualizar el estado con el año válido
-                //}
                 }}
                 //style={styles.input}
               style={[styles.input, { width: '12%', color: year ? 'black' : 'gray' }]}
             />
           </View>
-{/*
-                {!validarFechaNacimiento() && (
-            <View style={[styles.inputContainer, { justifyContent: 'flex-end' }]}>
-              <Text style={{ color: 'red' }}>
-                <MaterialCommunityIcons name="alert-circle" size={20} color="red" /> Fecha de nacimiento inválida
-              </Text>
-            </View>
-          )}*/}
-
         </View>
-
-                  
-
-{/*
-
-        <View style={styles.inputContainer}>
-          <Text style={styles.normalText}>Fecha de Nacimiento:</Text>
-          <TouchableOpacity onPress={showDatePicker}>
-            <Text style={[styles.input, { width: 100, color: fechaNacimiento ? 'black' : 'gray' }]}>
-              {/* {fechaNacimiento ? new Date(fechaNacimiento).toLocaleDateString() : 'Seleccionar fecha'}/}
-              {fechaNacimiento ? fechaNacimiento.toLocaleDateString() : 'Seleccionar fecha'}
-            </Text>
-          </TouchableOpacity>
-        </View>
-        */}
 
         {/* Botón de envío */}
         <TouchableOpacity style={styles.button} onPress={handleSubmit}>
@@ -538,21 +387,12 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     paddingHorizontal: 10,
     borderRadius: 10,
-    //marginLeft: 1,
-    //flex: 1, // Hace que el TextInput ocupe todo el espacio disponible
-    //textAlign: 'left', // Alinea el texto a la izquierda dentro del TextInput
   },
 
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    //marginRight: 25,
-    //justifyContent: 'left',
-    //marginLeft: 10,
-    //justifyContent: 'flex-start'
-    //marginBottom: 16,
-    //marginEnd: 20,
   },
 
   picker: {
@@ -566,9 +406,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
     marginLeft: 50,
     justifyContent: 'space-between',
-    //marginLeft: 50, // Ajusta el margen izquierdo
-    //color: 'gray',
-    //alignSelf: 'flex-start', // Alinea a la izquierda
   },
   birthdayContainer: {
     flexDirection: 'column',
@@ -611,18 +448,11 @@ const styles = StyleSheet.create({
   },
 
   normalText: {
-    //fontSize: 24,
-    //fontWeight: 'bold',
     justifyContent: 'center', // Alineación vertical
     //textAlign: 'center',
     marginBottom: 16,
   },
 
-  /*errorText: {
-    color: 'red',
-    marginBottom: 10,
-  },*/
-   
   horizontalPadding: {
     paddingHorizontal: 20, // Ajusta este valor para cambiar el espacio horizontal del botón
   },
