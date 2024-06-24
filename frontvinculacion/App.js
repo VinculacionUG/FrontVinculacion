@@ -13,9 +13,6 @@ import FormularioFema3p2 from './src/components/FormularioFema3p2';
 import FormularioFema4 from './src/components/FormularioFema4';
 import FormularioFema5 from './src/components/FormularioFema5';
 import RecoveryPassword from './src/components/RecoveryPassword';
-import CreateUser from './src/components/CreateUser';
-import PasswordUpdate from './src/components/PasswordUpdate';
-import EditProfile from './src/components/EditProfile';
 
 const Stack = createNativeStackNavigator();
 
@@ -34,9 +31,6 @@ const App = () => {
         <Stack.Screen name="FormularioFema4" component={FormularioFema4} options={{ headerShown: false }} />
         <Stack.Screen name="FormularioFema5" component={FormularioFema5} options={{ headerShown: false }} />
         <Stack.Screen name="RecoveryPassword" component={RecoveryPassword} options={{ headerShown: false }} />
-        <Stack.Screen name="CreateUser" component={CreateUser} options={{ headerShown: false }} />
-        <Stack.Screen name="PasswordUpdate" component={PasswordUpdate} options={{ headerShown: false }} />
-        <Stack.Screen name="EditProfile" component={EditProfile} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
