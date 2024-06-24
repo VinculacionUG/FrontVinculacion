@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as DocumentPicker from 'expo-document-picker';
 
@@ -14,7 +13,7 @@ const FormularioFema = ({ navigation }) => {
   const [longitud, setLongitud] = useState('');
   const [inspector, setInspector] = useState('');
   const [supervisor, setSupervisor] = useState('');
-  const [fecha, setFecha] = useState('');
+  const [fecha, setFecha] = useState({ year: '', month: '', day: '' });
   const [hora, setHora] = useState('');
   const [file1Name, setFile1Name] = useState('');
   const [file2Name, setFile2Name] = useState('');
@@ -38,7 +37,6 @@ const FormularioFema = ({ navigation }) => {
     });
   };
 
-
   const handleDocument1 = async () => {
     try {
       const result = await DocumentPicker.getDocumentAsync({
@@ -52,7 +50,7 @@ const FormularioFema = ({ navigation }) => {
       console.error(error);
     }
   };
-  
+
   const handleDocument2 = async () => {
     try {
       const result = await DocumentPicker.getDocumentAsync({
@@ -66,204 +64,156 @@ const FormularioFema = ({ navigation }) => {
       console.error(error);
     }
   };
-  
-  
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Formulario FEMA P-154</Text>
 
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Adjuntar Fotografía:</Text>
+        <View style={styles.uploadButtonContainer}>
+          <TouchableOpacity style={styles.uploadButton} onPress={handleDocument1}>
+            <Text style={styles.uploadButtonText}>Subir</Text>
+          </TouchableOpacity>
+          <View style={styles.fileNameContainer}>
+            {selectedFile1 ? (
+              <Text>{file1Name}</Text>
+            ) : (
+              <Text>No se eligió ningún archivo</Text>
+            )}
+          </View>
+        </View>
+      </View>
 
-      <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>Inspector  </Text>
-        <Picker
-          style={styles.input}
-          selectedValue={inspector}
-          onValueChange={(itemValue) => setInspector(itemValue)}
-        >
-          <Picker.Item label="Inspector 1" value="inspector1" />
-          <Picker.Item label="Inspector 2" value="inspector2" />
-        </Picker>
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Adjuntar Gráfico:</Text>
+        <View style={styles.uploadButtonContainer}>
+          <TouchableOpacity style={styles.uploadButton} onPress={handleDocument2}>
+            <Text style={styles.uploadButtonText}>Subir</Text>
+          </TouchableOpacity>
+          <View style={styles.fileNameContainer}>
+            {selectedFile2 ? (
+              <Text>{file2Name}</Text>
+            ) : (
+              <Text>No se eligió ningún archivo</Text>
+            )}
+          </View>
+        </View>
       </View>
 
       <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>Supervisor  </Text>
-        <Picker
-          style={styles.input}
-          selectedValue={supervisor}
-          onValueChange={(itemValue) => setSupervisor(itemValue)}
-        >
-          <Picker.Item label="Supervisor 1" value="supervisor1" />
-          <Picker.Item label="Supervisor 2" value="supervisor2" />
-        </Picker>
-      </View>
-
-
-  <View style={styles.section}>
-  <Text style={styles.sectionTitle}>Adjuntar Fotografía</Text>
-  <View style={styles.uploadButtonContainer}>
-    <TouchableOpacity style={styles.uploadButton} onPress={handleDocument1}>
-      <Text style={styles.uploadButtonText}>Subir</Text>
-    </TouchableOpacity>
-    {selectedFile1 ? (
-      <Text>{file1Name}</Text>
-    ) : (
-      <Text>No se eligió ningún archivo</Text>
-    )}
-  </View>
-</View>
-
-<View style={styles.section}>
-  <Text style={styles.sectionTitle}>Adjuntar Gráfico</Text>
-  <View style={styles.uploadButtonContainer}>
-    <TouchableOpacity style={styles.uploadButton} onPress={handleDocument2}>
-      <Text style={styles.uploadButtonText}>Subir</Text>
-    </TouchableOpacity>
-    {selectedFile2 ? (
-      <Text>{file2Name}</Text>
-    ) : (
-      <Text>No se eligió ningún archivo</Text>
-    )}
-  </View>
-</View>
-
-
-      <Text style={styles.subtitle}>Información del Edificio</Text>
-
-      <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>Dirección  </Text>
+        <Text style={styles.inputLabel}>Dirección:</Text>
         <TextInput
-          style={styles.input}
-          placeholder="Ingrese la dirección"
+          style={[styles.input, { textAlign: 'center', paddingHorizontal: 20 }]} // Ajuste manual hacia la izquierda y hacia la derecha
           value={direccion}
           onChangeText={(text) => setDireccion(text)}
         />
       </View>
 
-      <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>ZIP  </Text>
+      <View style={[styles.inputContainer, { width: '25%' }]}>
+        <Text style={[styles.inputLabel, { marginRight: 75 }]}>ZIP:</Text>
         <TextInput
-          style={styles.input}
-          placeholder="ZIP"
+          style={[styles.input, { textAlign: 'center' }]} 
           value={zip}
           onChangeText={(text) => setZip(text)}
         />
       </View>
 
       <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>Otras Identificaciones  </Text>
+        <Text style={styles.inputLabel}>Otras Identificaciones:</Text>
         <TextInput
           style={styles.input}
-          placeholder="Otras Identificaciones"
           value={otrasIdentificaciones}
           onChangeText={(text) => setOtrasIdentificaciones(text)}
         />
       </View>
 
       <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>Nombre del Edificio  </Text>
+        <Text style={styles.inputLabel}>Nombre del Edificio:</Text>
         <TextInput
           style={styles.input}
-          placeholder="Nombre del Edificio"
           value={nombreEdificio}
           onChangeText={(text) => setNombreEdificio(text)}
         />
       </View>
 
       <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>Uso  </Text>
+        <Text style={styles.inputLabel}>Uso:</Text>
         <TextInput
           style={styles.input}
-          placeholder="Uso"
           value={uso}
           onChangeText={(text) => setUso(text)}
         />
       </View>
 
+      <View style={styles.inputContainerRow}>
+        <View style={styles.dateInputContainer}>
+          <Text style={styles.inputLabel}>Latitud:</Text>
+          <TextInput
+            style={[styles.input, styles.dateInput]}
+            value={latitud}
+            onChangeText={(text) => setLatitud(text)}
+          />
+        </View>
+        <View style={[styles.dateInputContainer, { marginLeft: -50 }]}>
+          <Text style={[styles.inputLabel, { marginRight: -30 }]}>Longitud:</Text>
+          <TextInput
+            style={[styles.input, styles.dateInput]}
+            value={longitud}
+            onChangeText={(text) => setLongitud(text)}
+          />
+        </View>
+      </View>
+
       <View style={styles.inputContainer}>
-  <Text style={styles.inputLabel}>Latitud  </Text>
-  <TextInput
-    style={[styles.input, styles.smallInput]}
-    placeholder="Latitud"
-    value={latitud}
-    onChangeText={(text) => setLatitud(text)}
-  />
-  <Text style={styles.inputLabel}>Longitud  </Text>
-  <TextInput
-    style={[styles.input, styles.smallInput]}
-    placeholder="Longitud"
-    value={longitud}
-    onChangeText={(text) => setLongitud(text)}
-  />
-</View>
+        <Text style={styles.inputLabel}>Fecha:</Text>
+        <View style={styles.dateInputContainer}>
+          <TextInput
+            style={[styles.input, styles.dateInput]}
+            placeholder="MM"
+            maxLength={2}
+            keyboardType="numeric"
+            value={fecha.month}
+            onChangeText={(text) => setFecha(prevState => ({ ...prevState, month: text }))}
+          />
+          <TextInput
+            style={[styles.input, styles.dateInput]}
+            placeholder="DD"
+            maxLength={2}
+            keyboardType="numeric"
+            value={fecha.day}
+            onChangeText={(text) => setFecha(prevState => ({ ...prevState, day: text }))}
+          />
+          <TextInput
+            style={[styles.input, styles.dateInput]}
+            placeholder="AAAA"
+            maxLength={4}
+            keyboardType="numeric"
+            value={fecha.year}
+            onChangeText={(text) => setFecha(prevState => ({ ...prevState, year: text }))}
+          />
+        </View>
+      </View>
 
-  <View style={styles.inputContainer}>
-  <Text style={styles.inputLabel}>Fecha  </Text>
-  <View style={styles.dateInputContainer}>
-    <TextInput
-      style={[styles.input, styles.dateInput]}
-      placeholder="MM"
-      maxLength={2}
-      keyboardType="numeric"
-      value={fecha.substring(0, 2)}
-      onChangeText={(text) => {
-        if (text.length <= 2) {
-          setFecha(text + fecha.substring(2, 3) + fecha.substring(3, 10));
-        }
-      }}
-    />
-    <Text style={styles.dateSeparator}>/</Text>
-    <TextInput
-      style={[styles.input, styles.dateInput]}
-      placeholder="DD"
-      maxLength={2}
-      keyboardType="numeric"
-      value={fecha.substring(3, 5)}
-      onChangeText={(text) => {
-        if (text.length <= 2) {
-          setFecha(fecha.substring(0, 3) + text + fecha.substring(5, 10));
-        }
-      }}
-    />
-    <Text style={styles.dateSeparator}>/</Text>
-    <TextInput
-      style={[styles.input, styles.dateInput]}
-      placeholder="AAAA"
-      maxLength={4}
-      keyboardType="numeric"
-      value={fecha.substring(6, 10)}
-      onChangeText={(text) => {
-        if (text.length <= 4) {
-          setFecha(fecha.substring(0, 6) + text);
-        }
-      }}
-    />
-  </View>
-</View>
+      <View style={[styles.inputContainer, { width: '60%' }]}>
+        <Text style={[styles.inputLabel, { marginRight: 60 }]}>Hora:</Text>
+        <TextInput
+          style={styles.input}
+          value={hora}
+          onChangeText={(text) => setHora(text)}
+        />
+      </View>
 
-
-    <View style={styles.inputContainer}>
-      <Text style={styles.inputLabel}>Hora  </Text>
-      <TextInput
-       style={[styles.input, styles.smallInput1]} // Aplicar el estilo smallInput aquí
-       placeholder="Hora"
-       value={hora}
-       onChangeText={(text) => setHora(text)}
-      />
-    </View>
-
-    <View style={styles.buttonContainer}>
-      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-        <MaterialCommunityIcons name="arrow-left" size={24} color="white" />
-        <Text style={styles.ButtonText}>Regresar</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.backButton} onPress={handleNext}>
-        <MaterialCommunityIcons name="arrow-right" size={24} color="white" />
-        <Text style={styles.ButtonText}>Continuar</Text>
-      </TouchableOpacity>
-    </View>
-
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+          <MaterialCommunityIcons name="arrow-left" size={24} color="white" />
+          <Text style={styles.buttonText}>Regresar</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.backButton} onPress={handleNext}>
+          <MaterialCommunityIcons name="arrow-right" size={24} color="white" />
+          <Text style={styles.buttonText}>Siguiente</Text>
+        </TouchableOpacity>
+      </View>
     </ScrollView>
   );
 };
@@ -285,29 +235,31 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: 'normal',
     marginBottom: 8,
   },
-  documentButton: {
+  uploadButtonContainer: {
+    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginVertical: 8,
+    justifyContent: 'space-between',
   },
-  documentButtonText: {
-    color: 'black',
+  uploadButton: {
+    backgroundColor: 'navy',
+    borderRadius: 10,
+    paddingHorizontal: 40,
+    paddingVertical: 5,
   },
-  fileName: {
+  uploadButtonText: {
+    color: 'white',
+    fontSize: 18,
+  },
+  fileNameContainer: {
     marginLeft: 8,
-    fontStyle: 'italic',
-    color: 'gray',
-  },
-  subtitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 8,
+    padding: 8,
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 5,
+    flex: 1,
   },
   inputContainer: {
     flexDirection: 'row',
@@ -316,19 +268,31 @@ const styles = StyleSheet.create({
   },
   inputLabel: {
     fontSize: 16,
-    marginLeft: 8,  
-    fontWeight: 'bold',
+    marginBottom: 4,
+    fontWeight: 'normal',
+    width: 100,
   },
   input: {
     flex: 1,
-    height: 40,
-    borderColor: 'gray',
+    flexDirection: 'row',
     borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 5,
+    height: 40,
+    padding: 0,
     paddingHorizontal: 10,
-    borderRadius: 10, // Ajusta este valor para cambiar la ovalidad
+    marginRight: 2,
+  },
+  inputText: {
+    flex: 1,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 16,
   },
   backButton: {
-    backgroundColor: 'blue',
+    backgroundColor: 'navy',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -336,23 +300,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 12,
     paddingHorizontal: 24,
-    },
-  backButtonText: {
-    color: 'white',
-    fontSize: 18,
-    marginLeft: 8,
   },
-  nextButton: {
-    backgroundColor: 'blue',
-    padding: 12,
-    borderRadius: 10,
-    alignItems: 'center',
-  },
-  nextButtonText: {
-    color: 'white',
-    fontSize: 18,
-  },
-  ButtonText: {
+  buttonText: {
     color: 'white',
     fontSize: 18,
     marginLeft: 8,
@@ -362,58 +311,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   dateInput: {
-    width: 50,
+    width: 70,
     marginRight: 5,
   },
   dateSeparator: {
-    fontSize: 20,
+    fontSize: 18,
     marginRight: 5,
   },
-  locationInput: {
-    flex: 1,
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    paddingHorizontal: 10,
-    borderRadius: 10,
-    marginRight: 10,
-  },
-  smallInput: {
-    width: 60,
-    marginRight: 10,
-  },
-  smallInput1: {
-    width: 60,
-    marginRight: 200,
-  },
-  uploadButtonContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between', // Para distribuir los elementos horizontalmente
-  },
-  uploadButton: {
-    backgroundColor: 'blue',
-    borderRadius: 10,
-    paddingHorizontal: 24,
-    paddingVertical: 12,
-  },
-  uploadButtonText: {
-    color: 'white',
-    fontSize: 18,
-  },
-  documentButtonText: {
-    color: 'black',
-  },
-  buttonContainer: {
+  inputContainerRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 16,
+    marginBottom: 16,
   },
-    
 });
 
 export default FormularioFema;
-
-
-
-
