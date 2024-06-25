@@ -118,16 +118,18 @@ const PasswordUpdate = () => {
       <View style={styles.formContainer}>
         <Text style={styles.heading}>Actualización de contraseña</Text>
 
+        {/*
         <View style={styles.inputContainer}>  
           <Text style={styles.normalText}>Usuario: </Text>
           {/*<Text style={[styles.normalText,{marginRight: 1}]}>Usuario: </Text>*/}
-          <TextInput
+          {/*<TextInput
             name="username"
             placeholder="Por defecto"
             style={[styles.input, { color: 'gray' }]}
             editable={false} // Deshabilitar la edición del TextInput
           />
         </View>
+        */}
 
         <View style={styles.inputContainer}>  
           <Text style={[styles.normalText, {marginRight: 30, }]}>Contraseña actual: </Text>

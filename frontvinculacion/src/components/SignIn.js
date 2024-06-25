@@ -10,6 +10,8 @@ const SignIn = () => {
   //const [usuario, setusuario] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false); // Nueva variable de estado
+  const esUsuarioValido = nombre => /^[0-9]+$/.test(nombre);
+
 
   const handleSubmit = async () => {    
     try {
@@ -70,18 +72,28 @@ const SignIn = () => {
         <View style={styles.formContainer}>
           <TextInput
             placeholder="Usuario"
-            keyboardType="email-address"
+            //keyboardType="email-address"
+            keyboardType="numeric"
             autoCapitalize="none"
             style={[styles.input, { color: nombre ? 'black' : 'gray' }]}
             value={nombre}
-            onChangeText={setEmail}
-            //onChangeText={text => {
+            //onChangeText={setEmail}
+            onChangeText={text => {
               // Filtrar caracteres no deseados
-            //  const filteredText = text.replace(/[^0-9]/g, ''); // Solo permite números
-            //  setEmail(filteredText);
-            //}}
+              const filteredText = text.replace(/[^0-9]/g, ''); // Solo permite números
+              setEmail(filteredText);
+            }}
           />
         </View>
+        {/*{!esUsuarioValido(nombre) && nombre.trim() !== '' && (
+          <View style={[styles.inputContainer, { justifyContent: 'flex-start' }]}> 
+            <View style={{ marginTop: -12 , marginBottom: 10}}>
+              <Text style={{ color: 'red' }}>
+                <MaterialCommunityIcons name="alert-circle" size={20} color="red" /> Solo números
+              </Text>
+            </View>
+          </View>
+        )}*/}
           
         <View style={styles.inputContainer}>  
           <TextInput

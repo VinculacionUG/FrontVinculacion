@@ -91,15 +91,13 @@ const Dashboard = () => {
           
         </TouchableOpacity>
 
-
         <TouchableOpacity
           style={styles.card}
-          //onPress={() => handleCardPress('Register')}
-          onPress={() => handleCardPress('Register')}
+          onPress={() => handleCardPress('EditProfile')}
         >
-          <MaterialCommunityIcons name="file-document" size={40} color="#001f3f"/>
-          <Text style= {styles.cardText}>Registro_P</Text>
-          
+          <MaterialCommunityIcons name="pencil" size={40} color="#001f3f"/>
+          {/*<Text style= {[styles.cardText, { width: 120 }]}>Crear Usuario</Text>*/}
+          <Text style= {styles.cardText}>Actualizar Perfil</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -107,19 +105,19 @@ const Dashboard = () => {
           onPress={() => handleCardPress('PasswordUpdate')}
         >
           <MaterialCommunityIcons name="key" size={40} color="#001f3f"/>
-          <Text style= {styles.cardText}>Actualización contraseña_P</Text>
-          
+          <Text style= {styles.cardText}>Actualizar contraseña</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
+        {/*<TouchableOpacity
           style={styles.card}
-          onPress={() => handleCardPress('EditProfile')}
+          //onPress={() => handleCardPress('Register')}
+          onPress={() => handleCardPress('Register')}
         >
-          <MaterialCommunityIcons name="pencil" size={40} color="#001f3f"/>
-          {/*<Text style= {[styles.cardText, { width: 120 }]}>Crear Usuario</Text>*/}
-          <Text style= {styles.cardText}>Actualizar Perfil_P</Text>
+          <MaterialCommunityIcons name="file-document" size={40} color="#001f3f"/>
+          <Text style= {styles.cardText}>Registro_P</Text>
           
-        </TouchableOpacity>
+        </TouchableOpacity>*/}
+        
       </View>
     </View>
   );
@@ -151,9 +149,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#e0e0e0',
     borderRadius: 18,
     padding: 25,
-    margin: 8,
+    margin: 5,
     alignItems: 'center',
-    width: 80, // Ancho del contenedor
+    width: 85, // Ancho del contenedor
     height: 115, // Altura del contenedor
   },
   cardText: {
