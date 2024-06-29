@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { CheckBox } from 'react-native-elements';
 //import { CheckBox, Button } from 'react-native-elements';
@@ -13,18 +13,19 @@ const FormularioFema2 = ({ route, navigation }) => {
   const [anioCodigo, setAnioCodigo] = useState('');
   const [anioConstruccion2, setAnioConstruccion2] = useState('');
   const [ampliacion, setAmpliacion] = useState('');
-  const [ocupacion, setOcupacion] = useState('');
-  const [tipoSuelo, setTipoSuelo] = useState('');
+  const [ocupacion, setOcupacion] = useState([]);
+  const [tipoSuelo, setTipoSuelo] = useState([]);
   const [comentario, setComentario] = useState('');
-  const [checkBox1, setCheckBox1] = useState(false);
-  const [checkBox2, setCheckBox2] = useState(false);
-  const [checkBox3, setCheckBox3] = useState(false);
-  const [checkBox4, setCheckBox4] = useState(false);
-  const [checkBox5, setCheckBox5] = useState(false);
-  const [checkBox6, setCheckBox6] = useState(false);
-  const [checkBox7, setCheckBox7] = useState(false);
-  const [checkBox8, setCheckBox8] = useState(false);
-  const [checkBox9, setCheckBox9] = useState(false);
+  //const [checkBox1, setCheckBox1] = useState(false);
+  //const [checkBox2, setCheckBox2] = useState(false);
+  //const [checkBox3, setCheckBox3] = useState(false);
+  //const [checkBox4, setCheckBox4] = useState(false);
+  //const [checkBox5, setCheckBox5] = useState(false);
+  //const [checkBox6, setCheckBox6] = useState(false);
+  //const [checkBox7, setCheckBox7] = useState(false);
+  //const [checkBox8, setCheckBox8] = useState(false);
+  //const [checkBox9, setCheckBox9] = useState(false);
+  const [tipoocupacion, setTipoOcupacion] = useState([]);  
   
   const { params } = route;
   const {
@@ -65,39 +66,125 @@ const FormularioFema2 = ({ route, navigation }) => {
       ampliacion,
       ocupacion,
       tipoSuelo,
+      tipoocupacion,
       comentario,
-      checkBox1,
-      checkBox2,
-      checkBox3,
-      checkBox4,
-      checkBox5,
-      checkBox6,
-      checkBox7,
-      checkBox8,
-      checkBox9,
+  //    checkBox1,
+  //    checkBox2,
+  //    checkBox3,
+  //    checkBox4,
+  //    checkBox5,
+  //    checkBox6,
+  //    checkBox7,
+  //    checkBox8,
+  //    checkBox9,
     });
   };
 
-
   //const FormularioCheckbox = () => {
     const [selectedCheckbox, setSelectedCheckbox] = useState(null);
-  
-    const checkboxes = [
-      { id: 1, label: 'Asamblea' },
-      { id: 2, label: 'Industria' },
-      { id: 3, label: 'Herramientas' },
-      { id: 4, label: 'Comercial' },
-      { id: 5, label: 'Oficina' },
-      { id: 6, label: 'Almacén' },
-      { id: 7, label: 'Servicios Em.' },
-      { id: 8, label: 'Escuela' },
-      { id: 9, label: 'Residencia' },
-    ];
-  
     const handleCheckboxChange = (id) => {
       setSelectedCheckbox(id);
     };
+ 
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [selectedValue, setSelectedValue] = useState('');
+  const [selectedValuetipoocupacion, setSelectedValueTipoOcupacion] = useState('');
+  const [selectedValuetipoSuelo, setSelectedValueTipoSuelo] = useState('');
 
+  useEffect(() => {
+    // URL del servicio GET
+    //const url = 'http://localhost:3000/api/TipoOcupacion';
+    const url = 'https://www.fema.somee.com/Users/TipoOcupacion';   
+    const fetchTipoOcupacion = async () => {
+      try {
+        const response = await fetch(url,
+		{
+			method: 'GET',
+		}
+		);
+        if (!response.ok) {
+          throw new Error('Error en la red');
+        }
+        const result = await response.json();
+        setTipoOcupacion(result);
+		//console.log(result);    
+      } catch (error) {
+        setError(error);
+		console.log(error);    
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchTipoOcupacion();
+
+    
+    // URL del servicio GET
+    //const url2 = 'http://localhost:3001/api/TipoSuelo';
+    const url2 = 'https://www.fema.somee.com/Users/TipoSuelo';
+    const fetchTipoSuelo = async () => {
+      try {
+        const response = await fetch(url2,
+		{
+			method: 'GET',
+		}
+		);
+        if (!response.ok) {
+          throw new Error('Error en la red');
+        }
+        const result = await response.json();
+        setTipoSuelo(result);
+		//console.log(result);    
+      } catch (error) {
+        setError(error);
+		console.log(error);    
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchTipoSuelo();
+
+
+    // URL del servicio GET
+    //const url3 = 'http://localhost:3002/api/Ocupacion';
+    const url3 = 'https://www.fema.somee.com/Users/Ocupacion';
+    const fetchOcupacion = async () => {
+      try {
+        const response = await fetch(url3,
+		{
+			method: 'GET',
+		}
+		);
+        if (!response.ok) {
+          throw new Error('Error en la red');
+        }
+        const result = await response.json();
+        setOcupacion(result);
+		//console.log(result);    
+      } catch (error) {
+        setError(error);
+		console.log(error);    
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchOcupacion();
+
+
+  }, []);
+
+
+  if (loading) {
+    return <ActivityIndicator size="large" color="#0000ff" />;
+  }
+
+  if (error) {
+    return (
+      <View>
+        <Text>Error: {error.message}</Text>
+      </View>
+    );
+  }
 
 
   return (
@@ -177,10 +264,6 @@ const FormularioFema2 = ({ route, navigation }) => {
 
       <View style={styles.inputContainer}>
         <Text style={styles.inputLabel }>Año de Construcción:</Text>
-        {/*        
-        <Text style={[styles.inputLabel, { height: 40, width: 110, marginRight: 2 }]}>Año de Construcción:</Text>
-        <View style={{ width: 20, height: 20 }} />
-       */} 
        
         <TextInput
           //style={[styles.input, { width: 20, height: 20 }]}
@@ -199,69 +282,55 @@ const FormularioFema2 = ({ route, navigation }) => {
     <Text style={[styles.subtitle, styles.boldRedText, styles.centerText]}></Text>
  
     <View style={styles.checkboxGrid}>
-        {checkboxes.map((checkbox) => (
-          <View key={checkbox.id} style={styles.checkboxContainer}>
+        {ocupacion.map((checkbox) => (
+          <View key={checkbox.cod_ocupacion} style={styles.checkboxContainer}>
             <CheckBox
-              title={checkbox.label}
-              checked={selectedCheckbox === checkbox.id}
-              onPress={() => handleCheckboxChange(checkbox.id)}
+              title={checkbox.descripcion}
+              checked={selectedCheckbox === checkbox.cod_ocupacion}
+              onPress={() => handleCheckboxChange(checkbox.cod_ocupacion)}
               containerStyle={styles.checkbox}
             />
           </View>
         ))}
       </View>
 
-      {/*   
-      <Button
-        title="Guardar Datos"
-        onPress={() => {
-          if (selectedCheckbox !== null) {
-            const seleccionada = checkboxes.find(checkbox => checkbox.id === selectedCheckbox);
-            Alert.alert('Datos guardados', `Seleccionaste: ${seleccionada.label}`);
-          } else {
-            Alert.alert('Error', 'Debes seleccionar una opción');
-          }
-        }}    
-        buttonStyle={styles.button}
-      />   */}
       {selectedCheckbox !== null && (
         <Text style={styles.resultado}>
-          Seleccionaste: {checkboxes.find(checkbox => checkbox.id === selectedCheckbox).label}
+          Seleccionaste: {ocupacion.find(checkbox => checkbox.cod_ocupacion === selectedCheckbox).descripcion}
         </Text>
       )}
 
+    <View style={styles.inputContainer}>
+      <Text style={styles.inputLabel}>Tipo de Ocupación:</Text>
+      <View style={{ width: 5, height: 40 }} /> 
+      <Picker
+        style={styles.smallPicker}
+        selectedValue={selectedValuetipoocupacion}
+        onValueChange={(itemValue) => setSelectedValueTipoOcupacion(itemValue)}
+      >
+        {tipoocupacion.map((item, index) => (
+          <Picker.Item label={item.descripcion} value={item.descripcion} key={index} />
+        ))}
+      </Picker>
+      {/*  <Text style={styles.selected}>Seleccionado: {selectedValue}</Text> */}
+    </View>
 
-      <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>Tipo de Ocupación:</Text>
-        <View style={{ width: 5, height: 40 }} /> 
-        <Picker
-          style={styles.smallPicker}
-          selectedValue={ocupacion}
-          on          ValueChange={(itemValue) => setOcupacion(itemValue)}
-          >
-            <Picker.Item label="Histórico" value="Histórico" />
-            <Picker.Item label="Albergue" value="Albergue" />
-            <Picker.Item label="Gubernamnetal" value="Gubernamnetal" />
-          </Picker>
-        </View>
-  
-        <View style={styles.inputContainer}>
-          <Text style={styles.inputLabel}>Tipo de suelo:</Text>
-          <View style={{ width: 43, height: 40 }} /> 
-          <Picker
-            style={styles.smallPicker}
-            selectedValue={tipoSuelo}
-            onValueChange={(itemValue) => setTipoSuelo(itemValue)}
-          >
-            <Picker.Item label="Roca Dura" value="Roca Dura" />
-            <Picker.Item label="Roca Semi-dura" value="Roca Semi-dura" />
-            <Picker.Item label="Suelo Denso" value="Suelo Denso" />
-            <Picker.Item label="Suelo Rigido" value="Suelo Rigido" />
-            <Picker.Item label="Suelo Blando" value="Suelo Blando" />
-            <Picker.Item label="Suelo Pobre" value="Suelo Pobre" />
-          </Picker>
-        </View>
-        
+
+    <View style={styles.inputContainer}>
+      <Text style={styles.inputLabel}>Tipo de Suelo:</Text>
+      <View style={{ width: 5, height: 40 }} /> 
+      <Picker
+        style={styles.smallPicker}
+        selectedValue={selectedValuetipoSuelo}
+        onValueChange={(itemValue) => setSelectedValueTipoSuelo(itemValue)}
+      >
+        {tipoSuelo.map((item, index) => (
+          <Picker.Item label={item.descripcion} value={item.descripcion} key={index} />
+        ))}
+      </Picker>
+      {/*  <Text style={styles.selected}>Seleccionado: {selectedValue}</Text> */}
+    </View>
+
 
         <View style={styles.inputContainer}>
   <Text style={styles.inputLabel}>Comentario:</Text>

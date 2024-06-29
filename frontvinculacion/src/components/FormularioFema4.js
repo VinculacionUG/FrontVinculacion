@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+//import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+//import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { CheckBox } from 'react-native-elements';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -44,8 +46,8 @@ const FormularioFema4 = ({ route, navigation }) => {
     resultadoFinalSL1_GT_Smin,
   } = params;
 
-  const [revisionExterior, setRevisionExterior] = useState('');
-  const [revisionInterior, setRevisionInterior] = useState('');
+  const [revisionExterior, setRevisionExterior] = useState([]);
+  const [revisionInterior, setRevisionInterior] = useState([]);
   const [revisionPlanos, setRevisionPlanos] = useState('');
   const [fuenteTipoSuelo, setFuenteTipoSuelo] = useState('');
   const [fuentePeligrosGeologicos1, setFuentePeligrosGeologicos1] = useState('');
@@ -107,11 +109,89 @@ const FormularioFema4 = ({ route, navigation }) => {
     });
   };
 
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [selectedValue, setSelectedValue] = useState('');
+  const [selectedValuerevisionExterior, setSelectedValueRevisionExterior] = useState('');
+  const [selectedValuerevisionInterior, setSelectedValueRevisionInterior] = useState('');
+  
+  useEffect(() => {
+    // URL del servicio GET
+    const url = 'http://www.fema.somee.com/Users/Exterior';
+    //const url = 'http://www.fema.somee.com/Users/Exterior';
+    const fetchRevisionExterior = async () => {
+      try {
+        const response = await fetch(url,
+		{
+			method: 'GET',
+		}
+		);
+        if (!response.ok) {
+          throw new Error('Error en la red');
+        }
+        const result = await response.json();
+        setRevisionExterior(result);
+		//console.log(result);    
+      } catch (error) {
+        setError(error);
+		console.log(error);    
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchRevisionExterior();
+
+
+
+    // URL del servicio GET
+      const url2 = 'http://www.fema.somee.com/Users/Interior';
+      //const url = 'http://www.fema.somee.com/Users/Interior';
+      const fetchRevisionInterior = async () => {
+        try {
+          const response = await fetch(url2,
+      {
+        method: 'GET',
+      }
+      );
+          if (!response.ok) {
+            throw new Error('Error en la red');
+          }
+          const result = await response.json();
+          setRevisionInterior(result);
+      //console.log(result);    
+        } catch (error) {
+          setError(error);
+      console.log(error);    
+        } finally {
+          setLoading(false);
+        }
+      };
+      fetchRevisionInterior();
+  
+
+  }, []);
+
+
+  if (loading) {
+    return <ActivityIndicator size="large" color="#0000ff" />;
+  }
+
+  if (error) {
+    return (
+      <View>
+        <Text>Error: {error.message}</Text>
+      </View>
+    );
+  }
+
+
   return (
+
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Formulario FEMA P-154</Text>
       <Text style={[styles.subtitle, styles.blackText, styles.centerText]}>Extensión de la revisión</Text>
 
+ {/*   
       <View style={styles.row}>
         <Text style={styles.inputLabel}>Exterior:</Text>
         <View style={{ width: 65 }} /> 
@@ -125,20 +205,39 @@ const FormularioFema4 = ({ route, navigation }) => {
           <Picker.Item label="Aéreo" value="Aéreo" />
         </Picker>
       </View>
+*/}
 
-      <View style={styles.row}>
-        <Text style={styles.inputLabel}>Interior:</Text>
-        <View style={{ width: 65 }} /> 
-        <Picker
-          style={[styles.input, styles.picker]}
-          selectedValue={revisionInterior}
-          onValueChange={(itemValue) => setRevisionInterior(itemValue)}
-        >
-          <Picker.Item label="NO" value="NO" />
-          <Picker.Item label="Visible" value="Visible" />
-          <Picker.Item label="Ingreso" value="Ingreso" />
-        </Picker>
-      </View>
+    <View style={styles.row}>
+      <Text style={styles.inputLabel}>Exterior:</Text>
+      <View style={{ width: 65 }} /> 
+      <Picker
+        style={[styles.input, styles.picker]}
+        selectedValue={selectedValuerevisionExterior}
+        onValueChange={(itemValue) => setSelectedValueRevisionExterior(itemValue)}
+      >
+        {revisionExterior.map((item, index) => (
+          <Picker.Item label={item.descripcion} value={item.descripcion} key={index} />
+        ))}
+      </Picker>
+      {/*  <Text style={styles.selected}>Seleccionado: {selectedValue}</Text> */}
+    </View>
+
+
+    <View style={styles.row}>
+      <Text style={styles.inputLabel}>Interior:</Text>
+      <View style={{ width: 65 }} /> 
+      <Picker
+        style={[styles.input, styles.picker]}
+        selectedValue={selectedValuerevisionInterior}
+        onValueChange={(itemValue) => setSelectedValueRevisionInterior(itemValue)}
+      >
+        {revisionInterior.map((item, index) => (
+          <Picker.Item label={item.descripcion} value={item.descripcion} key={index} />
+        ))}
+      </Picker>
+      {/*  <Text style={styles.selected}>Seleccionado: {selectedValue}</Text> */}
+    </View>
+	  
 
       <View style={styles.row}>
         <Text style={styles.inputLabel}>Revisión planos:</Text>
@@ -327,7 +426,6 @@ const styles = StyleSheet.create({
 });
 
 export default FormularioFema4;
-
 
           
   
