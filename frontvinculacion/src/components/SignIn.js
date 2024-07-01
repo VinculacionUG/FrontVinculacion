@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+//import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SignIn = () => {
   const navigation = useNavigation();
@@ -25,13 +26,16 @@ const SignIn = () => {
         },
         body: JSON.stringify({
           "nombre": nombre,
-          "password": guaradarC,
+          "password": password,
         }),
       });
 
       if (response.ok) {
-        //navigation.navigate('PasswordUpdate');
-        //navigation.navigate('Register');
+        //const responseData = await response.json();
+        //await AsyncStorage.setItem('userData', JSON.stringify(responseData));
+
+        //const responseData = response.json
+        //console.log
         navigation.navigate('Dashboard');
       } else {
         const responseData = await response.json(); // Obtener el mensaje de error del cuerpo de la respuesta
@@ -70,49 +74,42 @@ const SignIn = () => {
             autoCapitalize="none"
             style={[styles.input, { color: nombre ? 'black' : 'gray' }]}
             value={nombre}
-            //onChangeText={setEmail}
-            onChangeText={text => {
+            onChangeText={setEmail}
+            //onChangeText={text => {
               // Filtrar caracteres no deseados
-              const filteredText = text.replace(/[^a-zA-Z0-9]/g, ''); // Solo permite letras y números
-              setEmail(filteredText);
-            }}
+            //  const filteredText = text.replace(/[^0-9]/g, ''); // Solo permite números
+            //  setEmail(filteredText);
+            //}}
           />
-          {/*<Text style={styles.forgotLink} onPress={() => navigation.navigate('ForgotUsername')}>*/}
-          <Text style={styles.forgotLink} onPress={() => navigation.navigate('RecoveryPassword')}>
-            ¿Olvidaste tu nombre de usuario?
-          </Text>
+        </View>
           
         <View style={styles.inputContainer}>  
           <TextInput
             placeholder="Constraseña"
-            //secureTextEntry
-            secureTextEntry={!showPassword} // Utiliza el estado showPassword para alternar la visibilidad de la contraseña
-            //style={[styles.input, {width: '100%', color: password ? 'black' : 'gray' }]}      
+            secureTextEntry={!showPassword} // ShowPassword para alternar la visibilidad de la contraseña
             style={[styles.input, { color: password ? 'black' : 'gray' }]}      
             value={password}
             //onChangeText={setPassword}
             onChangeText={text => {
-              // Filtrar caracteres no deseados
-              const filteredText = text.replace(/[^a-zA-Z0-9]/g, ''); // Solo permite letras y números
-              setPassword(filteredText);
+              if (text.length <= 50) { // Máx 50
+                // Filtrar caracteres no deseados
+                const filteredText = text.replace(/[^a-zA-Z0-9]/g, ''); // Solo permite letras y números
+                setPassword(filteredText);
+              }
             }}
           />
-          {/* Icono de ojo para alternar la visibilidad de la contraseña */}
-          {/*<TouchableOpacity style={styles.passwordVisibilityButton}*/}
-          {/*<TouchableOpacity style={[styles.normalText, {marginBottom: 15, marginRight: 5, marginLeft: 10}]} onPress={() => setShowPassword(!showPassword)}>  */}      
           <TouchableOpacity style={styles.normalText} onPress={() => setShowPassword(!showPassword)}>        
               <MaterialCommunityIcons name={showPassword ? 'eye-off' : 'eye'} size={24} color="black" style={styles.eyeIcon} />
             </TouchableOpacity>
         </View>
 
-          <Text style={styles.forgotLink} onPress={() => navigation.navigate('RecoveryPassword')}>
-            ¿Olvidaste tu contraseña?
-          </Text>
-          <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-            {/*<MaterialCommunityIcons name="lock-open" size={24} color="white" />*/}
-            <Text style={styles.buttonText}onPress={() => navigation.navigate('Dashboard')} >Iniciar Sesión</Text>
-          </TouchableOpacity>
-        </View>
+        <Text style={styles.forgotLink} onPress={() => navigation.navigate('RecoveryPassword')}>
+          ¿Olvidaste tu contraseña?
+        </Text>
+        <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+          {/*<Text style={styles.buttonText} onPress={() => navigation.navigate('Dashboard')} >Iniciar Sesión</Text>*/}
+          <Text style={styles.buttonText}>Iniciar Sesión</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -151,10 +148,10 @@ const styles = StyleSheet.create({
   input: {
     //color: 'gray',
     backgroundColor: 'rgba(0, 31, 63, 0.05)',
-    height: 40,
+    height: 45,
     borderColor: 'gray',
     borderWidth: 1,
-    marginBottom: 16,
+    marginBottom: 18,
     paddingHorizontal: 10,
     //borderRadius: 40,
     borderRadius: 10,
@@ -219,28 +216,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   passwordInput: {
-    //marginBottom: 10,
-    //marginTop:10,
     flex: 1,
   },
   normalText: {
-    //fontSize: 24,
-    //fontWeight: 'bold',
-    //justifyContent: 'flex-start', // Alineación vertical
-    //textAlign: 'right',
     marginBottom: 16,
-    //marginRight: 50,
   },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    //marginRight: 25,
-    //justifyContent: 'left',
-    //marginLeft: 10,
-    //justifyContent: 'flex-start'
-    //marginBottom: 16,
-    //marginEnd: 20,
   },
   passwordVisibilityButton: {
     paddingHorizontal: 10,

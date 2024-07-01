@@ -30,13 +30,25 @@ const EditProfile = () => {
 
   //Comparar contraseñas
   const [confirmPassword, setConfirmPassword] = useState('');//
-  //const [claveMatch, setClavedMatch] = useState(true);
   const [passwordMatchError, setPasswordMatchError] = useState(false);
 
   //Poner ojo dentro del cuadro
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  //const [formState, setFormState] = useState({});
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);  
+  const [correoValido, setCorreoValido] = useState(false); // Agrega el estado correoValido
+
+   // Validar el formato del correo electrónico
+   const validarCorreo = (email) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
+
+  // Función para manejar cambios en el campo de correo electrónico
+  const handleChangeCorreo = (text) => {
+    setCorreo(text); // Actualiza el estado del correo electrónico
+    setCorreoValido(validarCorreo(text)); // Verifica si el correo electrónico es válido y actualiza el estado correspondiente
+  };
+
 
   const handleChange = (name, value) => {////
     setFormState({
@@ -67,47 +79,6 @@ const EditProfile = () => {
       setPasswordMatchError(false);
     }
   };
-
-{/*
-  // Función para mostrar el selector de fecha
-  const showDatePicker = async () => {
-    try {
-      const { action, year, month, day } = await DatePickerAndroid.open({
-        // Configuración del selector de fecha
-        date: new Date(), // Fecha inicial
-        mode: 'spinner', // Modo de selección de fecha (spinner o calendar)
-      });
-      if (action !== DatePickerAndroid.dismissedAction) {
-        // Si el usuario selecciona una fecha
-        const selectedDate = new Date(year, month, day);
-        //setFechaNacimiento(selectedDate.toISOString()); // Almacena la fecha seleccionada
-        setFechaNacimiento(selectedDate); // Almacena la fecha seleccionada sin convertirla
-      }
-    } catch ({ code, message }) {
-      console.warn('Error al abrir el selector de fecha: ', message);
-    }
-  };
-*/}
-  
-
-    // Función para mostrar el selector de fecha
- /*   const showDatePicker = () => {
-      Alert.alert(
-        'Seleccionar Fecha de Nacimiento',
-        '',
-        [
-          {
-            text: 'Cancelar',
-            style: 'cancel',
-          },
-          {
-            text: 'Seleccionar',
-            onPress: () => console.log('Fecha seleccionada'),
-          },
-        ],
-        { cancelable: true }
-      );
-    };*/
 
     const handleDatePick = async () => {
       try {
@@ -233,61 +204,18 @@ const EditProfile = () => {
       </TouchableOpacity>
 
       <View style={styles.formContainer}>
-        <Text style={styles.heading}>Perfil</Text>
+        <Text style={styles.heading}>Actualizar Perfil</Text>
 
-        <View style={styles.inputContainer}>  
-            {/*<View style={{ flex: 1 }}> {/* Este contenedor se expandirá para llenar el espacio restante */}
-            <Text style={styles.normalText}>Nº Documento:</Text>
-            <TextInput
-              //name="numDocumento"
-              placeholder="0952517282"
-              //style={styles.input}        
-              //style={[styles.input, { flex: 1 }]} // Ajusta el ancho del input aquí
-              style={styles.input } // Ajusta el ancho del input aquí
-              //style={[styles.input, { color: cedula ? 'black' : 'gray' }]}
-              keyboardType="numeric"
-              value={cedula}
-              onChangeText={setCedula}
-            />    
-          </View>
-
-          <View style={styles.inputContainer}>  
-          <Text style={styles.normalText}>Nombres: </Text>
-          <TextInput
-            name="nombre"
-            placeholder="Cristopher"
-            style={styles.input}
-            //style={[styles.input, { color: nombre1 ? 'black' : 'gray' }]}
-            //style={[styles.picker, { color: nombre1 ? 'black' : 'gray' }]}
-            value={nombre1}
-            onChangeText={setNombre1}
-          />
+        <View style={styles.profileContainer}>
+          {/* Icono de perfil  */}
+          <MaterialCommunityIcons name="account" size={70} color="#001f3f" />
+          <Text style={styles.username}>Nombre de Usuario{'\n\n'}</Text>
         </View>
 
-        <View style={styles.inputContainer}>  
-          <Text style={styles.normalText}>Apellidos: </Text>
-          <TextInput
-            name="apellido"
-            placeholder="Borbor"
-            style={styles.input}
-            //style={[styles.input, { color: apellido1 ? 'black' : 'gray' }]}
-            value={apellido1}
-            onChangeText={setApellido1}
-          />
-        </View>
-
-{/*
         <View style={styles.inputContainer}>
-        {/*<View style={[styles.inputContainer, { marginLeft: 1 }]}>*/}
-        {/*<View style={[styles.inputContainer, { justifyContent: 'flex-start' }]}>*/}
-        {/*<View style={[styles.inputContainer, { justifyContent: 'left' }]}>*/}
-        
-        {/*
           <Text style={styles.normalText}>Tipo de documento: </Text>
-
           <Picker
             selectedValue={tipoDocumento}
-            //onValueChange={(itemValue, itemIndex) => setTipoDocumento(itemValue)}
             onValueChange={(itemValue, itemIndex) => {
               setTipoDocumento(itemValue);
               if (itemValue === 'Cedula' || itemValue === 'Pasaporte') {
@@ -296,7 +224,7 @@ const EditProfile = () => {
                 setShowCedulaInput(false);
               }
             }}
-            style={[styles.picker, { color: tipoDocumento ? 'black' : 'gray' }]}
+            style={[styles.picker, {width: '50%', color: tipoDocumento ? 'black' : 'gray' }]}
           >
             <Picker.Item label="Seleccione" value="" />
             <Picker.Item label="Cédula" value="Cedula" />
@@ -304,51 +232,23 @@ const EditProfile = () => {
           </Picker>
         </View>
 
-        {showCedulaInput && (
-          <View style={styles.inputContainer}>  
-            {/*<View style={{ flex: 1 }}> {/* Este contenedor se expandirá para llenar el espacio restante /}
-            <Text style={styles.normalText}>Número Documento: </Text>
+        <View style={styles.inputContainer}>  
+            {/*<View style={{ flex: 1 }}> {/* Este contenedor se expandirá para llenar el espacio restante */}
+            <Text style={styles.normalText}>Nº Documento:</Text>
             <TextInput
-              //name="numDocumento"
-              //placeholder="Documento de indentidad: "
-              //style={styles.input}        
-              //style={[styles.input, { flex: 1 }]} // Ajusta el ancho del input aquí
-              style={[styles.input, { width: '100%' }]} // Ajusta el ancho del input aquí
-              //style={[styles.input, { color: cedula ? 'black' : 'gray' }]}
+              style={[styles.input, { color: cedula ? 'black' : 'gray' }]}
               keyboardType="numeric"
               value={cedula}
               onChangeText={setCedula}
+              editable={false} // Deshabilitar la edición del TextInput
             />    
           </View>
-          //</View>
-        )}
 
-      {/*{showCedulaInput && (
-        <TextInput
-          placeholder="Cedula"
-          style={styles.input}
-          keyboardType="numeric"
-          value={cedula}
-          onChangeText={setCedula}
-        />
-      )}
-
-        <TextInput
-          name="identificacion"
-          placeholder="Identificacion"
-          style={styles.input}
-          value={cedula}
-          onChangeText={setCedula}
-        />*/}
-{/*
-        <View style={styles.inputContainer}>  
+          <View style={styles.inputContainer}>  
           <Text style={styles.normalText}>Nombres: </Text>
           <TextInput
             name="nombre"
-            //placeholder="Nombre"
             style={styles.input}
-            //style={[styles.input, { color: nombre1 ? 'black' : 'gray' }]}
-            //style={[styles.picker, { color: nombre1 ? 'black' : 'gray' }]}
             value={nombre1}
             onChangeText={setNombre1}
           />
@@ -358,21 +258,17 @@ const EditProfile = () => {
           <Text style={styles.normalText}>Apellidos: </Text>
           <TextInput
             name="apellido"
-            //placeholder="Apellido"
             style={styles.input}
-            //style={[styles.input, { color: apellido1 ? 'black' : 'gray' }]}
             value={apellido1}
             onChangeText={setApellido1}
           />
         </View>
-      */}
+
         <View style={styles.inputContainer}>  
           <Text style={styles.normalText}>Direccion: </Text>
           <TextInput
             name="direccion"
-            placeholder="17 y Alcedo"
             style={styles.input}
-            //style={[styles.input, { color: apellido1 ? 'black' : 'gray' }]}
             value={direccion}
             onChangeText={setDireccion}
           />
@@ -382,38 +278,45 @@ const EditProfile = () => {
           <Text style={styles.normalText}>Email: </Text>
           <TextInput
             name="email"
-            placeholder="cristopher@gmail.com"
             style={styles.input}
-            //style={[styles.input, { color: correo ? 'black' : 'gray' }]}
             value={correo}
-            onChangeText={setCorreo}
+            //onChangeText={setCorreo}
+            onChangeText={handleChangeCorreo} // Usa la función handleChangeCorreo para manejar cambios en el correo electrónico
+
           />
+          
         </View>
+        {!correoValido && correo.trim() !== '' && (
+              <View style={[styles.inputContainer, { justifyContent: 'flex-end' }]}> 
+                <View style={{ marginTop: -12 , marginBottom: 10}}>
+                <Text style={{ color: 'red' }}>
+                <MaterialCommunityIcons name="alert-circle" size={20} color="red" /> Correo electrónico inválido</Text>
+              </View>
+              </View>
+            )}
 
         <View style={styles.inputContainer}>  
-          <Text style={styles.normalText}>Teléfono: </Text>
+          <Text style={styles.normalText}>Celular: </Text>
           <TextInput
             name="telefono"
-            placeholder="0990068113"
             style={styles.input}
-            //style={[styles.input, { color: celular ? 'black' : 'gray' }]}
             value={celular}
-            //onChangeText={setCelular}
             onChangeText={(text) => {
-              // Filtrar los caracteres no numéricos utilizando una expresión regular
-              const numericValue = text.replace(/[^0-9+]/, '');
-              // Actualizar el estado con el valor filtrado
-              setCelular(numericValue);
+              let formattedText = text.trim(); // Elimina los espacios en blanco al principio y al final
+              // Verifica si el texto no está vacío y si el primer carácter no es un "+"
+              if (formattedText && formattedText[0] !== '+') {
+                  formattedText = '+' + formattedText; // Agrega el "+" al principio del texto
+              }
+              // Verifica si el texto cumple con el patrón deseado
+              if (/^\+[0-9]*$/.test(formattedText)) {
+                  formattedText = formattedText.slice(0, 13);
+                  setCelular(formattedText); // Actualiza el estado solo si el texto es válido
+              }
             }}
           />
         </View>
 
-        {/*<View style={styles.inputContainer}>*/}
-        {/*<View style={[styles.inputContainer, { marginLeft: 1 }]}>*/}
-        {/*<View style={[styles.inputContainer, { marginRight: 125 }]}>*/}
         <View style={[styles.inputContainer, { justifyContent: 'flex-start' }]}> 
-        {/*<View style={[styles.inputContainer, { justifyContent: 'left' }]}>*/} 
-        {/*<View style={[styles.inputContainer, { justifyContent: 'center' }]}>*/} 
           <Text style={styles.normalText}>Sexo: </Text>
           <Picker
             selectedValue={sexo}
@@ -426,35 +329,6 @@ const EditProfile = () => {
           </Picker>
         </View>
 
-        {/*<Picker
-          selectedValue={sexo}
-          onValueChange={setSexo}
-          style={styles.picker}
-        >
-          <Picker.Item label="Selecciona el sexo" value="" />
-          <Picker.Item label="Masculino" value="m" />
-          <Picker.Item label="Femenino" value="f" />
-        </Picker>
-
-        <View style={styles.inputContainer}>
-            <Text>Sexo</Text>
-            <Picker
-              selectedValue={sexo}
-              onValueChange={setSexo}
-              style={styles.picker}
-            >
-              <Picker.Item label="Seleccione" value="" />
-              <Picker.Item label="Masculino" value="Masculino" />
-              <Picker.Item label="Femenino" value="Femenino" />
-            </Picker>
-        </View>*/}
-        
-          {/*<TouchableOpacity style={styles.button} onPress={handleSubmit}>
-            <MaterialCommunityIcons size={24} color="white" />
-            <Text style={styles.buttonText}>Continuar</Text>
-          </TouchableOpacity>*/}
-
-        {/*<View style={styles.inputRow}>*/}
           <View style={styles.inputContainer}>
             <Text style={styles.normalText}>Fecha de Nacimiento:</Text>
             <View style={styles.dateInputsContainer}>
@@ -503,7 +377,7 @@ const EditProfile = () => {
               onChangeText={(text) => {
                 const numericValue = text.replace(/[^0-9+]/, ''); // Filtrar los caracteres no numéricos 
                 const intValue = parseInt(numericValue, 10); // Convertir el valor a un número entero
-                if (numericValue.length <= 4) { // Filtrar la cantidad de números
+                if (numericValue.length <= 4 || intValue <= 2020) { // Filtrar la cantidad de números
                   setYear(numericValue);
                 }
                 }}
@@ -512,113 +386,12 @@ const EditProfile = () => {
             />
           </View>
         </View>
-{/*
-        <View style={styles.inputContainer}>
-          <Text style={styles.normalText}>Fecha de Nacimiento:</Text>
-          <TextInput
-            //name="fechaNacimiento"
-            value={selectedDate}
-            editable={false} // Evita que el usuario edite la fecha directamente
-            style={styles.input}
-          />
-        </View>
-              */}
 
-{/*
-        <View style={styles.inputContainer}>
-          <Text style={styles.normalText}>Fecha de Nacimiento: </Text>
-          {/*<TouchableOpacity onPress={showDatePicker}>/}
-          <TouchableOpacity onPress={handleDatePick} style={styles.datePickerButton}>
-            {/*<Text style={[styles.input, {  width: 100, color: fechaNacimiento ? 'black' : 'gray' }]}>*/}
-              {/* {fechaNacimiento ? new Date(fechaNacimiento).toLocaleDateString() : 'Seleccionar fecha'}*/}
-              {/*{fechaNacimiento ? fechaNacimiento.toLocaleDateString() : 'Seleccionar fecha'}/}
-              <Text>{fechaNacimiento ? fechaNacimiento.toISOString() : 'Seleccionar fecha'}</Text>
-            {/*</Text>/}
-          </TouchableOpacity>
-        </View>*/}
- {/*       
-        <View style={styles.line} />
-
-        <View style={styles.inputContainer}>  
-          <Text style={styles.normalText}>Usuario: </Text>
-          <TextInput
-            name="username"
-            //placeholder="Usuario"
-            style={styles.input}
-            //style={[styles.input, { color: usuario ? 'black' : 'gray' }]}
-            value={usuario}
-            onChangeText={setUsuario}
-          />
-        </View>
-
-        <View style={styles.inputContainer}>  
-          <Text style={styles.normalText}>Contraseña: </Text>
-          {/*<View style={styles.inputWithIcon}> {/* Contenedor para el campo de entrada con icono */
-/*          <TextInput
-            //name="password"
-            //placeholder="Contraseña"
-            //secureTextEntry
-            
-            secureTextEntry={!showPassword} // Cambiar a texto visible si showPassword es verdadero
-            //secureTextEntry={true}
-            //style={styles.input}
-            style={[styles.input, { width: '60%' }]} // Ajusta el ancho del input aquí
-            //style={[styles.input, { color: clave ? 'black' : 'gray' }]}
-            value={clave}
-            //onChangeText={setClave}
-            onChangeText={handlePasswordChange}
-            //onChangeText={text => setClave(text)}
-          />
-          {/*<TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.iconContainer}>*
-          <TouchableOpacity style={styles.normalText} onPress={() => setShowPassword(!showPassword)}>
-            <MaterialCommunityIcons name={showPassword ? 'eye-off' : 'eye'} size={24} color="black" />
-          </TouchableOpacity>
-        {/*</View>*
-        </View>
-
-        <View style={styles.inputContainer}>  
-          <Text style={styles.normalText}>Confirmar contraseña: </Text>
-          <TextInput
-            name="confirmPassword"
-            //placeholder="Confirmar contraseña"
-            secureTextEntry={!showConfirmPassword} // Cambiar a texto visible si showConfirmPassword es verdadero
-            //secureTextEntry
-            //style={styles.input}
-            style={[styles.input, { width: '90%' }]} // Ajusta el ancho del input aquí
-            //style={[styles.input,{  width: '90%', borderColor: passwordMatchError ? 'red' : 'gray' }]}        
-            //style={[styles.input, { color: celular ? 'black' : 'gray' }]}
-            value={confirmPassword}
-            onChangeText={handleConfirmPasswordChange}
-            //onChangeText={setClave}
-            /*onChangeText={(text) => {
-              setConfirmPassword(text);
-              setPasswordMatchError(false); // Ocultar el mensaje de error cuando se cambia el texto
-            }}*
-            
-          />
-          
-          <TouchableOpacity style={styles.normalText} onPress={() => setShowConfirmPassword(!showConfirmPassword)}>
-            <MaterialCommunityIcons name={showConfirmPassword ? 'eye-off' : 'eye'} size={24} color="black" />
-          </TouchableOpacity>
-        </View>
-
-        {passwordMatchError && (
-          //<View style={styles.inputContainer}>  
-          <View style={[styles.inputContainer, { justifyContent: 'flex-end' }]}> 
-            <Text style={{ color: 'red' }}>
-            <MaterialCommunityIcons name="alert-circle" size={20} color="red" /> Las contraseñas no coinciden</Text>
-          </View>
-        )}
-*/}
         {/* Botón de envío */}
         <TouchableOpacity style={styles.button} onPress={handleSubmit}>
           <MaterialCommunityIcons size={24} color="white" />
-          <Text style={styles.buttonText}>Continuar</Text>
+          <Text style={styles.buttonText}>Guardar</Text>
         </TouchableOpacity>
-        {/*<TouchableOpacity style={[styles.goBackButton, styles.horizontalPadding]} onPress={() => navigation.goBack()}>
-          <MaterialCommunityIcons name="arrow-left" size={24} color="white" />
-          <Text style={styles.goBackButtonText}>Regresar</Text>
-        </TouchableOpacity>*/}
       </View>
      </ScrollView>
   );
@@ -632,8 +405,6 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     backgroundColor: '#ffffff', // Cambiar al color deseado
-    //position: 'relative',
-    //paddingBottom: 20, // Espacio adicional en la parte inferior para evitar que el último elemento se oculte detrás del botón de navegación
   },
   formContainer: {
     width: '80%',
@@ -656,21 +427,17 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     paddingHorizontal: 10,
     borderRadius: 10,
-    //marginLeft: 1,
-    //flex: 1, // Hace que el TextInput ocupe todo el espacio disponible
-    //textAlign: 'left', // Alinea el texto a la izquierda dentro del TextInput
   },
 
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    //marginRight: 25,
-    //justifyContent: 'left',
-    //marginLeft: 10,
-    //justifyContent: 'flex-start'
-    //marginBottom: 16,
-    //marginEnd: 20,
+  },
+  profileContainer: {
+    alignItems: 'center',
+    marginBottom: 20,
+    marginTop: 20,
   },
 
   picker: {
@@ -684,9 +451,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
     marginLeft: 50,
     justifyContent: 'space-between',
-    //marginLeft: 50, // Ajusta el margen izquierdo
-    //color: 'gray',
-    //alignSelf: 'flex-start', // Alinea a la izquierda
   },
   birthdayContainer: {
     flexDirection: 'column',
@@ -729,17 +493,9 @@ const styles = StyleSheet.create({
   },
 
   normalText: {
-    //fontSize: 24,
-    //fontWeight: 'bold',
     justifyContent: 'center', // Alineación vertical
-    //textAlign: 'center',
     marginBottom: 16,
   },
-
-  /*errorText: {
-    color: 'red',
-    marginBottom: 10,
-  },*/
    
   horizontalPadding: {
     paddingHorizontal: 20, // Ajusta este valor para cambiar el espacio horizontal del botón
@@ -755,8 +511,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center', // Esto centra verticalmente los elementos dentro de este contenedor
     marginLeft: 10,
-    //justifyContent: 'flex-end', // Alinea los elementos a la derecha
-    //justifyContent: 'flex-end', // Alinea los elementos a la derecha
   },
 
 });

@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
 const Dashboard = () => {
   const navigation = useNavigation();
-
+  const [userName, setUserName] = useState(''); // Estado para el nombre del usuario
+  
   const handleCardPress = (routeName) => {
     navigation.navigate(routeName);
   };
@@ -28,7 +29,7 @@ const Dashboard = () => {
       <View style={styles.profileContainer}>
         {/* Icono de perfil  */}
         <MaterialCommunityIcons name="account" size={70} color="#001f3f" />
-        <Text style={styles.username}>Nombre de Usuario{'\n\n'}</Text>
+        <Text style={styles.username}>{userName ? userName : 'Nombre de Usuario'}{'\n\n'}</Text>
       </View>
       <View style={styles.cardsContainer}>
         {/* Mini Cards */}
@@ -85,18 +86,19 @@ const Dashboard = () => {
           onPress={() => handleCardPress('CreateUser')}
         >
           <MaterialCommunityIcons name="account-plus" size={36} color="#001f3f"/>
-          <Text style= {styles.cardText}>Crear Usuario</Text>
+          {/*<Text style= {styles.cardText}>Crear Usuario</Text>*/}
+          <Text style= {styles.cardText}>Registrar Usuario</Text>
           
         </TouchableOpacity>
 
-{/*
+
         <TouchableOpacity
           style={styles.card}
           //onPress={() => handleCardPress('Register')}
           onPress={() => handleCardPress('Register')}
         >
           <MaterialCommunityIcons name="file-document" size={40} color="#001f3f"/>
-          <Text style= {styles.cardText}>Registro - PRUEBA</Text>
+          <Text style= {styles.cardText}>Registro_P</Text>
           
         </TouchableOpacity>
 
@@ -105,7 +107,7 @@ const Dashboard = () => {
           onPress={() => handleCardPress('PasswordUpdate')}
         >
           <MaterialCommunityIcons name="key" size={40} color="#001f3f"/>
-          <Text style= {styles.cardText}>Actualización contraseña - PRUEBA</Text>
+          <Text style= {styles.cardText}>Actualización contraseña_P</Text>
           
         </TouchableOpacity>
 
@@ -114,10 +116,10 @@ const Dashboard = () => {
           onPress={() => handleCardPress('EditProfile')}
         >
           <MaterialCommunityIcons name="pencil" size={40} color="#001f3f"/>
-          {/*<Text style= {[styles.cardText, { width: 120 }]}>Crear Usuario</Text>/}
-          <Text style= {styles.cardText}>Editar perfil - PRUEBA</Text>
+          {/*<Text style= {[styles.cardText, { width: 120 }]}>Crear Usuario</Text>*/}
+          <Text style= {styles.cardText}>Actualizar Perfil_P</Text>
           
-        </TouchableOpacity>*/}
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -176,4 +178,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Dashboard;
+export default Dashboard;

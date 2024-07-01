@@ -13,10 +13,28 @@ const CreateUser = () => {
   const [nombre2, setNombre2] = useState('');
   const [apellido1, setApellido1] = useState('');
   const [apellido2, setApellido2] = useState('');
+  const [correo, setCorreo] = useState('');
+  const [sexo, setSexo] = useState('');
   const [rol, setRol] = useState('');
   const [usuario, setUsuario] = useState('');
   const [clave, setClave] = useState('');
   const [showPassword, setShowPassword] = useState(false); //Poner ojo dentro del cuadro
+
+  const [correoValido, setCorreoValido] = useState(false); // Agrega el estado correoValido
+
+  // Función para validar el correo electrónico
+  const validarCorreo = (email) => {
+    // Expresión regular para validar el formato del correo electrónico
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
+
+  // Función para manejar cambios en el campo de correo electrónico
+  const handleChangeCorreo = (text) => {
+    setCorreo(text); // Actualiza el estado del correo electrónico
+    setCorreoValido(validarCorreo(text)); // Verifica si el correo electrónico es válido y actualiza el estado correspondiente
+  };
+
 
   const handleChange = (name, value) => {////
     setFormState({
@@ -51,6 +69,8 @@ const CreateUser = () => {
       !cedula ||
       !nombre1 ||
       !apellido1 ||
+      !correo ||
+      !sexo ||
       !rol ||
       !usuario ||
       !clave
@@ -74,6 +94,8 @@ const CreateUser = () => {
           "nombre2": "",
           "apellido1": apellido1,
           "apellido2": "",
+          "correo": correo,
+          "sexo": sexo,
           "rol": rol,
           "estado": true,
           "userName": usuario,
@@ -118,22 +140,8 @@ const CreateUser = () => {
       </TouchableOpacity>
 
       <View style={styles.formContainer}>
-        <Text style={styles.heading}>Creación de Usuario</Text>
-
-        <View style={styles.inputContainer}>  
-          <Text style={[styles.normalText,{marginRight: 1}]}>Administrador encargado: </Text>
-          <TextInput
-            name="admin"
-            placeholder="Juanito Alimaña (Nombre del administrador)"
-            style={[styles.input, { width: '100%', color: 'gray' }]}
-            //style={[styles.input, { width: '100%', color: usuario ? 'black' : 'gray' }]}
-            //value={usuario}
-            //onChangeText={setUsuario}
-            editable={false} // Deshabilitar la edición del TextInput
-          />
-        </View>
-
-        <View style={styles.line} />
+        {/*<Text style={styles.heading}>Creación de Usuario</Text>*/}
+        <Text style={styles.heading}>Registro</Text>
 
         <View style={styles.inputContainer}>
           <Text style={styles.normalText}>Tipo de documento: </Text>
@@ -155,27 +163,22 @@ const CreateUser = () => {
           </Picker>
         </View>
 
-        {showCedulaInput && (
-          <View style={styles.inputContainer}>  
-            {/*<View style={{ flex: 1 }}> {/* Este contenedor se expandirá para llenar el espacio restante */}
-            <Text style={[styles.normalText, {marginRight: 0, }]}>Nº Documento: </Text>
-            <TextInput
-              name="numDocumento"
-              //placeholder="Documento de indentidad: "
-              style={styles.input}      
-              keyboardType="numeric" // Esta línea permite ingresar solo números
-              value={cedula}
-              onChangeText={setCedula}
-              /*onChangeText={(text) => {
+        <View style={styles.inputContainer}>  
+          <Text style={[styles.normalText, {marginRight: 35}]}>Nº Documento: </Text>
+          <TextInput
+            name="numDocumento"
+            style={[styles.input, {width: '100%', paddingRight: 42}]}
+            keyboardType="numeric" // Esta línea permite ingresar solo números
+            value={cedula}
+            //onChangeText={setCedula}
+            onChangeText={(text) => {
                 // Filtrar los caracteres no numéricos utilizando una expresión regular
                 const numericValue = text.replace(/[^0-9]/g, '');
                 // Actualizar el estado con el valor filtrado
                 setCedula(numericValue);
-              }}*/
-            />    
-          </View>
-          //</View>
-        )}
+            }}
+          />
+        </View>
 
         <View style={styles.inputContainer}>  
           <Text style={styles.normalText}>Nombres: </Text>
@@ -197,6 +200,40 @@ const CreateUser = () => {
           />
         </View>
 
+        <View style={styles.inputContainer}>  
+          <Text style={[styles.normalText, {marginRight: 75}]}>Email: </Text>
+          <TextInput
+            name="email"
+            style={styles.input}
+            value={correo}
+            //onChangeText={setCorreo}
+            onChangeText={handleChangeCorreo} 
+          />
+          
+
+        </View>
+        {!correoValido && correo.trim() !== '' && (
+              <View style={[styles.inputContainer, { justifyContent: 'flex-end' }]}> 
+                <View style={{ marginTop: -12 , marginBottom: 10}}>
+                <Text style={{ color: 'red' }}>
+                <MaterialCommunityIcons name="alert-circle" size={20} color="red" /> Correo electrónico inválido</Text>
+              </View>
+              </View>
+            )}
+
+        <View style={styles.inputContainer}>
+          <Text style={styles.normalText}>Sexo: </Text>
+          <Picker
+            selectedValue={sexo}
+            onValueChange={setSexo}
+            style={[styles.picker, { color: sexo ? 'black' : 'gray' }]}
+          >
+            <Picker.Item label="Seleccione" value="" />
+            <Picker.Item label="Masculino" value="Masculino" />
+            <Picker.Item label="Femenino" value="Femenino" />
+          </Picker>
+        </View>
+
         <View style={styles.inputContainer}>
           <Text style={styles.normalText}>Rol del usuario: </Text>
           <Picker
@@ -210,47 +247,12 @@ const CreateUser = () => {
             <Picker.Item label="Inspector" value="Inspector" />
           </Picker>
         </View>
-  
-        <View style={styles.line} />
-
-        <View style={styles.inputContainer}>  
-          <Text style={styles.normalText}>Usuario: </Text>
-          <TextInput
-            name="username"
-            placeholder="Por defecto"
-            style={[styles.input, { color: usuario ? 'black' : 'gray' }]}
-            value={usuario}
-            onChangeText={setUsuario}
-            editable={false} // Deshabilitar la edición del TextInput
-          />
-        </View>
-
-        <View style={styles.inputContainer}> 
-          <Text style={[styles.normalText, {marginRight: 10 }]}>Contraseña: </Text>
-          <TextInput
-            //name="password"
-            placeholder="Por defecto"
-            //secureTextEntry
-            //secureTextEntry={true}
-            secureTextEntry={!showPassword} // Cambiar a texto visible si showPassword es verdadero
-            style={[styles.input, {width: '100%', paddingRight: 42, transform: [{ translateX: 18}] , color: clave ? 'black' : 'gray' }]}
-            value={clave}
-            onChangeText={setClave}
-            editable={false} // Deshabilitar la edición del TextInput
-          />
-          <TouchableOpacity style={[styles.normalText, {marginBottom: 15, marginRight: 5, marginLeft: 10}]} onPress={() => setShowPassword(!showPassword)}>
-            <MaterialCommunityIcons name={showPassword ? 'eye-off' : 'eye'} size={24} color="black" style={styles.eyeIcon} />
-          </TouchableOpacity>
-        {/*</View>*/}
-        </View>
 
         {/* Botón de envío */}
         <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-          {/*<MaterialCommunityIcons size={24} color="white" />*/}
-          <Text style={styles.buttonText}>Continuar</Text>
+          <Text style={styles.buttonText}>Registrar</Text>
         </TouchableOpacity>
       </View>
-      {/*</View>*/}
     </ScrollView>
   );
 };
@@ -262,9 +264,6 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     backgroundColor: '#ffffff', // Cambiar al color deseado
-    //position: 'relative',
-    //paddingBottom: 20, // Espacio adicional en la parte inferior para evitar que el último elemento se oculte detrás del botón de navegación
-    //paddingTop: 40, // Añade espacio en la parte superior si es necesario
 },
   formContainer: {
     width: '80%',
@@ -340,16 +339,10 @@ const styles = StyleSheet.create({
     zIndex: 1, // Asegura que la flecha esté sobre otros elementos
   },
   normalText: {
-    //fontSize: 24,
-    //fontWeight: 'bold',
     justifyContent: 'center',
     marginBottom: 16,
     marginRight: 50,
   },
-  /*errorText: {
-    color: 'red',
-    marginBottom: 10,
-  },*/
   horizontalPadding: {
     paddingHorizontal: 20, // Ajusta este valor para cambiar el espacio horizontal del botón
   },
