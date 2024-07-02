@@ -109,13 +109,18 @@ const FormularioFema = ({ navigation }) => {
           onChangeText={(text) => setDireccion(text)}
         />
       </View>
-
-      <View style={[styles.inputContainer, { width: '25%' }]}>
-        <Text style={[styles.inputLabel, { marginRight: 75 }]}>ZIP:</Text>
+         
+      <View style={styles.inputContainer}>
+        <Text style={styles.inputLabel}>ZIP:</Text>
         <TextInput
-          style={[styles.input, { textAlign: 'center' }]} 
+          style={styles.inputText}     
           value={zip}
-          onChangeText={(text) => setZip(text)}
+          maxLength={6}
+          onChangeText={(text) => {
+         // Filtrar los caracteres no numéricos utilizando una expresión regular
+         const numericValue = text.replace(/[^0-9]/g, '');
+         setZip(numericValue);
+        }}
         />
       </View>
 
@@ -194,11 +199,11 @@ const FormularioFema = ({ navigation }) => {
           />
         </View>
       </View>
-
-      <View style={[styles.inputContainer, { width: '60%' }]}>
-        <Text style={[styles.inputLabel, { marginRight: 60 }]}>Hora:</Text>
+ {/*   */}
+      <View style={styles.inputContainer}>        
+        <Text style={styles.inputLabel}>Hora:</Text>
         <TextInput
-          style={styles.input}
+          style={styles.inputText}
           value={hora}
           onChangeText={(text) => setHora(text)}
         />
@@ -284,7 +289,17 @@ const styles = StyleSheet.create({
     marginRight: 2,
   },
   inputText: {
-    flex: 1,
+    flex: .20,
+    flexDirection: 'row',
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 5,
+    height: 40,
+    width: 0,
+    padding: 0,
+    paddingHorizontal: 10,
+    marginRight: 2,
+    //backgroundColor: 'red',
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -306,7 +321,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginLeft: 8,
   },
-  dateInputContainer: {
+  dateInputContainer: {    
     flexDirection: 'row',
     alignItems: 'center',
   },
