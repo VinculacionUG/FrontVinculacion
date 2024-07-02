@@ -22,7 +22,9 @@ const RecoveryPassword = () => {
       if (response.ok) {
         const data = await response.json();
         console.log('Response:', data);
-        navigation.navigate('SignIn');
+        Alert.alert('Mensaje enviado', 'Se ha enviado un correo electrónico con instrucciones para restablecer su contraseña.');
+        //navigation.navigate('SignIn');
+        navigation.goBack();
       } else {
         console.log('Fetch Error:', response.statusText);
         console.log('Error Details:', await response.text());

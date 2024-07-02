@@ -24,12 +24,6 @@ const Start = () => {
               {/*<MaterialIcons name="lock-open" size={24} color="white" />*/}
               <Text style={styles.buttonText}>Iniciar Sesión</Text>
             </TouchableOpacity>
-            {/*<Text style={styles.bodyText}>
-              No tienes una cuenta?{' '}
-              <Text style={styles.linkText} onPress={() => navigation.navigate('Register')}>
-                Regístrate
-              </Text>
-            </Text>*/}
           </View>
         </View>
       </View>
@@ -93,5 +87,4 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
 });
-
 export default Start;
