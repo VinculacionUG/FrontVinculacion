@@ -146,8 +146,8 @@ const FormularioFema2 = ({ route, navigation }) => {
 
 
     // URL del servicio GET
-    const url3 = 'http://localhost:3002/api/Ocupacion';
-    //const url3 = 'https://www.fema.somee.com/Users/Ocupacion';
+    //const url3 = 'http://localhost:3002/api/Ocupacion';
+    const url3 = 'https://www.fema.somee.com/Users/Ocupacion';
     const fetchOcupacion = async () => {
       try {
         const response = await fetch(url3,

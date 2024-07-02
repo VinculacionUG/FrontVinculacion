@@ -146,7 +146,6 @@ const FormularioFema4 = ({ route, navigation }) => {
     // URL del servicio GET
       //const url2 = 'http://localhost:3004/api/Interior';
       const url2 = 'https://www.fema.somee.com/api/FemaCuatro/consultarEvaluacionInterior';
-    //  const url = 'http://www.fema.somee.com/Users/Interior';
       const fetchRevisionInterior = async () => {
         try {
           const response = await fetch(url2,
