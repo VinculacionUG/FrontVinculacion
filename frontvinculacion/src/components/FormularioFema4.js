@@ -117,8 +117,8 @@ const FormularioFema4 = ({ route, navigation }) => {
   
   useEffect(() => {
     // URL del servicio GET
-    //const url = 'http://localhost:3003/api/Exterior';
     const url = 'https://www.fema.somee.com/api/FemaCuatro/consultarEvaluacionExterior';
+    //const url = 'http://www.fema.somee.com/Users/Exterior';
     const fetchRevisionExterior = async () => {
       try {
         const response = await fetch(url,
@@ -144,7 +144,6 @@ const FormularioFema4 = ({ route, navigation }) => {
 
 
     // URL del servicio GET
-      //const url2 = 'http://localhost:3004/api/Interior';
       const url2 = 'https://www.fema.somee.com/api/FemaCuatro/consultarEvaluacionInterior';
       const fetchRevisionInterior = async () => {
         try {
@@ -426,3 +425,14 @@ const styles = StyleSheet.create({
 });
 
 export default FormularioFema4;
+
+          
+  
+
+
+
+
+
+
+    
+

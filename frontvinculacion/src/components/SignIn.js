@@ -198,6 +198,7 @@ const styles = StyleSheet.create({
   goBackButtonText: {
     color: 'white',
     marginLeft: 10,
+    textAlign: 'center',
   },
   horizontalPadding: {
     paddingHorizontal: 20, // Ajusta este valor para cambiar el espacio horizontal del botón

@@ -82,8 +82,8 @@ const FormularioFema2 = ({ route, navigation }) => {
 
   //const FormularioCheckbox = () => {
     const [selectedCheckbox, setSelectedCheckbox] = useState(null);
-    const handleCheckboxChange = (cod_ocupacion) => {
-          setSelectedCheckbox(cod_ocupacion);
+    const handleCheckboxChange = (id) => {
+      setSelectedCheckbox(id);
     };
  
   const [loading, setLoading] = useState(true);
