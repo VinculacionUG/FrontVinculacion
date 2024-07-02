@@ -11,8 +11,6 @@ const FormularioFema = ({ navigation }) => {
   const [uso, setUso] = useState('');
   const [latitud, setLatitud] = useState('');
   const [longitud, setLongitud] = useState('');
-  const [inspector, setInspector] = useState('');
-  const [supervisor, setSupervisor] = useState('');
   const [fecha, setFecha] = useState({ year: '', month: '', day: '' });
   const [hora, setHora] = useState('');
   const [file1Name, setFile1Name] = useState('');
@@ -29,7 +27,6 @@ const FormularioFema = ({ navigation }) => {
       uso,
       latitud,
       longitud,
-      inspector,
       fecha,
       hora,
       file1Name,
