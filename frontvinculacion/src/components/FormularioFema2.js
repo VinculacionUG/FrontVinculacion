@@ -213,7 +213,7 @@ const FormularioFema2 = ({ route, navigation }) => {
           ))}
         </Picker>
       </View>
-
+          
       <View style={styles.inputContainer}>
         <Text style={[styles.inputLabel, { height: 40, marginRight: 2 }]}>Año Construcción:</Text>
         <View style={{ width: 5, height: 40 }} /> 
