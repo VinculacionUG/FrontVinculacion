@@ -80,10 +80,9 @@ const FormularioFema2 = ({ route, navigation }) => {
     });
   };
 
-  //const FormularioCheckbox = () => {
     const [selectedCheckbox, setSelectedCheckbox] = useState(null);
-    const handleCheckboxChange = (id) => {
-      setSelectedCheckbox(id);
+    const handleCheckboxChange = (codOcupacion) => {
+      setSelectedCheckbox(codOcupacion);
     };
  
   const [loading, setLoading] = useState(true);
@@ -108,7 +107,7 @@ const FormularioFema2 = ({ route, navigation }) => {
         }
         const result = await response.json();
         setTipoOcupacion(result);
-		//console.log(result);    
+		    //console.log(result);    
       } catch (error) {
         setError(error);
 		console.log(error);    
@@ -161,6 +160,8 @@ const FormularioFema2 = ({ route, navigation }) => {
         const result = await response.json();
         setOcupacion(result);
 		//console.log(result);    
+    //console.log(ocupacion);    
+
       } catch (error) {
         setError(error);
 		console.log(error);    
@@ -172,6 +173,8 @@ const FormularioFema2 = ({ route, navigation }) => {
 
 
   }, []);
+
+  //console.log(ocupacion);    
 
 
   if (loading) {
@@ -283,11 +286,11 @@ const FormularioFema2 = ({ route, navigation }) => {
  
     <View style={styles.checkboxGrid}>
         {ocupacion.map((checkbox) => (
-          <View key={checkbox.cod_ocupacion} style={styles.checkboxContainer}>
+          <View key={checkbox.codOcupacion} style={styles.checkboxContainer}>
             <CheckBox
               title={checkbox.descripcion}
-              checked={selectedCheckbox === checkbox.cod_ocupacion}
-              onPress={() => handleCheckboxChange(checkbox.cod_ocupacion)}
+              checked={selectedCheckbox === checkbox.codOcupacion}
+              onPress={() => handleCheckboxChange(checkbox.codOcupacion)}
               containerStyle={styles.checkbox}
             />
           </View>
@@ -296,7 +299,7 @@ const FormularioFema2 = ({ route, navigation }) => {
 
       {selectedCheckbox !== null && (
         <Text style={styles.resultado}>
-          Seleccionaste: {ocupacion.find(checkbox => checkbox.cod_ocupacion === selectedCheckbox).descripcion}
+          Seleccionaste: {ocupacion.find(checkbox => checkbox.codOcupacion === selectedCheckbox).descripcion}
         </Text>
       )}
 
@@ -331,7 +334,6 @@ const FormularioFema2 = ({ route, navigation }) => {
       {/*  <Text style={styles.selected}>Seleccionado: {selectedValue}</Text> */}
     </View>
 
-
         <View style={styles.inputContainer}>
   <Text style={styles.inputLabel}>Comentario:</Text>
 </View>
@@ -359,8 +361,8 @@ const FormularioFema2 = ({ route, navigation }) => {
     );
   };
 
-  
-  
+
+ 
   const styles = StyleSheet.create({
     container: {
       flexGrow: 1,
@@ -483,9 +485,3 @@ const FormularioFema2 = ({ route, navigation }) => {
   });
   
   export default FormularioFema2;
-  
-
-
-
-
-
