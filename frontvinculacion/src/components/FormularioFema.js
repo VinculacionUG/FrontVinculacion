@@ -1,65 +1,107 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import React, { useContext, useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Image, Alert } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import * as DocumentPicker from 'expo-document-picker';
+import * as ImagePicker from 'expo-image-picker';
+import { AppContext } from './AppContext'; 
 
 const FormularioFema = ({ navigation }) => {
-  const [direccion, setDireccion] = useState('');
-  const [zip, setZip] = useState('');
-  const [otrasIdentificaciones, setOtrasIdentificaciones] = useState('');
-  const [nombreEdificio, setNombreEdificio] = useState('');
-  const [uso, setUso] = useState('');
-  const [latitud, setLatitud] = useState('');
-  const [longitud, setLongitud] = useState('');
-  const [fecha, setFecha] = useState({ year: '', month: '', day: '' });
-  const [hora, setHora] = useState('');
-  const [file1Name, setFile1Name] = useState('');
-  const [file2Name, setFile2Name] = useState('');
-  const [selectedFile1, setSelectedFile1] = useState(false);
-  const [selectedFile2, setSelectedFile2] = useState(false);
+  const {
+    adjuntarFotografica,
+    setAdjuntarFotografica,
+    adjuntarGrafico,
+    setAdjuntarGrafico,
+    direccion,
+    setDireccion,
+    zip,
+    setZip,
+    otrasIdentificaciones,
+    setOtrasIdentificaciones,
+    nombreEdificio,
+    setNombreEdificio,
+    uso,
+    setUso,
+    latitud,
+    setLatitud,
+    longitud,
+    setLongitud,
+    fecha,
+    setFecha,
+    hora,
+    setHora,
+  } = useContext(AppContext);
 
   const handleNext = () => {
-    navigation.navigate('FormularioFema2', {
-      direccion,
-      zip,
-      otrasIdentificaciones,
-      nombreEdificio,
-      uso,
-      latitud,
-      longitud,
-      fecha,
-      hora,
-      file1Name,
-      file2Name,
-    });
-  };
-
-  const handleDocument1 = async () => {
-    try {
-      const result = await DocumentPicker.getDocumentAsync({
-        type: ['application/pdf', 'image/jpeg'],
+    if (validateForm()) {
+      // Aquí puedes guardar los datos o hacer lo necesario antes de navegar
+      console.log('Datos guardados:', {
+        adjuntarFotografica,
+        adjuntarGrafico,
+        direccion,
+        zip,
+        otrasIdentificaciones,
+        nombreEdificio,
+        uso,
+        latitud,
+        longitud,
+        fecha,
+        hora,
       });
-      if (result.assets.length > 0) {
-        setFile1Name(result.assets[0].name);
-        setSelectedFile1(true);
-      }
-    } catch (error) {
-      console.error(error);
+
+      navigation.navigate('FormularioFema2');
+    } else {
+      Alert.alert('Error', 'Por favor completa todos los campos y adjunta ambas imágenes antes de continuar.');
     }
   };
 
-  const handleDocument2 = async () => {
+  const validateForm = () => {
+    return (
+      adjuntarFotografica !== null &&
+      adjuntarGrafico !== null &&
+      direccion !== '' &&
+      zip !== '' &&
+      otrasIdentificaciones !== '' &&
+      nombreEdificio !== '' &&
+      uso !== '' &&
+      latitud !== '' &&
+      longitud !== '' &&
+      fecha.month !== '' &&
+      fecha.day !== '' &&
+      fecha.year !== '' &&
+      hora !== ''
+    );
+  };
+
+  const pickImage = async (setImage) => {
     try {
-      const result = await DocumentPicker.getDocumentAsync({
-        type: ['application/pdf', 'image/jpeg'],
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert('Permiso denegado', 'Se necesita permiso para acceder a las imágenes.');
+        return;
+      }
+
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+        base64: true,
       });
-      if (result.assets.length > 0) {
-        setFile2Name(result.assets[0].name);
-        setSelectedFile2(true);
+
+      if (!result.cancelled && result.base64) {
+        setImage(`data:image/jpeg;base64,${result.base64}`);
+      } else {
+        Alert.alert('Error', 'Hubo un problema al seleccionar la imagen. Por favor, intenta nuevamente.');
       }
     } catch (error) {
-      console.error(error);
+      console.error("Error al seleccionar imagen: ", error);
+      Alert.alert("Error", "Hubo un problema al seleccionar la imagen. Por favor, intenta nuevamente.");
     }
+  };
+
+  const getFileNameFromUri = (uri) => {
+    if (!uri) return null;
+    const uriParts = uri.split('/');
+    return uriParts[uriParts.length - 1];
   };
 
   return (
@@ -69,12 +111,12 @@ const FormularioFema = ({ navigation }) => {
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Adjuntar Fotografía:</Text>
         <View style={styles.uploadButtonContainer}>
-          <TouchableOpacity style={styles.uploadButton} onPress={handleDocument1}>
+          <TouchableOpacity style={styles.uploadButton} onPress={() => pickImage(setAdjuntarFotografica)}>
             <Text style={styles.uploadButtonText}>Subir</Text>
           </TouchableOpacity>
           <View style={styles.fileNameContainer}>
-            {selectedFile1 ? (
-              <Text>{file1Name}</Text>
+            {adjuntarFotografica ? (
+              <Text style={styles.fileNameText}>{getFileNameFromUri(adjuntarFotografica)}</Text>
             ) : (
               <Text>No se eligió ningún archivo</Text>
             )}
@@ -85,12 +127,12 @@ const FormularioFema = ({ navigation }) => {
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Adjuntar Gráfico:</Text>
         <View style={styles.uploadButtonContainer}>
-          <TouchableOpacity style={styles.uploadButton} onPress={handleDocument2}>
+          <TouchableOpacity style={styles.uploadButton} onPress={() => pickImage(setAdjuntarGrafico)}>
             <Text style={styles.uploadButtonText}>Subir</Text>
           </TouchableOpacity>
           <View style={styles.fileNameContainer}>
-            {selectedFile2 ? (
-              <Text>{file2Name}</Text>
+            {adjuntarGrafico ? (
+              <Text style={styles.fileNameText}>{getFileNameFromUri(adjuntarGrafico)}</Text>
             ) : (
               <Text>No se eligió ningún archivo</Text>
             )}
@@ -101,23 +143,22 @@ const FormularioFema = ({ navigation }) => {
       <View style={styles.inputContainer}>
         <Text style={styles.inputLabel}>Dirección:</Text>
         <TextInput
-          style={[styles.input, { textAlign: 'center', paddingHorizontal: 20 }]} // Ajuste manual hacia la izquierda y hacia la derecha
+          style={[styles.input, { textAlign: 'center', paddingHorizontal: 20 }]}
           value={direccion}
           onChangeText={(text) => setDireccion(text)}
         />
       </View>
-         
+
       <View style={styles.inputContainer}>
         <Text style={styles.inputLabel}>ZIP:</Text>
         <TextInput
-          style={styles.inputText}     
+          style={styles.inputText}
           value={zip}
           maxLength={6}
           onChangeText={(text) => {
-         // Filtrar los caracteres no numéricos utilizando una expresión regular
-         const numericValue = text.replace(/[^0-9]/g, '');
-         setZip(numericValue);
-        }}
+            const numericValue = text.replace(/[^0-9]/g, '');
+            setZip(numericValue);
+          }}
         />
       </View>
 
@@ -196,8 +237,8 @@ const FormularioFema = ({ navigation }) => {
           />
         </View>
       </View>
- {/*   */}
-      <View style={styles.inputContainer}>        
+
+      <View style={styles.inputContainer}>
         <Text style={styles.inputLabel}>Hora:</Text>
         <TextInput
           style={styles.inputText}
@@ -263,6 +304,14 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     flex: 1,
   },
+  fileNameText: {
+    fontSize: 14,
+  },
+  image: {
+    width: 100,
+    height: 100,
+    borderRadius: 5,
+  },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -286,7 +335,7 @@ const styles = StyleSheet.create({
     marginRight: 2,
   },
   inputText: {
-    flex: .20,
+    flex: 0.20,
     flexDirection: 'row',
     borderWidth: 1,
     borderColor: 'gray',
@@ -296,7 +345,6 @@ const styles = StyleSheet.create({
     padding: 0,
     paddingHorizontal: 10,
     marginRight: 2,
-    //backgroundColor: 'red',
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -318,7 +366,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginLeft: 8,
   },
-  dateInputContainer: {    
+  dateInputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -338,6 +386,12 @@ const styles = StyleSheet.create({
 });
 
 export default FormularioFema;
+
+
+
+
+
+
 
 
 
