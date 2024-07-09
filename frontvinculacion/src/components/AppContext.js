@@ -23,6 +23,8 @@ export const AppProvider = ({ children }) => {
   const [anoCodigo, setAnoCodigo] = useState('');
   const [ampliacion, setAmpliacion] = useState('');
   const [anoDeContruccion, setAnoDeContruccion] = useState('');
+  const [tiposuelo1, setTiposuelo1] = useState('');
+  const [tipoocupacion1, setTipoocupacion1] = useState('');
   const [checkBox1, setCheckBox1] = useState(false);
   const [checkBox2, setCheckBox2] = useState(false);
   const [checkBox3, setCheckBox3] = useState(false);
@@ -67,6 +69,8 @@ export const AppProvider = ({ children }) => {
       anoCodigo, setAnoCodigo,
       ampliacion, setAmpliacion,
       anoDeContruccion, setAnoDeContruccion,
+      tiposuelo1, setTiposuelo1,
+      tipoocupacion1, setTipoocupacion1,
       checkBox1, setCheckBox1,
       checkBox2, setCheckBox2,
       checkBox3, setCheckBox3,

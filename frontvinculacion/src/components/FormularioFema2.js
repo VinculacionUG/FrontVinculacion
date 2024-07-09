@@ -19,6 +19,10 @@ const FormularioFema2 = ({ navigation }) => {
     setInf,
     anoConstruccion,
     setAnoConstruccion,
+    tiposuelo1,
+     setTiposuelo1,
+    tipoocupacion1, 
+    setTipoocupacion1,
     areaTotalDePiso, 
     setAreaTotalDePiso,
     anoCodigo,
@@ -33,7 +37,7 @@ const FormularioFema2 = ({ navigation }) => {
   } = useContext(AppContext);
 
   const handleNext = () => {
-    if (validateForm()) {
+    //if (vali()) {
       console.log('Datos guardados:', {
         numeroPiso,
         inf,
@@ -42,16 +46,16 @@ const FormularioFema2 = ({ navigation }) => {
         anoCodigo, 
         ampliacion, 
         anoDeContruccion, 
-        tipoocupacion,
-        tipoSuelo, 
+        tiposuelo1,
+        tipoocupacion1,
         comentario, 
         ocupacion: selectedCheckboxes,
       });
 
       navigation.navigate('FormularioFema3');
-    } else {
-      Alert.alert('Error', 'Por favor completa todos los campos y adjunta ambas imágenes antes de continuar.');
-    }
+ //   } else {
+    //  Alert.alert('Error', 'Por favor completa todos los campos y adjunta ambas imágenes antes de continuar.');
+   // }
   };
   const[selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const handleCheckboxChange = (codOcupacion) => {
@@ -300,7 +304,7 @@ const FormularioFema2 = ({ navigation }) => {
         style={styles.smallPicker}
         selectedValue={selectedValuetipoSuelo}
         onValueChange={(itemValue) => setSelectedValueTipoSuelo(itemValue)}
-      >
+      >  setTiposuelo1
         {tipoSuelo.map((item, index) => (
           <Picker.Item label={item.descripcion} value={item.descripcion} key={index} />
         ))}
