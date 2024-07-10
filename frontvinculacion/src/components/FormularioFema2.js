@@ -341,7 +341,10 @@ const FormularioFema2 = ({ route, navigation }) => {
         <Picker
           style={styles.smallPicker}
           selectedValue={selectedValuetipoSuelo}
-          onValueChange={(itemValue) => setSelectedValueTipoSuelo(itemValue)}
+          onValueChange={(itemValue) => {
+            setSelectedValueTipoSuelo(itemValue);
+            console.log('Tipo de Suelo seleccionado:', itemValue); // Imprime el valor en la consola
+          }}
         >
           {tipoSuelo.map((item, index) => (
             <Picker.Item label={item.descripcion} value={item.descripcion} key={index} />
