@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+//import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+//import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { CheckBox } from 'react-native-elements';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -41,11 +43,11 @@ const FormularioFema4 = ({ route, navigation }) => {
     sueloTipoE1_3Pisos,
     sueloTipoE_GT3Pisos,
     resultadoMinimoSmin,
-    resultadoFinalSL1_GT_Smin,
+    resultadoFinalSL1_GT_Smin,    
   } = params;
 
-  const [revisionExterior, setRevisionExterior] = useState('');
-  const [revisionInterior, setRevisionInterior] = useState('');
+  const [revisionExterior, setRevisionExterior] = useState([]);
+  const [revisionInterior, setRevisionInterior] = useState([]);
   const [revisionPlanos, setRevisionPlanos] = useState('');
   const [fuenteTipoSuelo, setFuenteTipoSuelo] = useState('');
   const [fuentePeligrosGeologicos1, setFuentePeligrosGeologicos1] = useState('');
@@ -55,6 +57,7 @@ const FormularioFema4 = ({ route, navigation }) => {
   const [checkBox2, setCheckBox2] = useState(false);
   const [checkBox3, setCheckBox3] = useState(false);
   const [checkBox4, setCheckBox4] = useState(false);
+  const [otrosPeligros, setOtrosPeligros] = useState([]);
 
   const handleNext = () => {
     navigation.navigate('FormularioFema5', {
@@ -107,118 +110,305 @@ const FormularioFema4 = ({ route, navigation }) => {
     });
   };
 
+
+
+  const [selectedCheckbox, setSelectedCheckbox] = useState(null);
+  const handleCheckboxChange = (codOtrosPeligorsSec) => {
+    setSelectedCheckbox(codOtrosPeligorsSec);
+  };
+
+
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [selectedValue, setSelectedValue] = useState('');
+  const [selectedValuerevisionExterior, setSelectedValueRevisionExterior] = useState('');
+  const [selectedValuerevisionInterior, setSelectedValueRevisionInterior] = useState('');
+  const [selectotrosPeligros, setSelectedValueOtrosPeligros] = useState('');
+
+  /*
+// Cod. Alterno
+  //Preguntas en un arreglo
+  const [selectedCheckboxP, setSelectedCheckboxP] = useState(null);
+
+  const checkboxes = [
+    { id: 1, label: 'Posible golpeteo entre edificios' },
+    { id: 2, label: 'Riesgo de caida de edificios adyacentes más altos' },
+    { id: 3, label: 'Peligro geológico o suelo tipo F' },
+    { id: 4, label: 'Daños significativos/deterioro del sistema estructual' },
+  ];
+
+
+  const [selectedCheckbox, setSelectedCheckbox] = useState(null);
+  const handleCheckboxChange = (id) => {
+    setSelectedCheckbox(id);
+  };
+*/
+  useEffect(() => {
+    // URL del servicio GET
+    const url = 'https://www.fema.somee.com/api/FemaCuatro/consultarEvaluacionExterior';
+    //const url = 'http://www.fema.somee.com/Users/Exterior';
+    const fetchRevisionExterior = async () => {
+      try {
+        const response = await fetch(url,
+		{
+			method: 'GET',
+		}
+		);
+        if (!response.ok) {
+          throw new Error('Error en la red');
+        }
+        const result = await response.json();
+        setRevisionExterior(result);
+		//console.log(result);    
+      } catch (error) {
+        setError(error);
+		console.log(error);    
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchRevisionExterior();
+
+
+
+    // URL del servicio GET
+      const url2 = 'https://www.fema.somee.com/api/FemaCuatro/consultarEvaluacionInterior';
+      const fetchRevisionInterior = async () => {
+        try {
+          const response = await fetch(url2,
+      {
+        method: 'GET',
+      }
+      );
+          if (!response.ok) {
+            throw new Error('Error en la red');
+          }
+          const result = await response.json();
+          setRevisionInterior(result);
+      //console.log(result);    
+        } catch (error) {
+          setError(error);
+      console.log(error);    
+        } finally {
+          setLoading(false);
+        }
+      };
+      fetchRevisionInterior();
+  
+ 
+    // URL del servicio GET
+    const url3 = 'https://www.fema.somee.com/api/FemaCuatro/consultarFemaOtrosPeligros';
+    const fetchOtrosPeligros = async () => {
+      try {
+        const response = await fetch(url3,
+    {
+      method: 'GET',
+    }
+    );
+        if (!response.ok) {
+          throw new Error('Error en la red');
+        }
+        const result = await response.json();
+        setOtrosPeligros(result);
+    //console.log(result);    
+      } catch (error) {
+        setError(error);
+    console.log(error);    
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchOtrosPeligros();
+
+ 
+
+  }, []);
+
+
+  if (loading) {
+    return <ActivityIndicator size="large" color="#0000ff" />;
+  }
+
+  if (error) {
+    return (
+      <View>
+        <Text>Error: {error.message}</Text>
+      </View>
+    );
+  }
+
+
   return (
+
     <ScrollView contentContainerStyle={styles.container}>
+      <Text style={styles.title}>Formulario FEMA P-154</Text>
+      <Text style={[styles.subtitle, styles.blackText, styles.centerText]}>Extensión de la revisión</Text>
 
-        <Text style={styles.title}>Formulario FEMA P-154</Text>
-        <Text style={styles.subtitle}>Extensión de la revisión</Text>
+ {/*   
+      <View style={styles.row}>
+        <Text style={styles.inputLabel}>Exterior:</Text>
+        <View style={{ width: 65 }} /> 
+        <Picker
+          style={[styles.input, styles.picker]}
+          selectedValue={revisionExterior}
+          onValueChange={(itemValue) => setRevisionExterior(itemValue)}
+        >
+          <Picker.Item label="Parcial" value="Parcial" />
+          <Picker.Item label="Todos los Lados" value="Todos los Lados" />
+          <Picker.Item label="Aéreo" value="Aéreo" />
+        </Picker>
+      </View>
+*/}
 
-        <View style={styles.inputContainer}>
-          <Text style={styles.inputLabel}>Exterior:  </Text>
-          <Picker
-            style={styles.input}
-            selectedValue={revisionExterior}
-            onValueChange={(itemValue) => setRevisionExterior(itemValue)}
-          >
-            <Picker.Item label="Exterior" value="exterior" />
-          </Picker>
-        </View>
-
-        <View style={styles.inputContainer}>
-          <Text style={styles.inputLabel}>Interior:  </Text>
-          <Picker
-            style={styles.input}
-            selectedValue={revisionInterior}
-            onValueChange={(itemValue) => setRevisionInterior(itemValue)}
-          >
-            <Picker.Item label="Interior" value="interior" />
-          </Picker>
-        </View>      
+    <View style={styles.row}>
+      <Text style={styles.inputLabel}>Exterior:</Text>
+      <View style={{ width: 65 }} /> 
+      <Picker
+        style={[styles.input, styles.picker]}
+        selectedValue={selectedValuerevisionExterior}
+        onValueChange={(itemValue) => setSelectedValueRevisionExterior(itemValue)}
+      >
+        {revisionExterior.map((item, index) => (
+          <Picker.Item label={item.descripcion} value={item.descripcion} key={index} />
+        ))}
+      </Picker>
+      {/*  <Text style={styles.selected}>Seleccionado: {selectedValue}</Text> */}
+    </View>
 
 
-        <View style={styles.inputContainer}>
-          <Text style={styles.inputLabel}>Revisión planos:  </Text>
-          <Picker
-            style={[styles.input, styles.picker]}
-            selectedValue={revisionPlanos}
-            onValueChange={(itemValue) => setRevisionPlanos(itemValue)}
-          >
-            <Picker.Item label="Rev si" value="si" />
-            <Picker.Item label="Rev No" value="no" />
-          </Picker>
-        </View>
-      
-      <Text style={styles.inputLabel}>Fuente del tipo de suelo  </Text>
-      <TextInput
+    <View style={styles.row}>
+      <Text style={styles.inputLabel}>Interior:</Text>
+      <View style={{ width: 65 }} /> 
+      <Picker
+        style={[styles.input, styles.picker]}
+        selectedValue={selectedValuerevisionInterior}
+        onValueChange={(itemValue) => setSelectedValueRevisionInterior(itemValue)}
+      >
+        {revisionInterior.map((item, index) => (
+          <Picker.Item label={item.descripcion} value={item.descripcion} key={index} />
+        ))}
+      </Picker>
+      {/*  <Text style={styles.selected}>Seleccionado: {selectedValue}</Text> */}
+    </View>
+	  
+
+      <View style={styles.row}>
+        <Text style={styles.inputLabel}>Revisión planos:</Text>
+        <View style={{ width: 5 }} /> 
+        <Picker
+          style={[styles.input, styles.picker]}
+          selectedValue={revisionPlanos}
+          onValueChange={(itemValue) => setRevisionPlanos(itemValue)}
+        >
+          <Picker.Item label="Sí" value="si" />
+          <Picker.Item label="No" value="no" />
+        </Picker>
+      </View>
+
+      <View style={styles.part1}>
+        <Text style={styles.inputLabel}>Fuente del tipo de suelo:</Text>
+        <TextInput
           style={styles.input}
-          placeholder="Fuente del tipo de suelo"
           value={fuenteTipoSuelo}
           onChangeText={(text) => setFuenteTipoSuelo(text)}
         />
-      <Text style={styles.inputLabel}> </Text>
-      <Text style={styles.inputLabel}>Fuente de peligros geológicos 1  </Text>
-      <TextInput
+      </View>
+
+      <View style={styles.part1}>
+        <Text style={styles.inputLabel}>Fuente de Peligros Geológicos</Text>
+        <TextInput
           style={styles.input}
-          placeholder="Fuente de peligros geológicos 1"
           value={fuentePeligrosGeologicos1}
           onChangeText={(text) => setFuentePeligrosGeologicos1(text)}
         />
+      </View>
 
-      <Text style={styles.inputLabel}> </Text>
-      <Text style={styles.inputLabel}>Fuente de peligros geológicos 2  </Text>
-      <TextInput
+      <View style={styles.part1}>
+        <Text style={styles.inputLabel}>Contacto de la Persona</Text>
+        <TextInput
           style={styles.input}
-          placeholder="Fuente de peligros geológicos 2"
           value={fuentePeligrosGeologicos2}
           onChangeText={(text) => setFuentePeligrosGeologicos2(text)}
         />
+      </View>
 
       <View>
-        <Text style={styles.subtitle}> </Text>
-        <Text style={styles.subtitle}>Otros Peligros</Text>
+        <Text style={[styles.subtitle, styles.centerText]}>Otros Peligros</Text>
+        <Text style={[styles.subtitle, styles.boldRedText, styles.centerText]}>¿Hay peligros que desencadenan una evaluación estructural detallada?</Text>
 
-        <Text style={styles.inputLabelred}>¿Hay peligros que desencadenan una evaluación estructural detallada?</Text>
-   
+ {/*    aqui va   
         <CheckBox
-        º  title="Posible golpeteo entre edificios"
+          title="Posible golpeteo entre edificios"
           checked={checkBox1}
           onPress={() => setCheckBox1(!checkBox1)}
+          containerStyle={styles.transparentCheckBox}
         />
-
         <CheckBox
           title="Riesgo de caída de edificios adyacentes más altos"
           checked={checkBox2}
           onPress={() => setCheckBox2(!checkBox2)}
+          containerStyle={styles.transparentCheckBox}
         />
-
         <CheckBox
           title="Peligro geológico o Suelo tipo F"
           checked={checkBox3}
           onPress={() => setCheckBox3(!checkBox3)}
+          containerStyle={styles.transparentCheckBox}
         />
-
         <CheckBox
           title="Daños significativos/deterioro del sistema estructural"
           checked={checkBox4}
           onPress={() => setCheckBox4(!checkBox4)}
+          containerStyle={styles.transparentCheckBox}
         />
-    </View> 
-      {/* Botones de Navegación */}
-      <View style={styles.buttonContainer}>
-      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-        <MaterialCommunityIcons name="arrow-left" size={24} color="white" />
-        <Text style={styles.ButtonText}>Regresar</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.backButton} onPress={handleNext}>
-        <MaterialCommunityIcons name="arrow-right" size={24} color="white" />
-        <Text style={styles.ButtonText}>Continuar</Text>
-      </TouchableOpacity>
-    </View>
+   aqui fin  checkboxes  */}
 
 
-   {/*   </View> */}
-    </ScrollView>
+ {/*  
+      <View style={styles.checkboxContainer}>
+        {checkboxes.map((checkbox) => (
+          <View key={checkbox.id} style={styles.checkboxContainer}>
+            <CheckBox
+              title={checkbox.label}
+              checked={selectedCheckbox === checkbox.id}
+              onPress={() => handleCheckboxChange(checkbox.id)}
+              containerStyle={styles.checkboxContainer}
+              textStyle={styles.checkboxText}
+            />
+          </View>
+        ))}
+      </View>
+*/}
+
+
+      <View style={styles.checkboxContainer}>
+        {otrosPeligros.map((checkbox) => (
+          <View key={checkbox.codOtrosPeligorsSec} style={styles.checkboxContainer}>
+            <CheckBox
+              title={checkbox.respuesta}
+              checked={selectedCheckbox === checkbox.codOtrosPeligorsSec}
+              onPress={() => handleCheckboxChange(checkbox.codOtrosPeligorsSec)}
+              containerStyle={styles.checkboxContainer}
+              textStyle={styles.checkboxText}
+            />
+          </View>
+        ))}
+      </View>
+
+      </View>
+        <View style={{ marginBottom: 50 }}></View> {/* Espacio de 1 centímetro entre los CheckBox y los botones */}
+        
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.prevButton} onPress={() => navigation.goBack()}>
+            <MaterialCommunityIcons name="arrow-left" size={24} color="white" />
+            <Text style={styles.buttonText}>Regresar</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
+            <Text style={styles.buttonText}>Siguiente</Text>
+            <MaterialCommunityIcons name="arrow-right" size={24} color="white" />
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
   );
 };
 
@@ -227,6 +417,30 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     padding: 16,
     backgroundColor: 'white',
+    paddingBottom: 50, 
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  inputLabel: {
+    fontSize: 16,
+    marginRight: 4,
+    fontWeight: 'normal',
+  },
+  picker: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    borderRadius: 5,
+    justifyContent: 'center',
+    width: 150,
+  },
+  part1: {
+    height: 75,
+    justifyContent: 'center',
+    marginBottom: 16,
   },
   title: {
     fontSize: 24,
@@ -234,51 +448,10 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     textAlign: 'center',
   },
-  section: {
-    marginBottom: 16,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 8,
-  },
-  documentButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginVertical: 8,
-  },
-  documentButtonText: {
-    color: 'black',
-  },
-  fileName: {
-    marginLeft: 8,
-    fontStyle: 'italic',
-    color: 'gray',
-  },
   subtitle: {
     fontSize: 18,
-    fontWeight: 'bold',
-    //marginBottom: 8,
     marginBottom: 16,
     textAlign: 'center',
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  inputLabel: {
-    fontSize: 16,
-    marginLeft: 8,  
-    fontWeight: 'bold',
-  },
-  inputLabelred: {
-    fontSize: 16,
-    marginLeft: 8,     
-    color: 'red',
   },
   input: {
     flex: 1,
@@ -286,91 +459,79 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     borderWidth: 1,
     paddingHorizontal: 10,
-    borderRadius: 10, // Ajusta este valor para cambiar la ovalidad
+    borderRadius: 5,
+    marginBottom: 16,
   },
-  backButton: {
-    backgroundColor: 'blue',
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 20, 
+    paddingHorizontal: 16,
+    paddingBottom: 20, 
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: 'white',
+    borderTopColor: 'lightgray',
+  },
+  prevButton: {
+    backgroundColor: 'navy',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 12,
     borderRadius: 10,
-    marginBottom: 12,
     paddingHorizontal: 24,
-    },
-  backButtonText: {
-    color: 'white',
-    fontSize: 18,
-    marginLeft: 8,
   },
   nextButton: {
-    backgroundColor: 'blue',
-    padding: 12,
-    borderRadius: 10,
+    backgroundColor: 'navy',
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    borderRadius: 10,
+    paddingHorizontal: 24,
   },
-  nextButtonText: {
-    color: 'white',
-    fontSize: 18,
-  },
-  ButtonText: {
+  buttonText: {
     color: 'white',
     fontSize: 18,
     marginLeft: 8,
   },
-  dateInputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  transparentCheckBox: {
+    backgroundColor: 'transparent',
+    borderWidth: 0,
   },
-  dateInput: {
-    width: 50,
-    marginRight: 5,
-  },
-  dateSeparator: {
-    fontSize: 20,
-    marginRight: 5,
-  },
-  locationInput: {
-    flex: 1,
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    paddingHorizontal: 10,
-    borderRadius: 10,
-    marginRight: 10,
-  },
-  smallInput: {
-    width: 60,
-    marginRight: 10,
-  },
-  smallInput1: {
-    width: 60,
-    marginRight: 200,
-  },
-  uploadButtonContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between', // Para distribuir los elementos horizontalmente
-  },
-  uploadButton: {
-    backgroundColor: 'blue',
-    borderRadius: 10,
-    paddingHorizontal: 24,
-    paddingVertical: 12,
-  },
-  uploadButtonText: {
-    color: 'white',
-    fontSize: 18,
-  },
-  documentButtonText: {
+  blackText: {
     color: 'black',
   },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 16,
+  boldRedText: {
+    color: 'red',
+    fontWeight: 'bold',
   },
-    
+  centerText: {
+    textAlign: 'center',
+  },
+  checkboxContainer: {
+    backgroundColor: 'transparent',
+    borderWidth: 0,
+    marginBottom: 8,
+  },
+  checkboxText: {
+    fontSize: 16,
+    marginLeft: 8,
+  },  
 });
 
 export default FormularioFema4;
+
+          
+  
+
+
+
+
+
+
+    
+

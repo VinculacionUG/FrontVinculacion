@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+//import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity, CheckBox } from 'react-native';
+import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator,CheckBox } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const FormularioFema3 = ({ route, navigation }) => {
-  // Obtener datos de las pantallas anteriores
   const { params } = route;
   const {
     direccion,
@@ -32,25 +32,55 @@ const FormularioFema3 = ({ route, navigation }) => {
     comentario,
   } = params;
 
-  //Console.log("help:" , params);
-
-  // Estados para los campos del FormularioParte3
-  const [tipoIdentificacionDNK, setTipoIdentificacionDNK] = useState('');
+  const [tipoEdificacion, setTipoEdificacion] = useState([]);
+  const [subTipo, setSubTipo] = useState('');
   const [resultadoBase, setResultadoBase] = useState('');
   const [irregularidadVerticalSevera, setIrregularidadVerticalSevera] = useState('');
   const [irregularidadVerticalModerada, setIrregularidadVerticalModerada] = useState('');
   const [plantaIrregular, setPlantaIrregular] = useState('');
   const [preCodigoSismico, setPreCodigoSismico] = useState('');
   const [postCodigoSismico, setPostCodigoSismico] = useState('');
-  const [sueloTipoAoB, setSueloTipoAoB] = useState('');
-  const [sueloTipoE1_3Pisos, setSueloTipoE1_3Pisos] = useState('');
-  const [sueloTipoE_GT3Pisos, setSueloTipoE_GT3Pisos] = useState('');
-  const [resultadoMinimoSmin, setResultadoMinimoSmin] = useState('');
-  const [resultadoFinalSL1_GT_Smin, setResultadoFinalSL1_GT_Smin] = useState('');
+  const [sueloTipoAB, setSueloTipoAB] = useState('');
+  const [sueloTipoE1a3, setSueloTipoE1a3] = useState('');
+  const [sueloTipoEMayor3, setSueloTipoEMayor3] = useState('');
+  const [resultadoSmin, setResultadoSmin] = useState('');
+  const [resultadoFinal, setResultadoFinal] = useState('');
+
+  const [estChecked, setEstChecked] = useState(false);
+  const [dnkChecked, setDnkChecked] = useState(false);
+
+  const getSubTipos = (tipo) => {
+    switch (tipo) {
+      case 'W':
+        return ['W1', 'W1A', 'W2'];
+      case 'S':
+        return ['S1', 'S2', 'S3', 'S4', 'S5'];
+      case 'C':
+        return ['C1', 'C2', 'C3'];
+      case 'PC':
+        return ['PC1', 'PC2'];
+      case 'RM':
+        return ['RM1', 'RM2'];
+      case 'URM':
+        return ['URM'];
+      case 'MH':
+        return ['MH'];
+      default:
+        return ['XXXX'];
+    }
+  };
+
+  const handleTipoEdificacionChange = (itemValue) => {
+    setTipoEdificacion(itemValue);
+    const subTipos = getSubTipos(itemValue);
+    if (subTipos.length === 1) {
+      setSubTipo(subTipos[0]);
+    } else {
+      setSubTipo('');
+    }
+  };
 
   const handleNext = () => {
-    // Puedes realizar validaciones o enviar los datos a la siguiente parte del formulario
-    // Por ahora, solo navegaré a una pantalla ficticia llamada 'FormularioParte4'
     navigation.navigate('FormularioFema4', {
       direccion,
       zip,
@@ -75,188 +105,282 @@ const FormularioFema3 = ({ route, navigation }) => {
       ocupacion,
       tipoSuelo,
       comentario,
-      tipoIdentificacionDNK,
+      tipoEdificacion,
+      subTipo,
       resultadoBase,
       irregularidadVerticalSevera,
       irregularidadVerticalModerada,
       plantaIrregular,
       preCodigoSismico,
       postCodigoSismico,
-      sueloTipoAoB,
-      sueloTipoE1_3Pisos,
-      sueloTipoE_GT3Pisos,
-      resultadoMinimoSmin,
-      resultadoFinalSL1_GT_Smin,
+      sueloTipoAB,
+      sueloTipoE1a3,
+      sueloTipoEMayor3,
+      resultadoSmin,
+      resultadoFinal,
     });
   };
+  
+  const handleBack = () => {
+    navigation.goBack();
+  };
+
+  const calcularResultadoFinal = () => {
+    setResultadoFinal('Resultado calculado');
+  };
+  
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [selectedValue, setSelectedValue] = useState('');
+  const [selectedValuetipoEdificacion, setSelectedValueTipoEdificacion] = useState('');
+  
+  useEffect(() => {
+    // URL del servicio GET
+    const url = 'https://www.fema.somee.com/Users/TipoEdificaciones';
+    const fetchTipoEdificacion = async () => {
+      try {
+        const response = await fetch(url,
+		{
+			method: 'GET',
+		}
+		);
+        if (!response.ok) {
+          throw new Error('Error en la red');
+        }
+        const result = await response.json();
+        setTipoEdificacion(result);
+		//console.log(result);    
+      } catch (error) {
+        setError(error);
+		console.log(error);    
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchTipoEdificacion();
+  }, []);
+
+  if (loading) {
+    return <ActivityIndicator size="large" color="#0000ff" />;
+  }
+
+  if (error) {
+    return (
+      <View>
+        <Text>Error: {error.message}</Text>
+      </View>
+    );
+  }
+
+ 
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Formulario FEMA P-154</Text>
-      <Text style={styles.subtitle}>Resultado base, modificadores y resultado final del nivel 1 de análisis, SL1</Text>
+      <Text style={styles.subtitle}>Resultado Base, Modificadores y Resultado Final de Nivel 1 de Análisis, SL1</Text>
 
-      {/* Selects */}
+ {/* 
       <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>Tipo de identificación DNK:  </Text>
+        <Text style={styles.inputLabel}>Tipo de Edificación:</Text>
         <Picker
-          style={styles.input}
-          selectedValue={tipoIdentificacionDNK}
-          onValueChange={(itemValue) => setTipoIdentificacionDNK(itemValue)}
+          style={styles.picker}
+          selectedValue={tipoEdificacion}
+          onValueChange={handleTipoEdificacionChange}
         >
-        <Picker.Item label="Sup" value="sup" />
-        <Picker.Item label="Inf" value="inf" />
+          <Picker.Item label="Seleccione..." value="" />
+          <Picker.Item label="W" value="W" />
+          <Picker.Item label="S" value="S" />
+          <Picker.Item label="C" value="C" />
+          <Picker.Item label="PC" value="PC" />
+          <Picker.Item label="RM" value="RM" />
+          <Picker.Item label="URM" value="URM" />
+          <Picker.Item label="MH" value="MH" />
+        </Picker>
+        <Text style={[styles.inputLabel, { marginLeft: 8 }]}>Sub Tipo:</Text>
+        <Picker
+          style={styles.picker}
+          selectedValue={subTipo}
+          onValueChange={(itemValue) => setSubTipo(itemValue)}
+        >
+          <Picker.Item label="Seleccione..." value="" />
+          {getSubTipos(tipoEdificacion).map((subTipo) => (
+            <Picker.Item key={subTipo} label={subTipo} value={subTipo} />
+          ))}
         </Picker>
       </View>
+ */}
 
-      <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>Resultado Base:  </Text>
-        <Picker
-          style={styles.input}
-          selectedValue={resultadoBase}
-          onValueChange={(itemValue) => setResultadoBase(itemValue)}
-        >
-        <Picker.Item label="Sup" value="sup" />
-        <Picker.Item label="Inf" value="inf" />
-        </Picker>
-      </View>
-
-      <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>Irregularidad vertical severa:  </Text>
-        <Picker
-          style={styles.input}
-          selectedValue={irregularidadVerticalSevera}
-          onValueChange={(itemValue) => setIrregularidadVerticalSevera(itemValue)}
-      >
-          {/* Agrega más opciones según sea necesario */}
-        <Picker.Item label="Sup" value="sup" />
-        <Picker.Item label="Inf" value="inf" />
-        </Picker>
-      </View>      
-
-
-      <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>Irregularidad vertical moderada:  </Text>
-        <Picker
-          style={styles.input}
-          selectedValue={irregularidadVerticalModerada}
-          onValueChange={(itemValue) => setIrregularidadVerticalModerada(itemValue)}
-        >
-        <Picker.Item label="Sup" value="sup" />
-        <Picker.Item label="Inf" value="inf" />
-        </Picker>
-      </View> 
-
-
-      <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>Planta irregular:  </Text>
-        <Picker
-          style={styles.input}
-          selectedValue={plantaIrregular}
-          onValueChange={(itemValue) => setPlantaIrregular(itemValue)}
-        >
-        <Picker.Item label="Sup" value="sup" />
-        <Picker.Item label="Inf" value="inf" />
-       </Picker>
-      </View>       
-
-      <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>Pre- código sísmico:  </Text>
-        <Picker
-          style={styles.input}
-          selectedValue={preCodigoSismico}
-          onValueChange={(itemValue) => setPreCodigoSismico(itemValue)}
-      >
-        <Picker.Item label="Sup" value="sup" />
-        <Picker.Item label="Inf" value="inf" />
-        </Picker>
-      </View>  
-
-      <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>Post- código sísmico:  </Text>
-        <Picker
-          style={styles.input}
-          selectedValue={postCodigoSismico}
-          onValueChange={(itemValue) => setPostCodigoSismico(itemValue)}
-        >
-        <Picker.Item label="Sup" value="sup" />
-        <Picker.Item label="Inf" value="inf" />
-        </Picker>
-      </View>  
-
-      {/* Desde aquí */}
-      <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>Suelo tipo A o B:  </Text>
+    <View style={styles.inputContainer}>
+      <Text style={styles.inputLabel}>Tipo de Edificación:</Text>
       <Picker
-        style={styles.input}
-        selectedValue={sueloTipoAoB}
-        onValueChange={(itemValue) => setSueloTipoAoB(itemValue)}
+        style={[styles.input, styles.picker]}
+        selectedValue={selectedValuetipoEdificacion}
+        onValueChange={(itemValue) => setSelectedValueTipoEdificacion(itemValue)}
       >
-        <Picker.Item label="Sup" value="sup" />
-        <Picker.Item label="Inf" value="inf" />
-        </Picker>
-      </View>        
-
-      <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>Suelo tipo E (1-3 pisos):  </Text>
+        {tipoEdificacion.map((item, index) => (
+          <Picker.Item label={item.descripcion} value={item.descripcion} key={index} />
+        ))}
+      </Picker>
+      {/*  <Text style={styles.selected}>Seleccionado: {selectedValue}</Text> */}
+	       <Text style={[styles.inputLabel, { marginLeft: 8 }]}>Sub Tipo:</Text>
         <Picker
-          style={styles.input}
-          selectedValue={sueloTipoE1_3Pisos}
-          onValueChange={(itemValue) => setSueloTipoE1_3Pisos(itemValue)}
+          style={styles.picker}
+          selectedValue={subTipo}
+          onValueChange={(itemValue) => setSubTipo(itemValue)}
         >
-          <Picker.Item label="Sup" value="sup" />
-          <Picker.Item label="Inf" value="inf" />
-          </Picker>
-      </View>        
+          <Picker.Item label="Seleccione..." value="" />
+          {getSubTipos(selectedValuetipoEdificacion).map((subTipo) => (
+            <Picker.Item key={subTipo} label={subTipo} value={subTipo} />
+          ))}
+        </Picker>  	  
+    </View>
+	
+	
+      <View style={styles.squareContainer}>
+        <View style={styles.resultContainer}>
+          <Text style={styles.resultLabel}>RESULTADO BASE:</Text>
+          <TextInput
+            style={[styles.resultInput1, { marginRight: 17 }]}
+            value={resultadoBase}
+            onChangeText={setResultadoBase}
+            keyboardType="numeric"
+          />
+        </View>
 
-      <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>Suelo tipo E (mayor 3 pisos):  </Text>
-        <Picker
-          style={styles.input}
-          selectedValue={sueloTipoE_GT3Pisos}
-          onValueChange={(itemValue) => setSueloTipoE_GT3Pisos(itemValue)}
-        >
-          <Picker.Item label="Sup" value="sup" />
-          <Picker.Item label="Inf" value="inf" />
-          </Picker>
-      </View>        
+        <View style={styles.squareContainer}>
+          <View style={styles.resultContainer}>
+            <Text style={styles.resultLabel}>Irregularidad Vertical Severa:</Text>
+            <TextInput
+              style={styles.resultInput}
+              value={irregularidadVerticalSevera}
+              onChangeText={setIrregularidadVerticalSevera}
+              keyboardType="numeric"
+            />
+          </View>
+          <View style={styles.resultContainer}>
+            <Text style={styles.resultLabel}>Irregularidad Vertical Moderada:</Text>
+            <TextInput
+              style={styles.resultInput}
+              value={irregularidadVerticalModerada}
+              onChangeText={setIrregularidadVerticalModerada}
+              keyboardType="numeric"
+            />
+          </View>
+        </View>
 
-      <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>Resulado mínimo, Smin:  </Text>
-        <Picker
-          style={styles.input}
-          selectedValue={resultadoMinimoSmin}
-          onValueChange={(itemValue) => setResultadoMinimoSmin(itemValue)}
-        >
-          <Picker.Item label="Sup" value="sup" />
-          <Picker.Item label="Inf" value="inf" />
-          </Picker>
-      </View>  
+        <View style={styles.squareContainer}>
+          <View style={styles.resultContainer}>
+            <Text style={styles.resultLabel}>Planta Irregular:</Text>
+            <TextInput
+              style={styles.resultInput}
+              value={plantaIrregular}
+              onChangeText={setPlantaIrregular}
+              keyboardType="numeric"
+            />
+          </View>
+        </View>
 
+        <View style={styles.squareContainer}>
+          <View style={styles.resultContainer}>
+            <Text style={styles.resultLabel}>Pre-código Sísmico:</Text>
+            <TextInput
+              style={styles.resultInput}
+              value={preCodigoSismico}
+              onChangeText={setPreCodigoSismico}
+              keyboardType="numeric"
+            />
+          </View>
+          <View style={styles.resultContainer}>
+            <Text style={styles.resultLabel}>Post-código Sísmico:</Text>
+            <TextInput
+              style={styles.resultInput}
+              value={postCodigoSismico}
+              onChangeText={setPostCodigoSismico}
+              keyboardType="numeric"
+            />
+          </View>
+        </View>
 
-      <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>Resultado final Nivel 1  </Text>
-        <Picker
-          style={styles.input}
-          selectedValue={resultadoFinalSL1_GT_Smin}
-          onValueChange={(itemValue) => setResultadoFinalSL1_GT_Smin(itemValue)}
-        >
-          <Picker.Item label="Sup" value="sup" />
-          <Picker.Item label="Inf" value="inf" />
-          </Picker>
-      </View> 
+        <View style={styles.squareContainer}>
+          <View style={styles.resultContainer}>
+            <Text style={styles.resultLabel}>Suelo tipo A o B:</Text>
+            <TextInput
+              style={styles.resultInput}
+              value={sueloTipoAB}
+              onChangeText={setSueloTipoAB}
+              keyboardType="numeric"
+            />
+          </View>
+          <View style={styles.resultContainer}>
+            <Text style={styles.resultLabel}>Suelo tipo E (1-3 pisos):</Text>
+            <TextInput
+              style={styles.resultInput}
+              value={sueloTipoE1a3}
+              onChangeText={setSueloTipoE1a3}
+              keyboardType="numeric"
+            />
+          </View>
+          <View style={styles.resultContainer}>
+            <Text style={styles.resultLabel}>Suelo tipo E (mayor a 3 pisos):</Text>
+            <TextInput
+              style={styles.resultInput}
+              value={sueloTipoEMayor3}
+              onChangeText={setSueloTipoEMayor3}
+              keyboardType="numeric"
+            />
+          </View>
+        </View>
 
+        <View style={styles.resultContainer}>
+          <Text style={styles.resultLabel}>RESULTADO SMIN:</Text>
+          <TextInput
+            style={[styles.resultInput, { marginRight: 18 }]}
+            value={resultadoSmin}
+            onChangeText={setResultadoSmin}
+            keyboardType="numeric"
+          />
+        </View>
+      </View>
+
+      <View style={styles.resultContainer}>
+        <TouchableOpacity style={styles.calculateButton} onPress={calcularResultadoFinal}>
+          <Text style={styles.calculateButtonText}>Calcular</Text>
+        </TouchableOpacity>
+        <Text style={[styles.resultLabel, { marginLeft: 50 }]}>Resultado Final:</Text>
+        <TextInput
+          style={[styles.resultInput, { marginRight: 35 }]}
+          value={resultadoFinal}
+          onChangeText={setResultadoFinal}
+          editable={false}
+        />
+      </View>
+
+      <View style={styles.checkboxContainer}>
+        <CheckBox
+          value={estChecked}
+          onValueChange={setEstChecked}
+        />
+        <Text style={styles.checkboxLabel}>EST</Text>
+        <CheckBox
+          value={dnkChecked}
+          onValueChange={setDnkChecked}
+        />
+        <Text style={styles.checkboxLabel}>DNK</Text>
+        <TouchableOpacity style={styles.saveButton}>
+          <Text style={styles.saveButtonText}>Guardar</Text>
+        </TouchableOpacity>
+      </View>
 
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-          <MaterialCommunityIcons name="arrow-left" size={24} color="white" />
-          <Text style={styles.ButtonText}>Regresar</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.backButton} onPress={handleNext}>
-          <MaterialCommunityIcons name="arrow-right" size={24} color="white" />
-          <Text style={styles.ButtonText}>Continuar</Text>
-        </TouchableOpacity>
-    </View>
+  <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+    <MaterialCommunityIcons name="arrow-left" size={24} color="white" />
+    <Text style={styles.buttonText}>Regresar</Text>
+  </TouchableOpacity>
+  <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
+    <Text style={styles.buttonText}>Siguiente</Text>
+    <MaterialCommunityIcons name="arrow-right" size={24} color="white" />
+  </TouchableOpacity>
+</View>
 
     </ScrollView>
   );
@@ -264,9 +388,8 @@ const FormularioFema3 = ({ route, navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
     padding: 16,
-    backgroundColor: 'white',
+    backgroundColor: '#f8f9fa',
   },
   title: {
     fontSize: 24,
@@ -274,35 +397,10 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     textAlign: 'center',
   },
-  section: {
-    marginBottom: 16,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 8,
-  },
-  documentButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginVertical: 8,
-  },
-  documentButtonText: {
-    color: 'black',
-  },
-  fileName: {
-    marginLeft: 8,
-    fontStyle: 'italic',
-    color: 'gray',
-  },
   subtitle: {
     fontSize: 18,
-    fontWeight: 'bold',
-    //marginBottom: 8,
-    marginBottom: 16,
+    fontWeight: '600',
+    marginBottom: 24,
     textAlign: 'center',
   },
   inputContainer: {
@@ -312,101 +410,137 @@ const styles = StyleSheet.create({
   },
   inputLabel: {
     fontSize: 16,
-    marginLeft: 8,  
-    fontWeight: 'bold',
+    marginRight: 8,
   },
-  input: {
+  picker: {
+    height: 50,
     flex: 1,
-    height: 40,
-    borderColor: 'gray',
     borderWidth: 1,
-    paddingHorizontal: 10,
-    borderRadius: 10, // Ajusta este valor para cambiar la ovalidad
+    borderColor: 'gray',
+    borderRadius: 5,
+  },
+  squareContainer: {
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 25,
+    padding: 16,
+    marginBottom: 16,
+  },
+  resultContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 8,
+    justifyContent: 'space-between',
+  },
+  resultLabel: {
+    fontSize: 16,
+    marginLeft: 0,
+    width: '60%',
+    textAlign: 'left',
+  },
+  resultInput: {
+    height: 30,
+    width: 60,
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 5,
+    paddingHorizontal: 8,
+  },
+  resultInput1: {
+    height: 30,
+    width: 60,
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 5,
+    paddingHorizontal: 8,
+  },
+  calculateButton: {
+    backgroundColor: 'navy',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 10,
+    marginRight: 8,
+  },
+  calculateButtonText: {
+    color: 'white',
+    fontSize: 16,
+  },
+  checkboxContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+    justifyContent: 'space-between',
+  },
+  checkboxLabel: {
+    fontSize: 16,
+    marginRight: 16,
+  },
+  saveButton: {
+    backgroundColor: 'navy',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 10,
+  },
+  saveButtonText: {
+    color: 'white',
+    fontSize: 16,
+  },
+  buttonContainer: {
+    flexDirection: 'row', // Alinea los elementos en una fila
+    justifyContent: 'space-between', // Distribuye los elementos horizontalmente
   },
   backButton: {
-    backgroundColor: 'blue',
-    flexDirection: 'row',
+    backgroundColor: 'navy',
+    flexDirection: 'row', // Alinea los elementos en una fila
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 12,
     borderRadius: 10,
-    marginBottom: 12,
     paddingHorizontal: 24,
-    },
-  backButtonText: {
-    color: 'white',
-    fontSize: 18,
-    marginLeft: 8,
+    marginRight: 10, // Agregué un margen derecho para separar los botones
   },
   nextButton: {
-    backgroundColor: 'blue',
-    padding: 12,
-    borderRadius: 10,
+    backgroundColor: 'navy',
+    flexDirection: 'row', // Alinea los elementos en una fila
     alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    borderRadius: 10,
+    paddingHorizontal: 24,
   },
-  nextButtonText: {
-    color: 'white',
-    fontSize: 18,
-  },
-  ButtonText: {
+  buttonText: {
     color: 'white',
     fontSize: 18,
     marginLeft: 8,
   },
-  dateInputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  dateInput: {
-    width: 50,
-    marginRight: 5,
-  },
-  dateSeparator: {
-    fontSize: 20,
-    marginRight: 5,
-  },
-  locationInput: {
-    flex: 1,
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    paddingHorizontal: 10,
-    borderRadius: 10,
-    marginRight: 10,
-  },
-  smallInput: {
-    width: 60,
-    marginRight: 10,
-  },
-  smallInput1: {
-    width: 60,
-    marginRight: 200,
-  },
-  uploadButtonContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between', // Para distribuir los elementos horizontalmente
-  },
-  uploadButton: {
-    backgroundColor: 'blue',
-    borderRadius: 10,
-    paddingHorizontal: 24,
-    paddingVertical: 12,
-  },
-  uploadButtonText: {
-    color: 'white',
-    fontSize: 18,
-  },
-  documentButtonText: {
-    color: 'black',
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 16,
-  },
-    
 });
 
-
 export default FormularioFema3;
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
