@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet,  Alert} from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Dashboard = () => {
   const navigation = useNavigation();
@@ -14,9 +15,91 @@ const Dashboard = () => {
     navigation.navigate('FormularioFema');
   };
 
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const userData = await AsyncStorage.getItem('userData');
+        if (userData) {
+          const { nombre, apellido } = JSON.parse(userData);
+          setUserName(`${nombre} ${apellido}`);
+        } else {
+          // Manejo de situación donde no se encuentra información de usuario
+          console.log('No se encuentra información de usuario PRUEBA'); //Mensaje de prueba
+        }
+      } catch (error) {
+        console.error('Error al obtener datos del usuario:', error.message);
+        Alert.alert('Error', 'Ha ocurrido un error al obtener los datos del usuario.');
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
+/*
+  const fetchUserData = async () => {
+    try {
+      const token = await AsyncStorage.getItem('token');
+      const response = await fetch('http://www.fema.somee.com/Auth/login', {
+        method: 'POST', // Cambiado a método POST
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({}), // Ajusta el cuerpo según necesites
+      });
+
+      if (response.ok) {
+        const userData = await response.json();
+        const { nombre, apellido } = userData.userInfo;
+        setUserName(`${nombre} ${apellido}`);
+      } else {
+        console.error('Error al obtener datos del usuario:', response.statusText);
+        Alert.alert('Error', 'Hubo un problema al obtener los datos del usuario.');
+      }
+    } catch (error) {
+      console.error('Error al obtener datos del usuario:', error.message);
+      Alert.alert('Error', 'Ha ocurrido un error al obtener los datos del usuario.');
+    }
+  };
+
+  useEffect(() => {
+    fetchUserData();
+  }, []);
+*/
+
+  /*
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const userData = await AsyncStorage.getItem('userData');
+        if (userData) {
+          const { nombre, apellido } = JSON.parse(userData);
+          setUserName(`${nombre} ${apellido}`);
+        } else {
+          // Manejo de situación donde no se encuentra información de usuario
+        }
+      } catch (error) {
+        console.error('Error al obtener datos del usuario:', error.message);
+        // Manejo de errores
+      }
+    };
+
+    fetchUserData();
+  }, []);
+  */
+
   const handleLogout = () => {
+  //const handleLogout = async () => {
     // Aquí va la lógica para cerrar sesión
     // Por ejemplo, limpiar el almacenamiento de tokens o redireccionar a la pantalla de inicio de sesión
+    /*
+    try {
+      await AsyncStorage.removeItem('userData');
+      navigation.navigate('Start'); // Redirige a la pantalla de inicio de sesión
+    } catch (error) {
+      console.error('Error al cerrar sesión:', error.message);
+      // Manejo de errores
+    }
+    */
     navigation.navigate('Start');
   };
   
@@ -29,7 +112,8 @@ const Dashboard = () => {
       <View style={styles.profileContainer}>
         {/* Icono de perfil  */}
         <MaterialCommunityIcons name="account" size={70} color="#001f3f" />
-        <Text style={styles.username}>{userName ? userName : 'Nombre de Usuario'}{'\n\n'}</Text>
+        <Text style={styles.username}>{userName}</Text>
+        {/*<Text style={styles.username}>{userName ? userName : 'Nombre de Usuario'}{'\n\n'}</Text>*/}
       </View>
       <View style={styles.cardsContainer}>
         {/* Mini Cards */}
