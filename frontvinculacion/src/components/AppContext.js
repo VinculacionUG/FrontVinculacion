@@ -5,6 +5,7 @@ export const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
   // Definir múltiples variables de estado
+  //fema 1
   const [adjuntarFotografica, setAdjuntarFotografica] = useState('');
   const [adjuntarGrafico, setAdjuntarGrafico] = useState('');
   const [direccion, setDireccion] = useState('');
@@ -16,6 +17,7 @@ export const AppProvider = ({ children }) => {
   const [longitud, setLongitud] = useState('');
   const [fecha, setFecha] = useState({ year: '', month: '', day: '' });
   const [hora, setHora] = useState('');
+  //fema2
   const [numeroPiso, setNumeroPiso] = useState('');
   const [inf, setInf] = useState('');
   const [anoConstruccion, setAnoConstruccion] = useState('');
@@ -38,19 +40,22 @@ export const AppProvider = ({ children }) => {
   const [tipoocupacion, setTipoocupacion] = useState('');
   const [tipoSuelo, setTipoSuelo] = useState('');
   const [comentario, setComentario] = useState('');
+  //fema 4
   const [exterior, setExterior] = useState('');
   const [interior, setInterior] = useState('');
   const [revisionPlanos, setRevisionPlanos] = useState('');
   const [fuenteDelTipoDeSuelo, setFuenteDelTipoDeSuelo] = useState('');
   const [fuenteDePeligrosGeologicos, setFuenteDePeligrosGeologicos] = useState('');
   const [contactoDeLaPersona, setContactoDeLaPersona] = useState('');
-  const [otrosPeligros, setOtrosPeligros] = useState('');
+  const [otrosPeligros1, setOtrosPeligros1] = useState('');
+  //fema 5
   const [pregunta1Fema5, setPregunta1Fema5] = useState('');
   const [pregunta2Fema5, setPregunta2Fema5] = useState('');
   const [inspeccionNivel, setInspeccionNivel] = useState('');
 
   return (
     <AppContext.Provider value={{
+      //fema1
       adjuntarFotografica, setAdjuntarFotografica,
       adjuntarGrafico, setAdjuntarGrafico,
       direccion, setDireccion,
@@ -62,6 +67,7 @@ export const AppProvider = ({ children }) => {
       longitud, setLongitud,
       fecha, setFecha,
       hora, setHora,
+      //fema 2
       numeroPiso, setNumeroPiso,
       inf, setInf,
       anoConstruccion, setAnoConstruccion,
@@ -84,13 +90,15 @@ export const AppProvider = ({ children }) => {
       tipoocupacion, setTipoocupacion,
       tipoSuelo, setTipoSuelo,
       comentario, setComentario,
+      //fema 4
       exterior, setExterior,
       interior, setInterior,
       revisionPlanos, setRevisionPlanos,
       fuenteDelTipoDeSuelo, setFuenteDelTipoDeSuelo,
       fuenteDePeligrosGeologicos, setFuenteDePeligrosGeologicos,
       contactoDeLaPersona, setContactoDeLaPersona,
-      otrosPeligros, setOtrosPeligros,
+      otrosPeligros1, setOtrosPeligros1,
+      //fema 5
       pregunta1Fema5, setPregunta1Fema5,
       pregunta2Fema5, setPregunta2Fema5,
       inspeccionNivel, setInspeccionNivel
