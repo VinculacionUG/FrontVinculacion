@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Image, Alert } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
-import { AppContext } from './AppContext'; 
+import { AppContext } from './AppContext';
 
 const FormularioFema = ({ navigation }) => {
   const {
@@ -87,8 +87,8 @@ const FormularioFema = ({ navigation }) => {
         base64: true,
       });
 
-      if (!result.cancelled && result.base64) {
-        setImage(`data:image/jpeg;base64,${result.base64}`);
+      if (!result.cancelled && result.assets && result.assets.length > 0 && result.assets[0].base64) {
+        setImage(`data:image/jpeg;base64,${result.assets[0].base64}`);
       } else {
         Alert.alert('Error', 'Hubo un problema al seleccionar la imagen. Por favor, intenta nuevamente.');
       }
@@ -116,8 +116,12 @@ const FormularioFema = ({ navigation }) => {
           </TouchableOpacity>
           <View style={styles.fileNameContainer}>
             {adjuntarFotografica ? (
-              <Text style={styles.fileNameText}>{getFileNameFromUri(adjuntarFotografica)}</Text>
-            ) : (
+              <>
+                {/* <Text style={styles.fileNameText}>{adjuntarFotografica}</Text>, */}
+                <Text style={styles.fileNameText}>Imagen Seleccionada: </Text>
+                <Image source={{ uri: adjuntarFotografica }} style={styles.image} />
+              </>
+            )  : (
               <Text>No se eligió ningún archivo</Text>
             )}
           </View>
@@ -132,7 +136,11 @@ const FormularioFema = ({ navigation }) => {
           </TouchableOpacity>
           <View style={styles.fileNameContainer}>
             {adjuntarGrafico ? (
-              <Text style={styles.fileNameText}>{getFileNameFromUri(adjuntarGrafico)}</Text>
+              <>
+                {/* <Text style={styles.fileNameText}>{adjuntarGrafico}</Text> */}
+                <Text style={styles.fileNameText}>Gráfico Seleccionado: </Text>
+                <Image source={{ uri: adjuntarGrafico }} style={styles.image} />
+              </>
             ) : (
               <Text>No se eligió ningún archivo</Text>
             )}
@@ -303,6 +311,7 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     borderRadius: 5,
     flex: 1,
+    alignItems: 'center',
   },
   fileNameText: {
     fontSize: 14,
@@ -386,25 +395,3 @@ const styles = StyleSheet.create({
 });
 
 export default FormularioFema;
-
-
-
-
-
-
-
-
-
-
-
-       
-
-
-         
-
-
-         
-
-
-
-
