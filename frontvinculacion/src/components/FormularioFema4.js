@@ -7,44 +7,6 @@ import { CheckBox } from 'react-native-elements';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const FormularioFema4 = ({ route, navigation }) => {
-  const { params } = route;
-  const {
-    direccion,
-    zip,
-    otrasIdentificaciones,
-    nombreEdificio,
-    uso,
-    latitud,
-    longitud,
-    inspector,
-    fecha,
-    hora,
-    files1,
-    files2,
-    numPisos,
-    sup,
-    info,
-    anioConstruccion,
-    areaTotalPiso,
-    anioCodigo,
-    anioConstruccion2,
-    ampliacion,
-    ocupacion,
-    tipoSuelo,
-    comentario,
-    tipoIdentificacionDNK,
-    resultadoBase,
-    irregularidadVerticalSevera,
-    irregularidadVerticalModerada,
-    plantaIrregular,
-    preCodigoSismico,
-    postCodigoSismico,
-    sueloTipoAoB,
-    sueloTipoE1_3Pisos,
-    sueloTipoE_GT3Pisos,
-    resultadoMinimoSmin,
-    resultadoFinalSL1_GT_Smin,
-  } = params;
 
   const [revisionExterior, setRevisionExterior] = useState([]);
   const [revisionInterior, setRevisionInterior] = useState([]);
@@ -57,56 +19,17 @@ const FormularioFema4 = ({ route, navigation }) => {
   const [checkBox2, setCheckBox2] = useState(false);
   const [checkBox3, setCheckBox3] = useState(false);
   const [checkBox4, setCheckBox4] = useState(false);
+  const [otrosPeligros, setOtrosPeligros] = useState([]);
 
   const handleNext = () => {
     navigation.navigate('FormularioFema5', {
-      direccion,
-      zip,
-      otrasIdentificaciones,
-      nombreEdificio,
-      uso,
-      latitud,
-      longitud,
-      inspector,
-      fecha,
-      hora,
-      files1,
-      files2,
-      numPisos,
-      sup,
-      info,
-      anioConstruccion,
-      areaTotalPiso,
-      anioCodigo,
-      anioConstruccion2,
-      ampliacion,
-      ocupacion,
-      tipoSuelo,
-      comentario,
-      tipoIdentificacionDNK,
-      resultadoBase,
-      irregularidadVerticalSevera,
-      irregularidadVerticalModerada,
-      plantaIrregular,
-      preCodigoSismico,
-      postCodigoSismico,
-      sueloTipoAoB,
-      sueloTipoE1_3Pisos,
-      sueloTipoE_GT3Pisos,
-      resultadoMinimoSmin,
-      resultadoFinalSL1_GT_Smin,
-      revisionExterior,
-      revisionInterior,
-      revisionPlanos,
-      fuenteTipoSuelo,
-      fuentePeligrosGeologicos1,
-      fuentePeligrosGeologicos2,
-      evaluacionDetallada,
-      checkBox1,
-      checkBox2,
-      checkBox3,
-      checkBox4,
     });
+  };
+
+
+  const [selectedCheckbox, setSelectedCheckbox] = useState(null);
+  const handleCheckboxChange = (codOtrosPeligorsSec) => {
+    setSelectedCheckbox(codOtrosPeligorsSec);
   };
 
   const [loading, setLoading] = useState(true);
@@ -114,11 +37,13 @@ const FormularioFema4 = ({ route, navigation }) => {
   const [selectedValue, setSelectedValue] = useState('');
   const [selectedValuerevisionExterior, setSelectedValueRevisionExterior] = useState('');
   const [selectedValuerevisionInterior, setSelectedValueRevisionInterior] = useState('');
-  
+  const [selectotrosPeligros, setSelectedValueOtrosPeligros] = useState('');
+
+
   useEffect(() => {
-    // URL del servicio GET
+
     const url = 'https://www.fema.somee.com/api/FemaCuatro/consultarEvaluacionExterior';
-    //const url = 'http://www.fema.somee.com/Users/Exterior';
+
     const fetchRevisionExterior = async () => {
       try {
         const response = await fetch(url,
@@ -145,7 +70,6 @@ const FormularioFema4 = ({ route, navigation }) => {
 
     // URL del servicio GET
       const url2 = 'https://www.fema.somee.com/api/FemaCuatro/consultarEvaluacionInterior';
-      //const url = 'http://www.fema.somee.com/Users/Interior';
       const fetchRevisionInterior = async () => {
         try {
           const response = await fetch(url2,
@@ -168,6 +92,32 @@ const FormularioFema4 = ({ route, navigation }) => {
       };
       fetchRevisionInterior();
   
+ 
+    // URL del servicio GET
+    const url3 = 'https://www.fema.somee.com/api/FemaCuatro/consultarFemaOtrosPeligros';
+    const fetchOtrosPeligros = async () => {
+      try {
+        const response = await fetch(url3,
+    {
+      method: 'GET',
+    }
+    );
+        if (!response.ok) {
+          throw new Error('Error en la red');
+        }
+        const result = await response.json();
+        setOtrosPeligros(result);
+    //console.log(result);    
+      } catch (error) {
+        setError(error);
+    console.log(error);    
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchOtrosPeligros();
+
+ 
 
   }, []);
 
@@ -184,28 +134,13 @@ const FormularioFema4 = ({ route, navigation }) => {
     );
   }
 
-
   return (
 
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Formulario FEMA P-154</Text>
       <Text style={[styles.subtitle, styles.blackText, styles.centerText]}>Extensión de la revisión</Text>
 
- {/*   
-      <View style={styles.row}>
-        <Text style={styles.inputLabel}>Exterior:</Text>
-        <View style={{ width: 65 }} /> 
-        <Picker
-          style={[styles.input, styles.picker]}
-          selectedValue={revisionExterior}
-          onValueChange={(itemValue) => setRevisionExterior(itemValue)}
-        >
-          <Picker.Item label="Parcial" value="Parcial" />
-          <Picker.Item label="Todos los Lados" value="Todos los Lados" />
-          <Picker.Item label="Aéreo" value="Aéreo" />
-        </Picker>
-      </View>
-*/}
+
 
     <View style={styles.row}>
       <Text style={styles.inputLabel}>Exterior:</Text>
@@ -219,7 +154,6 @@ const FormularioFema4 = ({ route, navigation }) => {
           <Picker.Item label={item.descripcion} value={item.descripcion} key={index} />
         ))}
       </Picker>
-      {/*  <Text style={styles.selected}>Seleccionado: {selectedValue}</Text> */}
     </View>
 
 
@@ -235,7 +169,6 @@ const FormularioFema4 = ({ route, navigation }) => {
           <Picker.Item label={item.descripcion} value={item.descripcion} key={index} />
         ))}
       </Picker>
-      {/*  <Text style={styles.selected}>Seleccionado: {selectedValue}</Text> */}
     </View>
 	  
 
@@ -282,31 +215,22 @@ const FormularioFema4 = ({ route, navigation }) => {
       <View>
         <Text style={[styles.subtitle, styles.centerText]}>Otros Peligros</Text>
         <Text style={[styles.subtitle, styles.boldRedText, styles.centerText]}>¿Hay peligros que desencadenan una evaluación estructural detallada?</Text>
-        <CheckBox
-          title="Posible golpeteo entre edificios"
-          checked={checkBox1}
-          onPress={() => setCheckBox1(!checkBox1)}
-          containerStyle={styles.transparentCheckBox}
-        />
-        <CheckBox
-          title="Riesgo de caída de edificios adyacentes más altos"
-          checked={checkBox2}
-          onPress={() => setCheckBox2(!checkBox2)}
-          containerStyle={styles.transparentCheckBox}
-        />
-        <CheckBox
-          title="Peligro geológico o Suelo tipo F"
-          checked={checkBox3}
-          onPress={() => setCheckBox3(!checkBox3)}
-          containerStyle={styles.transparentCheckBox}
-        />
-        <CheckBox
-          title="Daños significativos/deterioro del sistema estructural"
-          checked={checkBox4}
-          onPress={() => setCheckBox4(!checkBox4)}
-          containerStyle={styles.transparentCheckBox}
-        />
-               </View>
+
+      <View style={styles.checkboxContainer}>
+        {otrosPeligros.map((checkbox) => (
+          <View key={checkbox.codOtrosPeligorsSec} style={styles.checkboxContainer}>
+            <CheckBox
+              title={checkbox.respuesta}
+              checked={selectedCheckbox === checkbox.codOtrosPeligorsSec}
+              onPress={() => handleCheckboxChange(checkbox.codOtrosPeligorsSec)}
+              containerStyle={styles.checkboxContainer}
+              textStyle={styles.checkboxText}
+            />
+          </View>
+        ))}
+      </View>
+
+      </View>
         <View style={{ marginBottom: 50 }}></View> {/* Espacio de 1 centímetro entre los CheckBox y los botones */}
         
         <View style={styles.buttonContainer}>
@@ -423,6 +347,15 @@ const styles = StyleSheet.create({
   centerText: {
     textAlign: 'center',
   },
+  checkboxContainer: {
+    backgroundColor: 'transparent',
+    borderWidth: 0,
+    marginBottom: 8,
+  },
+  checkboxText: {
+    fontSize: 16,
+    marginLeft: 8,
+  },  
 });
 
 export default FormularioFema4;

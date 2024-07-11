@@ -1,58 +1,10 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { CheckBox } from 'react-native-elements';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const FormularioFema5 = ({ route, navigation }) => {
-  
-  // Obtener datos de las pantallas anteriores
-  const { params } = route;
-  const {
-    direccion,
-    zip,
-    otrasIdentificaciones,
-    nombreEdificio,
-    uso,
-    latitud,
-    longitud,
-    inspector,
-    fecha,
-    hora,
-    files1,
-    files2,
-    numPisos,
-    sup,
-    info,
-    anioConstruccion,
-    areaTotalPiso,
-    anioCodigo,
-    anioConstruccion2,
-    ampliacion,
-    ocupacion,
-    tipoSuelo,
-    comentario,
-    tipoIdentificacionDNK,
-    resultadoBase,
-    irregularidadVerticalSevera,
-    irregularidadVerticalModerada,
-    plantaIrregular,
-    preCodigoSismico,
-    postCodigoSismico,
-    sueloTipoAoB,
-    sueloTipoE1_3Pisos,
-    sueloTipoE_GT3Pisos,
-    resultadoMinimoSmin,
-    resultadoFinalSL1_GT_Smin,
-    revisionExterior,
-    revisionInterior,
-    revisionPlanos,
-    fuenteTipoSuelo,
-    fuentePeligrosGeologicos1,
-    fuentePeligrosGeologicos2,
-    evaluacionDetallada,
-  } = params;
-
   const [checkBox1, setCheckBox1] = useState(false);
   const [checkBox2, setCheckBox2] = useState(false);
   const [checkBox3, setCheckBox3] = useState(false);
@@ -61,10 +13,24 @@ const FormularioFema5 = ({ route, navigation }) => {
   const [checkBox6, setCheckBox6] = useState(false);
   const [checkBox7, setCheckBox7] = useState(false);
   const [checkBox8, setCheckBox8] = useState(false);
-  // Estados para los campos del FormularioParte5
+  const [selectedCheckbox, setSelectedCheckbox] = useState(null);
+  const [selectedCheckbox2, setSelectedCheckbox2] = useState(null);
+  const handleCheckboxChange = (codAccionPregunta) => {
+    setSelectedCheckbox(codAccionPregunta);
+  };
+
+  const handleCheckboxChange2 = (codAccionPregunta) => {
+    setSelectedCheckbox2(codAccionPregunta);
+  };
+
   const [accionRequerida, setAccionRequerida] = useState('');
   const [evaluacionDetalladaElementosNoEstructurales, setEvaluacionDetalladaElementosNoEstructurales] = useState('');
   const [inspeccionNivel2, setInspeccionNivel2] = useState('');
+
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [selectedValue, setSelectedValue] = useState('');
+  const [accionPreguntas, setAccionPreguntas] = useState([]);  
 
   const handleGuardar = () => {
     Alert.alert(
@@ -80,74 +46,92 @@ const FormularioFema5 = ({ route, navigation }) => {
     );
   };
 
+  useEffect(() => {
+
+    const url = 'https://www.fema.somee.com/api/FemaCinco/accionPreguntas';   
+    const fetchAccionPreguntas = async () => {
+      try {
+        const response = await fetch(url,
+		{
+			method: 'GET',
+		}
+		);
+        if (!response.ok) {
+          throw new Error('Error en la red');
+        }
+        const result = await response.json();
+        setAccionPreguntas(result); 
+      } catch (error) {
+        setError(error);
+		console.log(error);    
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchAccionPreguntas();
+   
+  }, []);
+    
+
+  if (loading) {
+    return <ActivityIndicator size="large" color="#0000ff" />;
+  }
+
+  if (error) {
+    return (
+      <View>
+        <Text>Error: {error.message}</Text>
+      </View>
+    );
+  }
+
+  const accionPreguntas1 = accionPreguntas.filter(item => item.codAccionPregunta >= 1 && item.codAccionPregunta <= 4);
+  const accionPreguntas2 = accionPreguntas.filter(item => item.codAccionPregunta >= 5 && item.codAccionPregunta <= 8);
+
+const pregunta1 = accionPreguntas1.find(item => item.codAccionPregunta === 1);
+const pregunta2 = accionPreguntas2.find(item => item.codAccionPregunta === 5);
+
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Formulario FEMA P-154</Text>
       <Text style={styles.subtitle}>Acción requerida</Text>
 
-      <Text style={[styles.textoRojo, styles.subtitle1]}>
-       ¿Se requiere de una evaluación estructural más detallada?
+      <Text style={[styles.textoRojo, styles.subtitle1]}>       
+      <Text>{pregunta1.pregunta}</Text>
       </Text>
-      <CheckBox
-        title="Si, se desconoce el tipo de edificio según FEMA"
-        checked={checkBox1}
-        onPress={() => setCheckBox1(!checkBox1)}
-        containerStyle={styles.checkboxContainer}
-        textStyle={styles.checkboxText}
-      />
-      <CheckBox
-        title="Si, resultado menor que el límite"
-        checked={checkBox2}
-        onPress={() => setCheckBox2(!checkBox2)}
-        containerStyle={styles.checkboxContainer}
-        textStyle={styles.checkboxText}
-      />
-      <CheckBox
-        title="Si, otros peligros presentes"
-        checked={checkBox3}
-        onPress={() => setCheckBox3(!checkBox3)}
-        containerStyle={styles.checkboxContainer}
-        textStyle={styles.checkboxText}
-      />
-      <CheckBox
-        title="No"
-        checked={checkBox4}
-        onPress={() => setCheckBox4(!checkBox4)}
-        containerStyle={styles.checkboxContainer}
-        textStyle={styles.checkboxText}
-      />
 
-      <Text style={[styles.textoRojo, styles.subtitle1]}>
-         ¿Se requiere una evaluación detallada de elementos no estructurales?
+      <View style={styles.checkboxGrid}>
+        {accionPreguntas1.map((checkbox) => (
+          <View key={checkbox.codAccionPregunta} style={styles.checkboxContainer}>
+            <CheckBox
+              title={checkbox.respuesta}
+              checked={selectedCheckbox === checkbox.codAccionPregunta}
+              onPress={() => handleCheckboxChange(checkbox.codAccionPregunta)}
+              containerStyle={styles.checkbox}
+            />
+          </View>
+        ))}
+      </View>
+
+      <Text style={[styles.textoRojo, styles.subtitle1]}>       
+      <Text>{pregunta2.pregunta}</Text>
       </Text>
-      <CheckBox
-        title="Si, hay peligro de caída de elementos"
-        checked={checkBox5}
-        onPress={() => setCheckBox5(!checkBox5)}
-        containerStyle={styles.checkboxContainer}
-        textStyle={styles.checkboxText}
-      />
-      <CheckBox
-        title="No, existe amenaza de elementos no estructurales y deben ser mitigados, pero la evaluación detallada no es necesaria"
-        checked={checkBox6}
-        onPress={() => setCheckBox6(!checkBox6)}
-        containerStyle={styles.checkboxContainer}
-        textStyle={styles.checkboxText}
-      />
-      <CheckBox
-        title="No, no existe peligro de elementos no estructurales"
-        checked={checkBox7}
-        onPress={() => setCheckBox7(!checkBox7)}
-        containerStyle={styles.checkboxContainer}
-        textStyle={styles.checkboxText}
-      />
-      <CheckBox
-        title="No, se sabe"
-        checked={checkBox8}
-        onPress={() => setCheckBox8(!checkBox8)}
-        containerStyle={styles.checkboxContainer}
-        textStyle={styles.checkboxText}
-      />
+
+      <View style={styles.checkboxGrid}>
+        {accionPreguntas2.map((checkbox2) => (
+          <View key={checkbox2.codAccionPregunta} style={styles.checkboxContainer}>
+            <CheckBox
+              title={checkbox2.respuesta}
+              checked={selectedCheckbox2 === checkbox2.codAccionPregunta}
+              onPress={() => handleCheckboxChange2(checkbox2.codAccionPregunta)}
+              containerStyle={styles.checkbox}
+            />
+          </View>
+        ))}
+      </View>
+
+
 
 <View style={styles.inline}>
    <Text style={[styles.textoRojo, styles.subtitle1]}>
@@ -260,7 +244,6 @@ const styles = StyleSheet.create({
 });
 
 export default FormularioFema5;
-
 
 
 

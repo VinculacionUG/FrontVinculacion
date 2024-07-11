@@ -20,7 +20,7 @@ const FormularioFema2 = ({ navigation }) => {
     anoConstruccion,
     setAnoConstruccion,
     tiposuelo1,
-     setTiposuelo1,
+    setTiposuelo1,
     tipoocupacion1, 
     setTipoocupacion1,
     areaTotalDePiso, 
@@ -175,7 +175,7 @@ const FormularioFema2 = ({ navigation }) => {
         <Text style={styles.inputLabel}>N° de Pisos: Sup:</Text>
         <Picker
           style={styles.smallPicker}
-          selectedValue={numeroPiso}
+          selectedValue={numeroPiso || '1'}
           onValueChange={(itemValue) => setNumeroPiso(itemValue)}
         >
           {Array.from({ length: 29 }, (_, i) => (
@@ -231,17 +231,21 @@ const FormularioFema2 = ({ navigation }) => {
             setAnoCodigo(numericValue);
           }}
         />
-        <View style={{ width: 10 }} />
-        <Text style={styles.inputLabel}>Ampliación:</Text>
-        <Picker
-          style={styles.smallPicker}
-          selectedValue={ampliacion}
-          onValueChange={(itemValue) => setAmpliacion(itemValue)}
-        >
-          <Picker.Item label="Sí" value="si" />
-          <Picker.Item label="No" value="no" />
-        </Picker>
-      </View>
+      <View style={{ width: 10 }} />
+      <Text style={styles.inputLabel}>Ampliación:</Text>
+      <Picker
+        style={styles.smallPicker}
+        selectedValue={ampliacion}
+        onValueChange={(itemValue) => {
+          setAmpliacion(itemValue);
+        }}
+      >
+        <Picker.Item label="Sí" value="si" />
+        <Picker.Item label="No" value="no" />
+      </Picker>
+    </View>
+
+
 
       <View style={styles.inputContainer}>
         <Text style={styles.inputLabel }>Año de Construcción:</Text>
@@ -287,15 +291,17 @@ const FormularioFema2 = ({ navigation }) => {
       <Picker
         style={styles.smallPicker}
         selectedValue={selectedValuetipoocupacion}
-        onValueChange={(itemValue) => setSelectedValueTipoOcupacion(itemValue)}
+        onValueChange={(itemValue) => {
+          setSelectedValueTipoOcupacion(itemValue);
+          setTipoocupacion1(itemValue); // Guardar el valor seleccionado en tipoocupacion1
+        }}
       >
-        { tipoocupacion.map((item, index) => (
+        {tipoocupacion.map((item, index) => (
           <Picker.Item label={item.descripcion} value={item.descripcion} key={index} />
         ))}
       </Picker>
-      {/*  <Text style={styles.selected}>Seleccionado: {selectedValue}</Text> */}
+      {/* <Text style={styles.selected}>Seleccionado: {selectedValuetipoocupacion}</Text> */}
     </View>
-
 
     <View style={styles.inputContainer}>
       <Text style={styles.inputLabel}>Tipo de Suelo:</Text>
@@ -303,13 +309,16 @@ const FormularioFema2 = ({ navigation }) => {
       <Picker
         style={styles.smallPicker}
         selectedValue={selectedValuetipoSuelo}
-        onValueChange={(itemValue) => setSelectedValueTipoSuelo(itemValue)}
-      >  setTiposuelo1
+        onValueChange={(itemValue) => {
+          setSelectedValueTipoSuelo(itemValue);
+          setTiposuelo1(itemValue); // Guardar el valor seleccionado en tiposuelo1
+        }}
+      >
         {tipoSuelo.map((item, index) => (
           <Picker.Item label={item.descripcion} value={item.descripcion} key={index} />
         ))}
       </Picker>
-      {/*  <Text style={styles.selected}>Seleccionado: {selectedValue}</Text> */}
+      {/* <Text style={styles.selected}>Seleccionado: {selectedValue}</Text> */}
     </View>
         <View style={styles.inputContainer}>
   <Text style={styles.inputLabel}>Comentario:</Text>
@@ -338,8 +347,6 @@ const FormularioFema2 = ({ navigation }) => {
     );
   };
 
-  
-  
   const styles = StyleSheet.create({
     container: {
       flexGrow: 1,

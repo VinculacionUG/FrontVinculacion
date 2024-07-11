@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity, CheckBox } from 'react-native';
+import React, { useEffect, useState } from 'react';
+//import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity, CheckBox } from 'react-native';
+import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator,CheckBox } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const FormularioFema3 = ({ route, navigation }) => {
 
-
-  const [tipoEdificacion, setTipoEdificacion] = useState('');
+  const [tipoEdificacion, setTipoEdificacion] = useState([]);
   const [subTipo, setSubTipo] = useState('');
   const [resultadoBase, setResultadoBase] = useState('');
   const [irregularidadVerticalSevera, setIrregularidadVerticalSevera] = useState('');
@@ -40,7 +40,7 @@ const FormularioFema3 = ({ route, navigation }) => {
       case 'MH':
         return ['MH'];
       default:
-        return [];
+        return [''];
     }
   };
 
@@ -56,42 +56,7 @@ const FormularioFema3 = ({ route, navigation }) => {
 
   const handleNext = () => {
     navigation.navigate('FormularioFema4', {
-      direccion,
-      zip,
-      otrasIdentificaciones,
-      nombreEdificio,
-      uso,
-      latitud,
-      longitud,
-      inspector,
-      fecha,
-      hora,
-      files1,
-      files2,
-      numPisos,
-      sup,
-      info,
-      anioConstruccion,
-      areaTotalPiso,
-      anioCodigo,
-      anioConstruccion2,
-      ampliacion,
-      ocupacion,
-      tipoSuelo,
-      comentario,
-      tipoEdificacion,
-      subTipo,
-      resultadoBase,
-      irregularidadVerticalSevera,
-      irregularidadVerticalModerada,
-      plantaIrregular,
-      preCodigoSismico,
-      postCodigoSismico,
-      sueloTipoAB,
-      sueloTipoE1a3,
-      sueloTipoEMayor3,
-      resultadoSmin,
-      resultadoFinal,
+
     });
   };
   
@@ -102,40 +67,83 @@ const FormularioFema3 = ({ route, navigation }) => {
   const calcularResultadoFinal = () => {
     setResultadoFinal('Resultado calculado');
   };
+  
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [selectedValue, setSelectedValue] = useState('');
+  const [selectedValuetipoEdificacion, setSelectedValueTipoEdificacion] = useState('');
+  
+  useEffect(() => {
+
+    const url = 'https://www.fema.somee.com/Users/TipoEdificaciones';
+    const fetchTipoEdificacion = async () => {
+      try {
+        const response = await fetch(url,
+		{
+			method: 'GET',
+		}
+		);
+        if (!response.ok) {
+          throw new Error('Error en la red');
+        }
+        const result = await response.json();
+        setTipoEdificacion(result);
+		//console.log(result);    
+      } catch (error) {
+        setError(error);
+		console.log(error);    
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchTipoEdificacion();
+  }, []);
+
+  if (loading) {
+    return <ActivityIndicator size="large" color="#0000ff" />;
+  }
+
+  if (error) {
+    return (
+      <View>
+        <Text>Error: {error.message}</Text>
+      </View>
+    );
+  }
+
+ 
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Formulario FEMA P-154</Text>
       <Text style={styles.subtitle}>Resultado Base, Modificadores y Resultado Final de Nivel 1 de Análisis, SL1</Text>
-      <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>Tipo de Edificación:</Text>
-        <Picker
-          style={styles.picker}
-          selectedValue={tipoEdificacion}
-          onValueChange={handleTipoEdificacionChange}
-        >
-          <Picker.Item label="Seleccione..." value="" />
-          <Picker.Item label="W" value="W" />
-          <Picker.Item label="S" value="S" />
-          <Picker.Item label="C" value="C" />
-          <Picker.Item label="PC" value="PC" />
-          <Picker.Item label="RM" value="RM" />
-          <Picker.Item label="URM" value="URM" />
-          <Picker.Item label="MH" value="MH" />
-        </Picker>
-        <Text style={[styles.inputLabel, { marginLeft: 8 }]}>Sub Tipo:</Text>
+
+    <View style={styles.inputContainer}>
+      <Text style={styles.inputLabel}>Tipo de Edificación:</Text>
+      <Picker
+        style={[styles.input, styles.picker]}
+        selectedValue={selectedValuetipoEdificacion}
+        onValueChange={(itemValue) => setSelectedValueTipoEdificacion(itemValue)}
+      >
+        {tipoEdificacion.map((item, index) => (
+          <Picker.Item label={item.descripcion} value={item.descripcion} key={index} />
+        ))}
+      </Picker>
+      {/*  <Text style={styles.selected}>Seleccionado: {selectedValue}</Text> */}
+	       <Text style={[styles.inputLabel, { marginLeft: 8 }]}>Sub Tipo:</Text>
         <Picker
           style={styles.picker}
           selectedValue={subTipo}
           onValueChange={(itemValue) => setSubTipo(itemValue)}
         >
           <Picker.Item label="Seleccione..." value="" />
-          {getSubTipos(tipoEdificacion).map((subTipo) => (
+          {getSubTipos(selectedValuetipoEdificacion).map((subTipo) => (
             <Picker.Item key={subTipo} label={subTipo} value={subTipo} />
           ))}
-        </Picker>
-      </View>
-
+        </Picker>  	  
+    </View>
+	
+	
       <View style={styles.squareContainer}>
         <View style={styles.resultContainer}>
           <Text style={styles.resultLabel}>RESULTADO BASE:</Text>
