@@ -1,131 +1,149 @@
-//import React, { useState } from 'react';
-import React, { useEffect, useState } from 'react';
-//import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState, useContext } from 'react';
 import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { CheckBox } from 'react-native-elements';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { AppContext } from './AppContext'; 
 
-const FormularioFema4 = ({ route, navigation }) => {
-
+const FormularioFema4 = ({ navigation }) => {
   const [revisionExterior, setRevisionExterior] = useState([]);
   const [revisionInterior, setRevisionInterior] = useState([]);
-  const [revisionPlanos, setRevisionPlanos] = useState('');
-  const [fuenteTipoSuelo, setFuenteTipoSuelo] = useState('');
-  const [fuentePeligrosGeologicos1, setFuentePeligrosGeologicos1] = useState('');
-  const [fuentePeligrosGeologicos2, setFuentePeligrosGeologicos2] = useState('');
-  const [evaluacionDetallada, setEvaluacionDetallada] = useState(false);
-  const [checkBox1, setCheckBox1] = useState(false);
-  const [checkBox2, setCheckBox2] = useState(false);
-  const [checkBox3, setCheckBox3] = useState(false);
-  const [checkBox4, setCheckBox4] = useState(false);
   const [otrosPeligros, setOtrosPeligros] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [selectedValuerevisionExterior, setSelectedValueRevisionExterior] = useState('');
+  const [selectedValuerevisionInterior, setSelectedValueRevisionInterior] = useState('');
+  
+  const {
+    exterior, 
+    setExterior,
+    interior, 
+    setInterior,
+    revisionPlanos, 
+    setRevisionPlanos,
+    fuenteDelTipoDeSuelo,
+    setFuenteDelTipoDeSuelo,
+    fuenteDePeligrosGeologicos,
+    setFuenteDePeligrosGeologicos,
+    contactoDeLaPersona, 
+    setContactoDeLaPersona,
+    otrosPeligros1, 
+    setOtrosPeligros1,
+  } = useContext(AppContext);
 
   const handleNext = () => {
-    navigation.navigate('FormularioFema5', {
+    console.log('Datos guardados:', {
+      exterior, 
+      interior, 
+      revisionPlanos, 
+      fuenteDelTipoDeSuelo, 
+      fuenteDePeligrosGeologicos,
+      contactoDeLaPersona, 
+      otrosPeligros1,
     });
+    navigation.navigate('FormularioFema5');
   };
-
 
   const [selectedCheckbox, setSelectedCheckbox] = useState(null);
   const handleCheckboxChange = (codOtrosPeligorsSec) => {
+    const peligroAsignado = asignarPeligro(codOtrosPeligorsSec);
     setSelectedCheckbox(codOtrosPeligorsSec);
+    setOtrosPeligros1(peligroAsignado); // Actualiza la variable otrosPeligros1
   };
 
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [selectedValue, setSelectedValue] = useState('');
-  const [selectedValuerevisionExterior, setSelectedValueRevisionExterior] = useState('');
-  const [selectedValuerevisionInterior, setSelectedValueRevisionInterior] = useState('');
-  const [selectotrosPeligros, setSelectedValueOtrosPeligros] = useState('');
+  function asignarPeligro(codigoPeligro) {
+    let otrosPeligros1;
 
+    switch (codigoPeligro) {
+      case 1:
+        otrosPeligros1 = 'Posible golpeteo entre edificios';
+        break;
+      case 2:
+        otrosPeligros1 = 'Riesgos de caídas de edificios adyacentes más altos';
+        break;
+      case 3:
+        otrosPeligros1 = 'Peligro geológico o suelo tipo F';
+        break;
+      case 4:
+        otrosPeligros1 = 'Daños significativos/deterioro del sistema estructural';
+        break;
+      default:
+        otrosPeligros1 = 'Código de peligro no válido';
+    }
+
+    return otrosPeligros1;
+  }
 
   useEffect(() => {
-
     const url = 'https://www.fema.somee.com/api/FemaCuatro/consultarEvaluacionExterior';
 
     const fetchRevisionExterior = async () => {
       try {
-        const response = await fetch(url,
-		{
-			method: 'GET',
-		}
-		);
+        const response = await fetch(url, { method: 'GET' });
         if (!response.ok) {
           throw new Error('Error en la red');
         }
         const result = await response.json();
-        setRevisionExterior(result);
-		//console.log(result);    
+        setRevisionExterior(result);    
       } catch (error) {
         setError(error);
-		console.log(error);    
+        console.log(error);    
       } finally {
         setLoading(false);
       }
     };
     fetchRevisionExterior();
 
-
-
-    // URL del servicio GET
-      const url2 = 'https://www.fema.somee.com/api/FemaCuatro/consultarEvaluacionInterior';
-      const fetchRevisionInterior = async () => {
-        try {
-          const response = await fetch(url2,
-      {
-        method: 'GET',
-      }
-      );
-          if (!response.ok) {
-            throw new Error('Error en la red');
-          }
-          const result = await response.json();
-          setRevisionInterior(result);
-      //console.log(result);    
-        } catch (error) {
-          setError(error);
-      console.log(error);    
-        } finally {
-          setLoading(false);
-        }
-      };
-      fetchRevisionInterior();
-  
- 
-    // URL del servicio GET
-    const url3 = 'https://www.fema.somee.com/api/FemaCuatro/consultarFemaOtrosPeligros';
-    const fetchOtrosPeligros = async () => {
+    const url2 = 'https://www.fema.somee.com/api/FemaCuatro/consultarEvaluacionInterior';
+    const fetchRevisionInterior = async () => {
       try {
-        const response = await fetch(url3,
-    {
-      method: 'GET',
-    }
-    );
+        const response = await fetch(url2, { method: 'GET' });
         if (!response.ok) {
           throw new Error('Error en la red');
         }
         const result = await response.json();
-        setOtrosPeligros(result);
-    //console.log(result);    
+        setRevisionInterior(result);    
       } catch (error) {
         setError(error);
-    console.log(error);    
+        console.log(error);    
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchRevisionInterior();
+
+    const url3 = 'https://www.fema.somee.com/api/FemaCuatro/consultarFemaOtrosPeligros';
+    const fetchOtrosPeligros = async () => {
+      try {
+        const response = await fetch(url3, { method: 'GET' });
+        if (!response.ok) {
+          throw new Error('Error en la red');
+        }
+        const result = await response.json();
+        setOtrosPeligros(result);  
+      } catch (error) {
+        setError(error);
+        console.log(error);    
       } finally {
         setLoading(false);
       }
     };
     fetchOtrosPeligros();
-
- 
-
   }, []);
 
+  const handleExteriorValueChange = (itemValue) => {
+    setSelectedValueRevisionExterior(itemValue);
+    setExterior(itemValue); // Actualiza la variable exterior
+  };
+
+  const handleInteriorValueChange = (itemValue) => {
+    setSelectedValueRevisionInterior(itemValue);
+    setInterior(itemValue); // Actualiza la variable interior
+  };
 
   if (loading) {
     return <ActivityIndicator size="large" color="#0000ff" />;
   }
-
   if (error) {
     return (
       <View>
@@ -135,42 +153,37 @@ const FormularioFema4 = ({ route, navigation }) => {
   }
 
   return (
-
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Formulario FEMA P-154</Text>
       <Text style={[styles.subtitle, styles.blackText, styles.centerText]}>Extensión de la revisión</Text>
 
+      <View style={styles.row}>
+        <Text style={styles.inputLabel}>Exterior:</Text>
+        <View style={{ width: 65 }} />
+        <Picker
+          style={[styles.input, styles.picker]}
+          selectedValue={selectedValuerevisionExterior}
+          onValueChange={handleExteriorValueChange} // Utiliza el nuevo método
+        >
+          {revisionExterior.map((item, index) => (
+            <Picker.Item label={item.descripcion} value={item.descripcion} key={index} />
+          ))}
+        </Picker>
+      </View>
 
-
-    <View style={styles.row}>
-      <Text style={styles.inputLabel}>Exterior:</Text>
-      <View style={{ width: 65 }} /> 
-      <Picker
-        style={[styles.input, styles.picker]}
-        selectedValue={selectedValuerevisionExterior}
-        onValueChange={(itemValue) => setSelectedValueRevisionExterior(itemValue)}
-      >
-        {revisionExterior.map((item, index) => (
-          <Picker.Item label={item.descripcion} value={item.descripcion} key={index} />
-        ))}
-      </Picker>
-    </View>
-
-
-    <View style={styles.row}>
-      <Text style={styles.inputLabel}>Interior:</Text>
-      <View style={{ width: 65 }} /> 
-      <Picker
-        style={[styles.input, styles.picker]}
-        selectedValue={selectedValuerevisionInterior}
-        onValueChange={(itemValue) => setSelectedValueRevisionInterior(itemValue)}
-      >
-        {revisionInterior.map((item, index) => (
-          <Picker.Item label={item.descripcion} value={item.descripcion} key={index} />
-        ))}
-      </Picker>
-    </View>
-	  
+      <View style={styles.row}>
+        <Text style={styles.inputLabel}>Interior:</Text>
+        <View style={{ width: 65 }} /> 
+        <Picker
+          style={[styles.input, styles.picker]}
+          selectedValue={selectedValuerevisionInterior}
+          onValueChange={handleInteriorValueChange} // Utiliza el nuevo método
+        >
+          {revisionInterior.map((item, index) => (
+            <Picker.Item label={item.descripcion} value={item.descripcion} key={index} />
+          ))}
+        </Picker>
+      </View>
 
       <View style={styles.row}>
         <Text style={styles.inputLabel}>Revisión planos:</Text>
@@ -189,8 +202,8 @@ const FormularioFema4 = ({ route, navigation }) => {
         <Text style={styles.inputLabel}>Fuente del tipo de suelo:</Text>
         <TextInput
           style={styles.input}
-          value={fuenteTipoSuelo}
-          onChangeText={(text) => setFuenteTipoSuelo(text)}
+          value={fuenteDelTipoDeSuelo}
+          onChangeText={(text) => setFuenteDelTipoDeSuelo(text)}
         />
       </View>
 
@@ -198,8 +211,8 @@ const FormularioFema4 = ({ route, navigation }) => {
         <Text style={styles.inputLabel}>Fuente de Peligros Geológicos</Text>
         <TextInput
           style={styles.input}
-          value={fuentePeligrosGeologicos1}
-          onChangeText={(text) => setFuentePeligrosGeologicos1(text)}
+          value={fuenteDePeligrosGeologicos}
+          onChangeText={(text) => setFuenteDePeligrosGeologicos(text)}
         />
       </View>
 
@@ -207,8 +220,8 @@ const FormularioFema4 = ({ route, navigation }) => {
         <Text style={styles.inputLabel}>Contacto de la Persona</Text>
         <TextInput
           style={styles.input}
-          value={fuentePeligrosGeologicos2}
-          onChangeText={(text) => setFuentePeligrosGeologicos2(text)}
+          value={contactoDeLaPersona}
+          onChangeText={(text) => setContactoDeLaPersona(text)}
         />
       </View>
 
@@ -216,34 +229,34 @@ const FormularioFema4 = ({ route, navigation }) => {
         <Text style={[styles.subtitle, styles.centerText]}>Otros Peligros</Text>
         <Text style={[styles.subtitle, styles.boldRedText, styles.centerText]}>¿Hay peligros que desencadenan una evaluación estructural detallada?</Text>
 
-      <View style={styles.checkboxContainer}>
-        {otrosPeligros.map((checkbox) => (
-          <View key={checkbox.codOtrosPeligorsSec} style={styles.checkboxContainer}>
-            <CheckBox
-              title={checkbox.respuesta}
-              checked={selectedCheckbox === checkbox.codOtrosPeligorsSec}
-              onPress={() => handleCheckboxChange(checkbox.codOtrosPeligorsSec)}
-              containerStyle={styles.checkboxContainer}
-              textStyle={styles.checkboxText}
-            />
-          </View>
-        ))}
+        <View style={styles.checkboxContainer}>
+          {otrosPeligros.map((checkbox) => (
+            <View key={checkbox.codOtrosPeligorsSec} style={styles.checkboxContainer}>
+              <CheckBox
+                title={checkbox.respuesta}
+                checked={selectedCheckbox === checkbox.codOtrosPeligorsSec}
+                onPress={() => handleCheckboxChange(checkbox.codOtrosPeligorsSec)}
+                containerStyle={styles.checkboxContainer}
+                textStyle={styles.checkboxText}
+              />
+            </View>
+          ))}
+        </View>
+        
       </View>
 
+      <View style={{ marginBottom: 50 }}></View> {/* Espacio de 1 centímetro entre los CheckBox y los botones */}
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.prevButton} onPress={() => navigation.goBack()}>
+          <MaterialCommunityIcons name="arrow-left" size={24} color="white" />
+          <Text style={styles.buttonText}>Regresar</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
+          <Text style={styles.buttonText}>Siguiente</Text>
+          <MaterialCommunityIcons name="arrow-right" size={24} color="white" />
+        </TouchableOpacity>
       </View>
-        <View style={{ marginBottom: 50 }}></View> {/* Espacio de 1 centímetro entre los CheckBox y los botones */}
-        
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.prevButton} onPress={() => navigation.goBack()}>
-            <MaterialCommunityIcons name="arrow-left" size={24} color="white" />
-            <Text style={styles.buttonText}>Regresar</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
-            <Text style={styles.buttonText}>Siguiente</Text>
-            <MaterialCommunityIcons name="arrow-right" size={24} color="white" />
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
+    </ScrollView>
   );
 };
 
@@ -359,6 +372,9 @@ const styles = StyleSheet.create({
 });
 
 export default FormularioFema4;
+
+
+
 
           
   

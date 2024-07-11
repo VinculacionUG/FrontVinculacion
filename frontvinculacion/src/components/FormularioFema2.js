@@ -9,8 +9,6 @@ const FormularioFema2 = ({ navigation }) => {
   const [ocupacion, setOcupacion] = useState([]);
   const [tipoocupacion, setTipoocupacion] = useState([]);
   const [tipoSuelo, setTipoSuelo] = useState([]);
-
-
   
   const {
     numeroPiso, 
@@ -32,8 +30,7 @@ const FormularioFema2 = ({ navigation }) => {
     anoDeContruccion,
     setAnoDeContruccion,
     comentario,
-     setComentario,
-
+    setComentario,
   } = useContext(AppContext);
 
   const handleNext = () => {
@@ -53,9 +50,6 @@ const FormularioFema2 = ({ navigation }) => {
       });
 
       navigation.navigate('FormularioFema3');
- //   } else {
-    //  Alert.alert('Error', 'Por favor completa todos los campos y adjunta ambas imágenes antes de continuar.');
-   // }
   };
   const[selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const handleCheckboxChange = (codOcupacion) => {
@@ -74,7 +68,6 @@ const FormularioFema2 = ({ navigation }) => {
  
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
- // const [selectedValue, setSelectedValue] = useState('');
   const [selectedValuetipoocupacion, setSelectedValueTipoOcupacion] = useState('');
   const [selectedValuetipoSuelo, setSelectedValueTipoSuelo] = useState('');
 
