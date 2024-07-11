@@ -51,8 +51,8 @@ const SignIn = () => {
         setUserData(responseData.userInfo); // Almacenar los datos del usuario en el estado
 
         //console.log('Datos del usuario:', responseData.userInfo); // Mostrar los datos por consola
-        console.log('Nombre del usuario:', responseData.userInfo.nombre); // Mostrar los datos por consola
-        console.log('Apellido del usuario:', responseData.userInfo.apellido); // Mostrar los datos por consola
+        // console.log('Nombre del usuario:', responseData.userInfo.nombre); // Mostrar los datos por consola
+        // console.log('Apellido del usuario:', responseData.userInfo.apellido); // Mostrar los datos por consola
 
         navigation.navigate('Dashboard');
       } else {
