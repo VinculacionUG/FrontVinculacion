@@ -30,8 +30,11 @@ const FormularioFema = ({ navigation }) => {
     setHora,
   } = useContext(AppContext);
 
+  const [errors, setErrors] = useState({});
+
   const handleNext = () => {
-    if (validateForm()) {
+    const missingFields = validateForm();
+    if (missingFields.length === 0) {
       // Aquí puedes guardar los datos o hacer lo necesario antes de navegar
       console.log('Datos guardados:', {
         adjuntarFotografica,
@@ -49,26 +52,28 @@ const FormularioFema = ({ navigation }) => {
 
       navigation.navigate('FormularioFema2');
     } else {
-      Alert.alert('Error', 'Por favor completa todos los campos y adjunta ambas imágenes antes de continuar.');
+      const errorMessages = {};
+      missingFields.forEach(field => {
+        errorMessages[field] = true; // Ahora solo guardamos el estado de error como true
+      });
+      setErrors(errorMessages);
     }
   };
 
   const validateForm = () => {
-    return (
-      adjuntarFotografica !== null &&
-      adjuntarGrafico !== null &&
-      direccion !== '' &&
-      zip !== '' &&
-      otrasIdentificaciones !== '' &&
-      nombreEdificio !== '' &&
-      uso !== '' &&
-      latitud !== '' &&
-      longitud !== '' &&
-      fecha.month !== '' &&
-      fecha.day !== '' &&
-      fecha.year !== '' &&
-      hora !== ''
-    );
+    const missingFields = [];
+    if (!adjuntarFotografica) missingFields.push('Fotografía');
+    if (!adjuntarGrafico) missingFields.push('Gráfico');
+    if (!direccion) missingFields.push('Dirección');
+    if (!zip) missingFields.push('ZIP');
+    if (!otrasIdentificaciones) missingFields.push('Otras Identificaciones');
+    if (!nombreEdificio) missingFields.push('Nombre del Edificio');
+    if (!uso) missingFields.push('Uso');
+    if (!latitud) missingFields.push('Latitud');
+    if (!longitud) missingFields.push('Longitud');
+    if (!fecha.month || !fecha.day || !fecha.year) missingFields.push('Fecha');
+    if (!hora) missingFields.push('Hora');
+    return missingFields;
   };
 
   const pickImage = async (setImage) => {
@@ -117,14 +122,14 @@ const FormularioFema = ({ navigation }) => {
           <View style={styles.fileNameContainer}>
             {adjuntarFotografica ? (
               <>
-                {/* <Text style={styles.fileNameText}>{adjuntarFotografica}</Text>, */}
                 <Text style={styles.fileNameText}>Imagen Seleccionada: </Text>
                 <Image source={{ uri: adjuntarFotografica }} style={styles.image} />
               </>
-            )  : (
+            ) : (
               <Text>No se eligió ningún archivo</Text>
             )}
           </View>
+          {errors.Fotografía && <MaterialCommunityIcons name="alert-circle" size={24} color="red" />}
         </View>
       </View>
 
@@ -137,7 +142,6 @@ const FormularioFema = ({ navigation }) => {
           <View style={styles.fileNameContainer}>
             {adjuntarGrafico ? (
               <>
-                {/* <Text style={styles.fileNameText}>{adjuntarGrafico}</Text> */}
                 <Text style={styles.fileNameText}>Gráfico Seleccionado: </Text>
                 <Image source={{ uri: adjuntarGrafico }} style={styles.image} />
               </>
@@ -145,6 +149,7 @@ const FormularioFema = ({ navigation }) => {
               <Text>No se eligió ningún archivo</Text>
             )}
           </View>
+          {errors.Gráfico && <MaterialCommunityIcons name="alert-circle" size={24} color="red" />}
         </View>
       </View>
 
@@ -155,6 +160,7 @@ const FormularioFema = ({ navigation }) => {
           value={direccion}
           onChangeText={(text) => setDireccion(text)}
         />
+        {errors.Dirección && <MaterialCommunityIcons name="alert-circle" size={24} color="red" />}
       </View>
 
       <View style={styles.inputContainer}>
@@ -168,6 +174,7 @@ const FormularioFema = ({ navigation }) => {
             setZip(numericValue);
           }}
         />
+        {errors.ZIP && <MaterialCommunityIcons name="alert-circle" size={24} color="red" />}
       </View>
 
       <View style={styles.inputContainer}>
@@ -177,6 +184,7 @@ const FormularioFema = ({ navigation }) => {
           value={otrasIdentificaciones}
           onChangeText={(text) => setOtrasIdentificaciones(text)}
         />
+        {errors['Otras Identificaciones'] && <MaterialCommunityIcons name="alert-circle" size={24} color="red" />}
       </View>
 
       <View style={styles.inputContainer}>
@@ -186,6 +194,7 @@ const FormularioFema = ({ navigation }) => {
           value={nombreEdificio}
           onChangeText={(text) => setNombreEdificio(text)}
         />
+        {errors['Nombre del Edificio'] && <MaterialCommunityIcons name="alert-circle" size={24} color="red" />}
       </View>
 
       <View style={styles.inputContainer}>
@@ -195,6 +204,7 @@ const FormularioFema = ({ navigation }) => {
           value={uso}
           onChangeText={(text) => setUso(text)}
         />
+        {errors.Uso && <MaterialCommunityIcons name="alert-circle" size={24} color="red" />}
       </View>
 
       <View style={styles.inputContainerRow}>
@@ -205,6 +215,7 @@ const FormularioFema = ({ navigation }) => {
             value={latitud}
             onChangeText={(text) => setLatitud(text)}
           />
+          {errors.Latitud && <MaterialCommunityIcons name="alert-circle" size={24} color="red" />}
         </View>
         <View style={[styles.dateInputContainer, { marginLeft: -50 }]}>
           <Text style={[styles.inputLabel, { marginRight: -30 }]}>Longitud:</Text>
@@ -213,6 +224,7 @@ const FormularioFema = ({ navigation }) => {
             value={longitud}
             onChangeText={(text) => setLongitud(text)}
           />
+          {errors.Longitud && <MaterialCommunityIcons name="alert-circle" size={24} color="red" />}
         </View>
       </View>
 
@@ -237,13 +249,14 @@ const FormularioFema = ({ navigation }) => {
           />
           <TextInput
             style={[styles.input, styles.dateInput]}
-            placeholder="AAAA"
+            placeholder="YYYY"
             maxLength={4}
             keyboardType="numeric"
             value={fecha.year}
             onChangeText={(text) => setFecha(prevState => ({ ...prevState, year: text }))}
           />
         </View>
+        {errors.Fecha && <MaterialCommunityIcons name="alert-circle" size={24} color="red" />}
       </View>
 
       <View style={styles.inputContainer}>
@@ -253,6 +266,7 @@ const FormularioFema = ({ navigation }) => {
           value={hora}
           onChangeText={(text) => setHora(text)}
         />
+        {errors.Hora && <MaterialCommunityIcons name="alert-circle" size={24} color="red" />}
       </View>
 
       <View style={styles.buttonContainer}>
@@ -392,6 +406,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginBottom: 16,
   },
+  errorText: {
+    color: 'red',
+    marginTop: 5,
+  },
 });
 
 export default FormularioFema;
+
