@@ -51,7 +51,9 @@ const FormularioFema2 = ({ navigation }) => {
 
       navigation.navigate('FormularioFema3');
   };
-  const[selectedCheckboxes, setSelectedCheckboxes] = useState([]);
+   
+  const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
+
   const handleCheckboxChange = (codOcupacion) => {
     setSelectedCheckboxes(prevState => {
       const updatedCheckboxes = prevState.includes(codOcupacion)
@@ -65,9 +67,9 @@ const FormularioFema2 = ({ navigation }) => {
     });
   };
 
- 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedValue, setSelectedValue] = useState('');
   const [selectedValuetipoocupacion, setSelectedValueTipoOcupacion] = useState('');
   const [selectedValuetipoSuelo, setSelectedValueTipoSuelo] = useState('');
 
@@ -77,10 +79,10 @@ const FormularioFema2 = ({ navigation }) => {
     const fetchTipoocupacion = async () => {
       try {
         const response = await fetch(url,
-		{
-			method: 'GET',
-		}
-		);
+          {
+            method: 'GET',
+          }
+        );
         if (!response.ok) {
           throw new Error('Error en la red');
         }
@@ -89,7 +91,7 @@ const FormularioFema2 = ({ navigation }) => {
 		//console.log(result);    
       } catch (error) {
         setError(error);
-		console.log(error);    
+        console.log(error);
       } finally {
         setLoading(false);
       }
@@ -100,19 +102,19 @@ const FormularioFema2 = ({ navigation }) => {
     const fetchTipoSuelo = async () => {
       try {
         const response = await fetch(url2,
-		{
-			method: 'GET',
-		}
-		);
+          {
+            method: 'GET',
+          }
+        );
         if (!response.ok) {
           throw new Error('Error en la red');
         }
         const result = await response.json();
         setTipoSuelo(result);
-		//console.log(result);    
+        //console.log(result);    
       } catch (error) {
         setError(error);
-		console.log(error);    
+        console.log(error);
       } finally {
         setLoading(false);
       }
@@ -123,19 +125,21 @@ const FormularioFema2 = ({ navigation }) => {
     const fetchOcupacion = async () => {
       try {
         const response = await fetch(url3,
-		{
-			method: 'GET',
-		}
-		);
+          {
+            method: 'GET',
+          }
+        );
         if (!response.ok) {
           throw new Error('Error en la red');
         }
         const result = await response.json();
         setOcupacion(result);
-		//console.log(result);    
+        //console.log(result);    
+        //console.log(ocupacion);    
+
       } catch (error) {
         setError(error);
-		console.log(error);    
+        console.log(error);
       } finally {
         setLoading(false);
       }
@@ -144,6 +148,8 @@ const FormularioFema2 = ({ navigation }) => {
 
 
   }, []);
+
+  //console.log(ocupacion);    
 
 
   if (loading) {
@@ -157,9 +163,10 @@ const FormularioFema2 = ({ navigation }) => {
       </View>
     );
   }
+
   const selectedDescriptions = ocupacion
-  .filter(checkbox => selectedCheckboxes.includes(checkbox.codOcupacion))
-  .map(checkbox => checkbox.descripcion);
+    .filter(checkbox => selectedCheckboxes.includes(checkbox.codOcupacion))
+    .map(checkbox => checkbox.descripcion);
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -175,7 +182,7 @@ const FormularioFema2 = ({ navigation }) => {
           <Picker.Item key={i + 1} label={`${i + 1}`} value={`${i + 1}`} />
           ))}
         </Picker>
-        
+
         <Text style={[styles.inputLabel, styles.infLabel]}>Inf:</Text>
         <Picker
           style={styles.smallPicker}
@@ -190,7 +197,7 @@ const FormularioFema2 = ({ navigation }) => {
 
       <View style={styles.inputContainer}>
         <Text style={[styles.inputLabel, { height: 40, marginRight: 2 }]}>Año Construcción:</Text>
-        <View style={{ width: 5, height: 40 }} /> 
+        <View style={{ width: 5, height: 40 }} />
         <TextInput
           style={[styles.input, { width: 50, height: 40 }]}
           value={anoConstruccion}
@@ -215,7 +222,7 @@ const FormularioFema2 = ({ navigation }) => {
 
       <View style={styles.inputContainer}>
         <Text style={styles.inputLabel}>Año de código:</Text>
-        <View style={{ width: 5 }} /> 
+        <View style={{ width: 5 }} />
         <TextInput
           style={[styles.input, { width: 0 }]} 
           value={anoCodigo}
@@ -241,8 +248,8 @@ const FormularioFema2 = ({ navigation }) => {
 
 
       <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel }>Año de Construcción:</Text>
-       
+        <Text style={styles.inputLabel}>Año de Construcción:</Text>
+
         <TextInput
           //style={[styles.input, { width: 20, height: 20 }]}
           style={styles.inputText}
@@ -254,23 +261,27 @@ const FormularioFema2 = ({ navigation }) => {
           maxLength={4}
         />
       </View>
- {/*   */}
+      {/*   */}
 
- <Text style={[styles.subtitle, styles.centerText]}>Ocupación:</Text>
-    <Text style={[styles.subtitle, styles.boldRedText, styles.centerText]}></Text>
- 
-    <View style={styles.checkboxGrid}>
+      <Text style={[styles.subtitle, styles.centerText]}>Ocupación:</Text>
+      <Text style={[styles.subtitle, styles.boldRedText, styles.centerText]}></Text>
+
+      <View style={styles.checkboxGrid}>
         {ocupacion.map((checkbox) => (
           <View key={checkbox.codOcupacion} style={styles.checkboxContainer}>
             <CheckBox
               title={checkbox.descripcion}
-              checked={selectedCheckboxes === checkbox.codOcupacion}
+              checked={selectedCheckboxes.includes(checkbox.codOcupacion)}
               onPress={() => handleCheckboxChange(checkbox.codOcupacion)}
               containerStyle={styles.checkbox}
+              textStyle={styles.checkboxLabel}
+              checkedIcon={<MaterialCommunityIcons name="checkbox-marked" size={24} color="green" />}
+              uncheckedIcon={<MaterialCommunityIcons name="checkbox-blank-outline" size={24} color="gray" />}
             />
           </View>
         ))}
       </View>
+
       {selectedCheckboxes !== null && (
         <Text style={styles.resultado}>
           Seleccionaste: {selectedDescriptions.join(', ')}
