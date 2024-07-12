@@ -1,163 +1,127 @@
-import React, { useState, useEffect } from 'react';
+// Consultar.js
+import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/Ionicons'; // Importa el icono desde la biblioteca de iconos
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-const Advertencia = ({ mensaje }) => (
-  <View style={[styles.advertenciaContainer, styles.errorContainer]}>
-    <View style={styles.iconContainer}>
-      <Icon name="alert-circle-outline" size={24} color="red" />
-    </View>
-    <View style={styles.advertenciaTextContainer}>
-      <Text style={[styles.advertenciaText, styles.errorText]}>{mensaje}</Text>
-    </View>
-  </View>
-);
+const Consultar = ({ navigation }) => {
+  const [busquedaNombre, setBusquedaNombre] = useState('');
+  const [busquedaCodigo, setBusquedaCodigo] = useState('');
+  const [edificiosEncontrados, setEdificiosEncontrados] = useState([]);
+  const [mostrarResultados, setMostrarResultados] = useState(false);
 
-const Consultar = () => {
-  const navigation = useNavigation();
-
-  const [usuario, setUsuario] = useState('');
-  const [contraseña, setContraseña] = useState('');
-  const [confirmarContraseña, setConfirmarContraseña] = useState('');
-  const [contraseñaError, setContraseñaError] = useState('');
-  const [cambioExitosoVisible, setCambioExitosoVisible] = useState(false);
-
-  useEffect(() => {
-    const obtenerNombreUsuario = async () => {
-      try {
-        const response = await fetch('https://www.fema.somee.com/Auth/login/Usuario', { //cambiar 
- 
-          headers: {
-            Authorization: 'Bearer tu_token_de_autenticacion', // Reemplaza con tu token de autenticación(ojo)
-          },
-        });
-        if (!response.ok) {
-          throw new Error('Error al obtener el nombre de usuario');
-        }
-        const data = await response.json();
-        const { nombreUsuario } = data;
-        setUsuario(nombreUsuario);
-        // Establecer la contraseña inicial con el valor del usuario actual
-        setContraseña(nombreUsuario);
-      } catch (error) {
-        console.error(error.message);
-      }
-    };
-
-    obtenerNombreUsuario();
-  }, []);
-
-  const guardarCambios = async () => {
-    try {
-      if (contraseña === confirmarContraseña) {
-        if (!validarContraseña(contraseña)) {
-          setContraseñaError('La contraseña debe tener al menos 6 caracteres, 1 mayúscula y 1 número.');
-          return;
-        }
-
-        const response = await fetch('https://www.fema.somee.com/Auth/login', {//cambiar
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            nuevaContraseña: contraseña,
-          }),
-        });
-
-        if (!response.ok) {
-          throw new Error('Error al guardar la contraseña');
-        }
-
-        console.log('Contraseña cambiada exitosamente');
-
-        // Mostrar mensaje de cambio exitoso durante 3 segundos
-        setCambioExitosoVisible(true);
-        setTimeout(() => {
-          setCambioExitosoVisible(false);
-          // Después de 3 segundos, regresar a la página anterior
-          navigation.goBack();
-        }, 3000);
-      } else {
-        setContraseñaError('Las contraseñas no coinciden');
-      }
-    } catch (error) {
-      console.error(error.message);
-    }
+  // Función para buscar el edificio en la base de datos por nombre
+  const buscarEdificioPorNombre = async () => {
+    // Simulación de búsqueda asincrónica ficticia
+    setTimeout(() => {
+      const edificios = [
+        {
+          nombre: 'Nombre del edificio 1',
+          fecha: 'Fecha del formulario 1',
+        },
+        {
+          nombre: 'Nombre del edificio 2',
+          fecha: 'Fecha del formulario 2',
+        },
+      ];
+      setEdificiosEncontrados(edificios);
+      setMostrarResultados(true);
+    }, 1000);
   };
 
-  const validarContraseña = (password) => {
-    const regex = /^(?=.*[A-Z])(?=.*\d).{6,}$/;
-    return regex.test(password);
+  // Función para buscar el edificio en la base de datos por código
+  const buscarEdificioPorCodigo = async () => {
+    // Simulación de búsqueda asincrónica ficticia
+    setTimeout(() => {
+      const edificios = [
+        {
+          nombre: 'Nombre del edificio 3',
+          fecha: 'Fecha del formulario 3',
+        },
+        {
+          nombre: 'Nombre del edificio 4',
+          fecha: 'Fecha del formulario 4',
+        },
+      ];
+      setEdificiosEncontrados(edificios);
+      setMostrarResultados(true);
+    }, 1000);
   };
 
   return (
-    <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollViewContent}>
-        <Text style={styles.title}>Ajustes</Text>
+    <ScrollView contentContainerStyle={styles.container}>
+      <Text style={styles.title}>Consultar FEMA P-154</Text>
 
-        <Text style={[styles.subtitle, styles.centerText]}>Cambio de Contraseña</Text>
+      {/* Texto y búsqueda por nombre del edificio */}
+      <View style={styles.searchContainer}>
+        <TextInput
+          style={styles.input}
+          placeholder="Nombre del edificio"
+          value={busquedaNombre}
+          onChangeText={(text) => setBusquedaNombre(text)}
+        />
+        <TouchableOpacity
+          style={[styles.searchButton, styles.transparentButton]}
+          onPress={() => {
+            buscarEdificioPorNombre();
+            setMostrarResultados(true);
+          }}
+        >
+          <MaterialCommunityIcons name="magnify" size={24} color="black" />
+        </TouchableOpacity>
+      </View>
 
-        <View style={styles.inputContainer}>
-          <Text style={[styles.label, { flex: 1 }]}>Usuario :</Text>
-          <TextInput
-            style={[styles.input, { flex: 2 }]}
-            value={usuario}
-            editable={false} // Campo de solo lectura
-          />
-        </View>
+      {/* Texto y búsqueda por código del formulario */}
+      <View style={styles.searchContainer}>
+        <TextInput
+          style={styles.input}
+          placeholder="Código del formulario"
+          value={busquedaCodigo}
+          onChangeText={(text) => setBusquedaCodigo(text)}
+        />
+        <TouchableOpacity
+          style={[styles.searchButton, styles.transparentButton]}
+          onPress={() => {
+            buscarEdificioPorCodigo();
+            setMostrarResultados(true);
+          }}
+        >
+          <MaterialCommunityIcons name="magnify" size={24} color="black" />
+        </TouchableOpacity>
+      </View>
 
-        <View style={styles.inputContainer}>
-          <Text style={[styles.label, { flex: 1 }]}>Contraseña :</Text>
-          <TextInput
-            style={[styles.input, { flex: 2 }]}
-            secureTextEntry={true}
-            value={contraseña}
-            onChangeText={(text) => {
-              setContraseña(text);
-              setContraseñaError('');
-            }}
-          />
-        </View>
-        {contraseñaError ? <Advertencia mensaje={contraseñaError} /> : null}
-
-        <View style={styles.inputContainer}>
-          <Text style={[styles.label, { flex: 1 }]}>Confirmar Contraseña :</Text>
-          <TextInput
-            style={[styles.input, { flex: 2 }]}
-            secureTextEntry={true}
-            value={confirmarContraseña}
-            onChangeText={setConfirmarContraseña}
-          />
-        </View>
-      </ScrollView>
-
-      <TouchableOpacity style={styles.regresarButton} onPress={() => navigation.goBack()}>
-        <Icon name="exit-outline" size={24} color="black" /> {/* Icono de salida */}
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.guardarButton} onPress={guardarCambios}>
-        <Text style={styles.guardarButtonText}>Guardar</Text>
-      </TouchableOpacity>
-
-      {cambioExitosoVisible && (
-        <View style={styles.cambioExitosoContainer}>
-          <Text style={styles.cambioExitosoText}>Cambio exitoso</Text>
+      {/* Mostrar detalles de los edificios encontrados si hay resultados */}
+      {mostrarResultados && (
+        <View style={styles.edificiosEncontradosContainer}>
+          {edificiosEncontrados.map((edificio, index) => (
+            <View key={index} style={styles.edificioEncontrado}>
+              <MaterialCommunityIcons name="file-document" size={24} color="black" />
+              <View>
+                <Text style={styles.formularioTitle}>FEMA P-154</Text>
+                <Text style={styles.formularioFecha}>{edificio.fecha}</Text>
+              </View>
+              <TouchableOpacity
+                style={[styles.editButton, styles.transparentButton]}
+                onPress={() => navigation.navigate('Editar2', { edificio })}
+              >
+                <MaterialCommunityIcons name="pencil" size={24} color="black" />
+              </TouchableOpacity>
+            </View>
+          ))}
         </View>
       )}
-    </View>
+
+      <TouchableOpacity style={[styles.backButton, styles.transparentButton]} onPress={() => navigation.goBack()}>
+        <MaterialCommunityIcons name="exit-to-app" size={24} color="black" />
+      </TouchableOpacity>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: 'white',
-    paddingHorizontal: 16,
-  },
-  scrollViewContent: {
     flexGrow: 1,
+    padding: 16,
+    backgroundColor: 'white',
   },
   title: {
     fontSize: 24,
@@ -165,103 +129,66 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     textAlign: 'center',
   },
-  subtitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 8,
-    marginTop: 16,
-  },
-  centerText: {
-    textAlign: 'center',
-  },
-  inputContainer: {
+  searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
     marginBottom: 16,
   },
-  label: {
-    fontSize: 16,
-    marginRight: 8,
-  },
   input: {
+    flex: 1,
     height: 40,
     borderColor: 'gray',
     borderWidth: 1,
     paddingHorizontal: 10,
     borderRadius: 10,
-    flex: 2,
+    marginRight: 10,
   },
-  guardarButton: {
-    backgroundColor: 'blue',
+  searchButton: {
     borderRadius: 10,
-    padding: 12,
+    padding: 10,
     alignItems: 'center',
-    marginBottom: 24,
-    alignSelf: 'center', // Alinea el botón en el centro horizontalmente
-    width: '100%',
+    justifyContent: 'center',
   },
-  guardarButtonText: {
-    color: 'white',
-    fontWeight: 'bold',
-    fontSize: 16,
+  transparentButton: {
+    backgroundColor: 'rgba(0, 0, 0, 0.0)',
   },
-  regresarButton: {
-    backgroundColor: 'rgba(0, 0, 0, 0.0)', // Fondo transparente con opacidad del 0%
+  backButton: {
     borderRadius: 10,
     padding: 12,
     alignItems: 'center',
     marginBottom: 24,
     position: 'absolute',
-    right: 16, // Posiciona el botón en la esquina superior derecha
-    top: 16, // Puedes ajustar la posición vertical según tus necesidades
+    right: 16,
+    top: 16,
   },
-  regresarButtonText: {
-    color: 'white',
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
-  errorContainer: {
-    backgroundColor: 'rgba(0, 0, 0, 0.1)', // Cambia el color de fondo a negro con opacidad del 10%
-    borderRadius: 5,
-    padding: 8,
-    marginTop: 8, // Ajusta el margen superior para separar del campo de contraseña
-    flexDirection: 'row', // Añade flex-direction para alinear elementos horizontalmente
-    alignItems: 'center', // Centra verticalmente los elementos en el contenedor
-    justifyContent: 'space-between', // Alinea los elementos al principio y al final del contenedor
-  },
-  errorText: {
-    color: 'black', // Cambia el color del texto a negro
-    fontSize: 12, // Ajusta el tamaño del texto de la advertencia
-    textAlign: 'left',
-    marginLeft: 5, // Añade un margen izquierdo para separar el texto del icono
-    flex: 1, // El texto ocupará todo el espacio disponible
-  },
-  advertenciaContainer: {
-    marginBottom: 8,
-  },
-  advertenciaTextContainer: {
-    flex: 1, // El texto de la advertencia ocupará todo el espacio disponible
-  },
-  iconContainer: {
-    width: 30,
-    alignItems: 'center',
-  },
-  advertenciaText: {
-    color: 'red',
-    fontSize: 12, // Ajusta el tamaño del texto de la advertencia
-    textAlign: 'left', // Alinea el texto a la izquierda
-  },
-  cambioExitosoContainer: {
-    backgroundColor: 'green',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
+  edificiosEncontradosContainer: {
+    marginTop: 16,
+    borderWidth: 1,
+    borderColor: 'gray',
     borderRadius: 10,
-    alignSelf: 'center',
-    marginTop: 20,
   },
-  cambioExitosoText: {
-    color: 'white',
+  edificioEncontrado: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: 'gray',
+  },
+  formularioTitle: {
+    fontSize: 20,
     fontWeight: 'bold',
+    marginLeft: 8,
+  },
+  formularioFecha: {
+    fontSize: 16,
+    color: 'gray',
+  },
+  editButton: {
+    borderRadius: 50,
+    padding: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 

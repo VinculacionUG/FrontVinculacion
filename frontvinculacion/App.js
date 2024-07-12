@@ -5,7 +5,10 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Start from './src/components/Start';
 import SignIn from './src/components/SignIn';
 import Register from './src/components/Register';
+import Editar from './src/components/Editar';
+import Ajuste from './src/components/Ajuste';
 import Dashboard from './src/components/Dashboard';
+import Consultar from './src/components/Consultar';
 import FormularioFema from './src/components/FormularioFema';
 import FormularioFema2 from './src/components/FormularioFema2';
 import FormularioFema3 from './src/components/FormularioFema3';
@@ -25,6 +28,9 @@ const App = () => {
         <Stack.Screen name="SignIn" component={SignIn} options={{ headerShown: false }} />
         <Stack.Screen name="Start" component={Start} options={{ headerShown: false }} />
         <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
+        <Stack.Screen name="Editar" component={Editar} options={{ headerShown: false }} />
+        <Stack.Screen name="Consultar" component={Consultar} options={{ headerShown: false }} />
+        <Stack.Screen name="Ajuste" component={Ajuste} options={{ headerShown: false }} />
         <Stack.Screen name="FormularioFema" component={FormularioFema} options={{ headerShown: false }} />
         <Stack.Screen name="FormularioFema2" component={FormularioFema2} options={{ headerShown: false }} />
         <Stack.Screen name="FormularioFema3" component={FormularioFema3} options={{ headerShown: false }} />
