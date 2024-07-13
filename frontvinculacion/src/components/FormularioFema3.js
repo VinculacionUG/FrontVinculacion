@@ -498,7 +498,7 @@ const FormularioFema3 = ({ route, navigation }) => {
       <View style={styles.squareContainer}>
         <View style={styles.resultContainer}>
           <Text style={styles.resultLabel}>RESULTADO BASE:</Text>
-          <CheckBox value={includeResultadoBase} onValueChange={handleChangeCheckboxResultadoBase} />
+          {/* <CheckBox value={includeResultadoBase} onValueChange={handleChangeCheckboxResultadoBase} /> */}
           <TextInput
             style={[styles.resultInput1, { marginRight: 17 }]}
             value={resultadoBase}
