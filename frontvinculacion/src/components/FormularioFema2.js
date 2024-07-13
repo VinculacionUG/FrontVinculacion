@@ -9,6 +9,11 @@ const FormularioFema2 = ({ navigation }) => {
   const [ocupacion, setOcupacion] = useState([]);
   const [tipoocupacion, setTipoocupacion] = useState([]);
   const [tipoSuelo, setTipoSuelo] = useState([]);
+  const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
+  const [selectedValuetipoocupacion, setSelectedValueTipoOcupacion] = useState('');
+  const [selectedValuetipoSuelo, setSelectedValueTipoSuelo] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const {
     numeroPiso,
@@ -33,11 +38,32 @@ const FormularioFema2 = ({ navigation }) => {
     setComentario,
   } = useContext(AppContext);
 
-  const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
-  const [selectedValuetipoocupacion, setSelectedValueTipoOcupacion] = useState('');
-  const [selectedValuetipoSuelo, setSelectedValueTipoSuelo] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const handleNext = () => {
+    // Validación de campos obligatorios
+    if (!numeroPiso || !inf || !anoConstruccion || !areaTotalDePiso || !anoCodigo || !ampliacion || !anoDeContruccion ||
+      !selectedValuetipoocupacion || !selectedValuetipoSuelo || selectedCheckboxes.length === 0 || !comentario) {
+      alert('Por favor complete todos los campos.');
+      return;
+    }
+
+    // Continuar con la navegación o el procesamiento de datos
+    console.log('Datos guardados:', {
+      numeroPiso,
+      inf,
+      anoConstruccion,
+      areaTotalDePiso,
+      anoCodigo,
+      ampliacion,
+      anoDeContruccion,
+      tiposuelo1,
+      tipoocupacion1,
+      comentario,
+      ocupacion: selectedCheckboxes,
+    });
+
+    navigation.navigate('FormularioFema3');
+  };
+
 
   useEffect(() => {
     const fetchTipoocupacion = async () => {
@@ -96,32 +122,6 @@ const FormularioFema2 = ({ navigation }) => {
     fetchOcupacion();
   }, []);
 
-  const handleNext = () => {
-    // Validación de campos obligatorios
-    if (!numeroPiso || !inf || !anoConstruccion || !areaTotalDePiso || !anoCodigo || !ampliacion || !anoDeContruccion ||
-      !selectedValuetipoocupacion || !selectedValuetipoSuelo || selectedCheckboxes.length === 0 || !comentario) {
-      alert('Por favor complete todos los campos.');
-      return;
-    }
-
-    // Continuar con la navegación o el procesamiento de datos
-    console.log('Datos guardados:', {
-      numeroPiso,
-      inf,
-      anoConstruccion,
-      areaTotalDePiso,
-      anoCodigo,
-      ampliacion,
-      anoDeContruccion,
-      tiposuelo1,
-      tipoocupacion1,
-      comentario,
-      ocupacion: selectedCheckboxes,
-    });
-
-    navigation.navigate('FormularioFema3');
-  };
-
   const handleCheckboxChange = (codOcupacion) => {
     setSelectedCheckboxes(prevState => {
       const updatedCheckboxes = prevState.includes(codOcupacion)
@@ -160,7 +160,7 @@ const FormularioFema2 = ({ navigation }) => {
         >
           <Picker.Item label="Seleccione" value="" />
           {Array.from({ length: 26 }, (_, i) => (
-            <Picker.Item key={i} label={`${i}`} value={`${i}`} />
+   <Picker.Item key={i} label={`${i}`} value={`${i}`} />
           ))}
         </Picker>
 
@@ -172,8 +172,9 @@ const FormularioFema2 = ({ navigation }) => {
         >
           <Picker.Item label="Seleccione" value="" />
           {Array.from({ length: 6 }, (_, i) => (
-            <Picker.Item key={i} label={`${i}`} value={`${i}`} />
-          ))}
+             <Picker.Item key={i} label={`${i}`} value={`${i}`} />
+            ))}
+  
         </Picker>
       </View>
 
@@ -227,8 +228,10 @@ const FormularioFema2 = ({ navigation }) => {
 
       <View style={styles.inputContainer}>
         <Text style={styles.inputLabel}>Año de Construcción:</Text>
+
         <TextInput
-          style={[styles.input, { width: 50 }]}
+          //style={[styles.input, { width: 20, height: 20 }]}
+          style={styles.inputText}
           value={anoDeContruccion}
           onChangeText={(text) => {
             const numericValue = text.replace(/[^0-9]/g, '');
@@ -343,11 +346,11 @@ const styles = StyleSheet.create({
   },
   inputLabel: {
     fontSize: 16,
-    marginRight: 4,
+    marginRight: 4, // Espacio de 4 píxeles para los 2 mm
     fontWeight: 'normal',
   },
   infLabel: {
-    marginLeft: 20,
+    marginLeft: 20, // Espacio de 4 píxeles entre el primer selector y el texto "Inf:"
   },
   input: {
     flex: 1,
@@ -359,12 +362,12 @@ const styles = StyleSheet.create({
   },
   smallPicker: {
     flex: 1,
-    height: 40,
+    height: 40, // Reducir altura del selector
     borderColor: 'gray',
     borderWidth: 1,
     borderRadius: 5,
     justifyContent: 'center',
-    width: 120,
+    width: 80, // Reducir el ancho del selector
   },
   backButton: {
     backgroundColor: 'navy',
@@ -398,10 +401,18 @@ const styles = StyleSheet.create({
   multilineText: {
     minHeight: 100,
   },
+  CheckBoxContainer: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 0,
+    paddingVertical: 20,
+  },
   checkboxGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     paddingHorizontal: 0,
+    //justifyContent: 'space-between',
   },
   checkboxContainer: {
     width: '30%',
@@ -411,12 +422,29 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     borderWidth: 0,
   },
+  button: {
+    marginTop: 20,
+    width: '100%',
+    backgroundColor: '#2196F3',
+  },
   resultado: {
     marginTop: 20,
     fontSize: 18,
     color: 'green',
   },
+  inputText: {
+    flex: .20,
+    flexDirection: 'row',
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 5,
+    height: 40,
+    width: 0,
+    padding: 0,
+    paddingHorizontal: 10,
+    marginRight: 2,
+    //backgroundColor: 'red',
+  }, 
 });
-
 export default FormularioFema2;
 
