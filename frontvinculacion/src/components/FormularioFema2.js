@@ -1,86 +1,126 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { CheckBox } from 'react-native-elements';
-//import { CheckBox, Button } from 'react-native-elements';
+import { AppContext } from './AppContext';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-const FormularioFema2 = ({ route, navigation }) => {
-  const [numPisos, setNumPisos] = useState('');
-  const [info, setInfo] = useState('');
-  const [anioConstruccion, setAnioConstruccion] = useState('');
-  const [areaTotalPiso, setAreaTotalPiso] = useState('');
-  const [anioCodigo, setAnioCodigo] = useState('');
-  const [anioConstruccion2, setAnioConstruccion2] = useState('');
-  const [ampliacion, setAmpliacion] = useState('');
+const FormularioFema2 = ({ navigation }) => {
   const [ocupacion, setOcupacion] = useState([]);
+  const [tipoocupacion, setTipoocupacion] = useState([]);
   const [tipoSuelo, setTipoSuelo] = useState([]);
-  const [comentario, setComentario] = useState('');
-  //const [checkBox1, setCheckBox1] = useState(false);  
-  //const [checkBox2, setCheckBox2] = useState(false);
-  //const [checkBox3, setCheckBox3] = useState(false);
-  //const [checkBox4, setCheckBox4] = useState(false);
-  //const [checkBox5, setCheckBox5] = useState(false);
-  //const [checkBox6, setCheckBox6] = useState(false);
-  //const [checkBox7, setCheckBox7] = useState(false);
-  //const [checkBox8, setCheckBox8] = useState(false);
-  //const [checkBox9, setCheckBox9] = useState(false);
-  const [tipoocupacion, setTipoOcupacion] = useState([]);
+  const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
+  const [selectedValuetipoocupacion, setSelectedValueTipoOcupacion] = useState('');
+  const [selectedValuetipoSuelo, setSelectedValueTipoSuelo] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const { params } = route;
   const {
-    direccion,
-    zip,
-    otrasIdentificaciones,
-    nombreEdificio,
-    uso,
-    latitud,
-    longitud,
-    inspector,
-    fecha,
-    hora,
-    files1,
-    files2,
-  } = params;
+    numeroPiso,
+    setNumeroPiso,
+    inf,
+    setInf,
+    anoConstruccion,
+    setAnoConstruccion,
+    tiposuelo1,
+    setTiposuelo1,
+    tipoocupacion1,
+    setTipoocupacion1,
+    areaTotalDePiso,
+    setAreaTotalDePiso,
+    anoCodigo,
+    setAnoCodigo,
+    ampliacion,
+    setAmpliacion,
+    anoDeContruccion,
+    setAnoDeContruccion,
+    comentario,
+    setComentario,
+  } = useContext(AppContext);
 
   const handleNext = () => {
-    navigation.navigate('FormularioFema3', {
-      direccion,
-      zip,
-      otrasIdentificaciones,
-      nombreEdificio,
-      uso,
-      latitud,
-      longitud,
-      inspector,
-      fecha,
-      hora,
-      files1,
-      files2,
-      numPisos,
-      info,
-      anioConstruccion,
-      areaTotalPiso,
-      anioCodigo,
-      anioConstruccion2,
+    // Validación de campos obligatorios
+    if (!numeroPiso || !inf || !anoConstruccion || !areaTotalDePiso || !anoCodigo || !ampliacion || !anoDeContruccion ||
+      !selectedValuetipoocupacion || !selectedValuetipoSuelo || selectedCheckboxes.length === 0 || !comentario) {
+      alert('Por favor complete todos los campos.');
+      return;
+    }
+
+    // Continuar con la navegación o el procesamiento de datos
+    console.log('Datos guardados:', {
+      numeroPiso,
+      inf,
+      anoConstruccion,
+      areaTotalDePiso,
+      anoCodigo,
       ampliacion,
-      ocupacion: selectedCheckboxes,
-      tipoSuelo,
-      tipoocupacion,
+      anoDeContruccion,
+      tiposuelo1,
+      tipoocupacion1,
       comentario,
-      //    checkBox1,
-      //    checkBox2,
-      //    checkBox3,
-      //    checkBox4,
-      //    checkBox5,
-      //    checkBox6,
-      //    checkBox7,
-      //    checkBox8,
-      //    checkBox9,
+      ocupacion: selectedCheckboxes,
     });
+
+    navigation.navigate('FormularioFema3');
   };
 
-  const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
+
+  useEffect(() => {
+    const fetchTipoocupacion = async () => {
+      try {
+        const response = await fetch('https://www.fema.somee.com/Users/TipoOcupacion', {
+          method: 'GET',
+        });
+        if (!response.ok) {
+          throw new Error('Error en la red');
+        }
+        const result = await response.json();
+        setTipoocupacion(result);
+      } catch (error) {
+        setError(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const fetchTipoSuelo = async () => {
+      try {
+        const response = await fetch('https://www.fema.somee.com/Users/TipoSuelo', {
+          method: 'GET',
+        });
+        if (!response.ok) {
+          throw new Error('Error en la red');
+        }
+        const result = await response.json();
+        setTipoSuelo(result);
+      } catch (error) {
+        setError(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const fetchOcupacion = async () => {
+      try {
+        const response = await fetch('https://www.fema.somee.com/Users/Ocupacion', {
+          method: 'GET',
+        });
+        if (!response.ok) {
+          throw new Error('Error en la red');
+        }
+        const result = await response.json();
+        setOcupacion(result);
+      } catch (error) {
+        setError(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTipoocupacion();
+    fetchTipoSuelo();
+    fetchOcupacion();
+  }, []);
 
   const handleCheckboxChange = (codOcupacion) => {
     setSelectedCheckboxes(prevState => {
@@ -88,104 +128,9 @@ const FormularioFema2 = ({ route, navigation }) => {
         ? prevState.filter(item => item !== codOcupacion)
         : [...prevState, codOcupacion];
 
-      // Mostrar IDs seleccionados en la consola
-      console.log('Selected IDs:', updatedCheckboxes);
-
       return updatedCheckboxes;
     });
   };
-
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [selectedValue, setSelectedValue] = useState('');
-  const [selectedValuetipoocupacion, setSelectedValueTipoOcupacion] = useState('');
-  const [selectedValuetipoSuelo, setSelectedValueTipoSuelo] = useState('');
-
-  useEffect(() => {
-    // URL del servicio GET
-    //const url = 'http://localhost:3000/api/TipoOcupacion';
-    const url = 'https://www.fema.somee.com/Users/TipoOcupacion';
-    const fetchTipoOcupacion = async () => {
-      try {
-        const response = await fetch(url,
-          {
-            method: 'GET',
-          }
-        );
-        if (!response.ok) {
-          throw new Error('Error en la red');
-        }
-        const result = await response.json();
-        setTipoOcupacion(result);
-        //console.log(result);    
-      } catch (error) {
-        setError(error);
-        console.log(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchTipoOcupacion();
-
-
-    // URL del servicio GET
-    //const url2 = 'http://localhost:3001/api/TipoSuelo';
-    const url2 = 'https://www.fema.somee.com/Users/TipoSuelo';
-    const fetchTipoSuelo = async () => {
-      try {
-        const response = await fetch(url2,
-          {
-            method: 'GET',
-          }
-        );
-        if (!response.ok) {
-          throw new Error('Error en la red');
-        }
-        const result = await response.json();
-        setTipoSuelo(result);
-        //console.log(result);    
-      } catch (error) {
-        setError(error);
-        console.log(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchTipoSuelo();
-
-
-    // URL del servicio GET
-    //const url3 = 'http://localhost:3002/api/Ocupacion';
-    const url3 = 'https://www.fema.somee.com/Users/Ocupacion';
-    const fetchOcupacion = async () => {
-      try {
-        const response = await fetch(url3,
-          {
-            method: 'GET',
-          }
-        );
-        if (!response.ok) {
-          throw new Error('Error en la red');
-        }
-        const result = await response.json();
-        setOcupacion(result);
-        //console.log(result);    
-        //console.log(ocupacion);    
-
-      } catch (error) {
-        setError(error);
-        console.log(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchOcupacion();
-
-
-  }, []);
-
-  //console.log(ocupacion);    
-
 
   if (loading) {
     return <ActivityIndicator size="large" color="#0000ff" />;
@@ -207,49 +152,50 @@ const FormularioFema2 = ({ route, navigation }) => {
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Formulario FEMA P-154</Text>
       <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>N° de Pisos: Sup:</Text>
+        <Text style={styles.inputLabel}>N° de Pisos:</Text>
         <Picker
           style={styles.smallPicker}
-          selectedValue={numPisos}
-          onValueChange={(itemValue) => setNumPisos(itemValue)}
+          selectedValue={numeroPiso}
+          onValueChange={(itemValue) => setNumeroPiso(itemValue)}
         >
-          {Array.from({ length: 29 }, (_, i) => (
-            <Picker.Item key={i + 1} label={`${i + 1}`} value={`${i + 1}`} />
+          <Picker.Item label="Seleccione" value="" />
+          {Array.from({ length: 26 }, (_, i) => (
+   <Picker.Item key={i} label={`${i}`} value={`${i}`} />
           ))}
         </Picker>
 
         <Text style={[styles.inputLabel, styles.infLabel]}>Inf:</Text>
         <Picker
           style={styles.smallPicker}
-          selectedValue={info}
-          onValueChange={(itemValue) => setInfo(itemValue)}
+          selectedValue={inf}
+          onValueChange={(itemValue) => setInf(itemValue)}
         >
+          <Picker.Item label="Seleccione" value="" />
           {Array.from({ length: 6 }, (_, i) => (
-            <Picker.Item key={i} label={`${i}`} value={`${i}`} />
-          ))}
+             <Picker.Item key={i} label={`${i}`} value={`${i}`} />
+            ))}
+  
         </Picker>
       </View>
 
       <View style={styles.inputContainer}>
-        <Text style={[styles.inputLabel, { height: 40, marginRight: 2 }]}>Año Construcción:</Text>
-        <View style={{ width: 5, height: 40 }} />
+        <Text style={styles.inputLabel}>Año Construcción:</Text>
         <TextInput
-          style={[styles.input, { width: 50, height: 40 }]}
-          value={anioConstruccion}
+          style={[styles.input, { width: 50 }]}
+          value={anoConstruccion}
           maxLength={4}
           onChangeText={(text) => {
             const numericValue = text.replace(/[^0-9]/g, '');
-            setAnioConstruccion(numericValue);
+            setAnoConstruccion(numericValue);
           }}
         />
-        <View style={{ width: 10, height: 40 }} />
-        <Text style={[styles.inputLabel, { height: 40, width: 150 }]}>Área total de piso (m2):</Text>
+        <Text style={[styles.inputLabel, { marginLeft: 10, width: 150 }]}>Área total de piso (m2):</Text>
         <TextInput
-          style={[styles.input, { width: 60, height: 40 }]}
-          value={areaTotalPiso}
+          style={[styles.input, { width: 60 }]}
+          value={areaTotalDePiso}
           onChangeText={(text) => {
             const numericValue = text.replace(/[^0-9]/g, '');
-            setAreaTotalPiso(numericValue);
+            setAreaTotalDePiso(numericValue);
           }}
           maxLength={5}
         />
@@ -257,22 +203,24 @@ const FormularioFema2 = ({ route, navigation }) => {
 
       <View style={styles.inputContainer}>
         <Text style={styles.inputLabel}>Año de código:</Text>
-        <View style={{ width: 5 }} />
         <TextInput
-          style={[styles.input, { width: 0 }]}
-          value={anioCodigo}
+          style={[styles.input, { width: 50 }]}
+          value={anoCodigo}
           onChangeText={(text) => {
             const numericValue = text.replace(/[^0-9]/g, '');
-            setAnioCodigo(numericValue);
+            setAnoCodigo(numericValue);
           }}
         />
-        <View style={{ width: 10 }} />
-        <Text style={styles.inputLabel}>Ampliación:</Text>
+
+        <Text style={[styles.inputLabel, { marginLeft: 10 }]}>Ampliación:</Text>
         <Picker
           style={styles.smallPicker}
           selectedValue={ampliacion}
-          onValueChange={(itemValue) => setAmpliacion(itemValue)}
+          onValueChange={(itemValue) => {
+            setAmpliacion(itemValue);
+          }}
         >
+          <Picker.Item label="Seleccione" value="" />
           <Picker.Item label="Sí" value="si" />
           <Picker.Item label="No" value="no" />
         </Picker>
@@ -284,18 +232,16 @@ const FormularioFema2 = ({ route, navigation }) => {
         <TextInput
           //style={[styles.input, { width: 20, height: 20 }]}
           style={styles.inputText}
-          value={anioConstruccion2}
+          value={anoDeContruccion}
           onChangeText={(text) => {
             const numericValue = text.replace(/[^0-9]/g, '');
-            setAnioConstruccion2(numericValue);
+            setAnoDeContruccion(numericValue);
           }}
           maxLength={4}
         />
       </View>
-      {/*   */}
 
       <Text style={[styles.subtitle, styles.centerText]}>Ocupación:</Text>
-      <Text style={[styles.subtitle, styles.boldRedText, styles.centerText]}></Text>
 
       <View style={styles.checkboxGrid}>
         {ocupacion.map((checkbox) => (
@@ -313,7 +259,7 @@ const FormularioFema2 = ({ route, navigation }) => {
         ))}
       </View>
 
-      {selectedCheckboxes !== null && (
+      {selectedCheckboxes.length > 0 && (
         <Text style={styles.resultado}>
           Seleccionaste: {selectedDescriptions.join(', ')}
         </Text>
@@ -321,36 +267,36 @@ const FormularioFema2 = ({ route, navigation }) => {
 
       <View style={styles.inputContainer}>
         <Text style={styles.inputLabel}>Tipo de Ocupación:</Text>
-        <View style={{ width: 5, height: 40 }} />
         <Picker
           style={styles.smallPicker}
           selectedValue={selectedValuetipoocupacion}
-          onValueChange={(itemValue) => setSelectedValueTipoOcupacion(itemValue)}
+          onValueChange={(itemValue) => {
+            setSelectedValueTipoOcupacion(itemValue);
+            setTipoocupacion1(itemValue); // Guardar el valor seleccionado en tipoocupacion1
+          }}
         >
+          <Picker.Item label="Seleccione" value="" />
           {tipoocupacion.map((item, index) => (
             <Picker.Item label={item.descripcion} value={item.descripcion} key={index} />
           ))}
         </Picker>
-        {/*  <Text style={styles.selected}>Seleccionado: {selectedValue}</Text> */}
       </View>
-
 
       <View style={styles.inputContainer}>
         <Text style={styles.inputLabel}>Tipo de Suelo:</Text>
-        <View style={{ width: 5, height: 40 }} />
         <Picker
           style={styles.smallPicker}
           selectedValue={selectedValuetipoSuelo}
           onValueChange={(itemValue) => {
             setSelectedValueTipoSuelo(itemValue);
-            console.log('Tipo de Suelo seleccionado:', itemValue); // Imprime el valor en la consola
+            setTiposuelo1(itemValue); // Guardar el valor seleccionado en tiposuelo1
           }}
         >
+          <Picker.Item label="Seleccione" value="" />
           {tipoSuelo.map((item, index) => (
             <Picker.Item label={item.descripcion} value={item.descripcion} key={index} />
           ))}
         </Picker>
-        {/*  <Text style={styles.selected}>Seleccionado: {selectedValue}</Text> */}
       </View>
 
       <View style={styles.inputContainer}>
@@ -358,7 +304,7 @@ const FormularioFema2 = ({ route, navigation }) => {
       </View>
       <View style={styles.inputContainer}>
         <TextInput
-          style={[styles.input, styles.multilineText, { width: '100%' }]}
+          style={[styles.input, styles.multilineText]}
           multiline
           numberOfLines={4}
           value={comentario}
@@ -379,8 +325,6 @@ const FormularioFema2 = ({ route, navigation }) => {
     </ScrollView>
   );
 };
-
-
 
 const styles = StyleSheet.create({
   container: {
@@ -500,7 +444,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginRight: 2,
     //backgroundColor: 'red',
-  },
+  }, 
 });
-
 export default FormularioFema2;
+
