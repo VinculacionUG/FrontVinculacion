@@ -5,32 +5,6 @@ import { Picker } from '@react-native-picker/picker';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const FormularioFema3 = ({ route, navigation }) => {
-  const { params } = route;
-  const {
-    direccion,
-    zip,
-    otrasIdentificaciones,
-    nombreEdificio,
-    uso,
-    latitud,
-    longitud,
-    inspector,
-    fecha,
-    hora,
-    files1,
-    files2,
-    numPisos,
-    sup,
-    info,
-    anioConstruccion,
-    areaTotalPiso,
-    anioCodigo,
-    anioConstruccion2,
-    ampliacion,
-    ocupacion,
-    tipoSuelo,
-    comentario,
-  } = params;
 
   const [tipoEdificacion, setTipoEdificacion] = useState([]);
   const [subTipo, setSubTipo] = useState('');
@@ -219,7 +193,7 @@ const FormularioFema3 = ({ route, navigation }) => {
   };
 
   useEffect(() => {
-    // URL del servicio GET
+
     const url = 'https://www.fema.somee.com/Users/TipoEdificaciones';
     const fetchTipoEdificacion = async () => {
       try {
