@@ -40,6 +40,8 @@ export const AppProvider = ({ children }) => {
   const [tipoocupacion, setTipoocupacion] = useState('');
   const [tipoSuelo, setTipoSuelo] = useState('');
   const [comentario, setComentario] = useState('');
+  //fema 3
+  const [resultado, setResultado] = useState('');
   //fema 4
   const [exterior, setExterior] = useState('');
   const [interior, setInterior] = useState('');
@@ -90,6 +92,9 @@ export const AppProvider = ({ children }) => {
       tipoocupacion, setTipoocupacion,
       tipoSuelo, setTipoSuelo,
       comentario, setComentario,
+      //fema 3
+      
+      resultado, setResultado,
       //fema 4
       exterior, setExterior,
       interior, setInterior,
