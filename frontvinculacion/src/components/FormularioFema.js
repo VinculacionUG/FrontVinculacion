@@ -31,44 +31,37 @@ const FormularioFema = ({ navigation }) => {
   } = useContext(AppContext);
 
   const handleNext = () => {
-    if (validateForm()) {
-      // Aquí puedes guardar los datos o hacer lo necesario antes de navegar
-      console.log('Datos guardados:', {
-        adjuntarFotografica,
-        adjuntarGrafico,
-        direccion,
-        zip,
-        otrasIdentificaciones,
-        nombreEdificio,
-        uso,
-        latitud,
-        longitud,
-        fecha,
-        hora,
-      });
-
-      navigation.navigate('FormularioFema2');
-    } else {
-      Alert.alert('Error', 'Por favor completa todos los campos y adjunta ambas imágenes antes de continuar.');
+    if (
+      !adjuntarFotografica ||
+      !adjuntarGrafico ||
+      !direccion ||
+      !zip ||
+      !otrasIdentificaciones ||
+      !nombreEdificio ||
+      !uso ||
+      !latitud ||
+      !longitud ||
+      !fecha ||
+      !hora
+    ) {
+      alert('Por favor complete todos los campos.');
+      return;
     }
-  };
-
-  const validateForm = () => {
-    return (
-      adjuntarFotografica !== null &&
-      adjuntarGrafico !== null &&
-      direccion !== '' &&
-      zip !== '' &&
-      otrasIdentificaciones !== '' &&
-      nombreEdificio !== '' &&
-      uso !== '' &&
-      latitud !== '' &&
-      longitud !== '' &&
-      fecha.month !== '' &&
-      fecha.day !== '' &&
-      fecha.year !== '' &&
-      hora !== ''
-    );
+    // Aquí puedes guardar los datos o hacer lo necesario antes de navegar
+    console.log('Datos guardados:', {
+      adjuntarFotografica,
+      adjuntarGrafico,
+      direccion,
+      zip,
+      otrasIdentificaciones,
+      nombreEdificio,
+      uso,
+      latitud,
+      longitud,
+      fecha,
+      hora,
+    });
+    navigation.navigate('FormularioFema2');
   };
 
   const pickImage = async (setImage) => {
@@ -93,8 +86,8 @@ const FormularioFema = ({ navigation }) => {
         Alert.alert('Error', 'Hubo un problema al seleccionar la imagen. Por favor, intenta nuevamente.');
       }
     } catch (error) {
-      console.error("Error al seleccionar imagen: ", error);
-      Alert.alert("Error", "Hubo un problema al seleccionar la imagen. Por favor, intenta nuevamente.");
+      console.error('Error al seleccionar imagen: ', error);
+      Alert.alert('Error', 'Hubo un problema al seleccionar la imagen. Por favor, intenta nuevamente.');
     }
   };
 
@@ -395,3 +388,4 @@ const styles = StyleSheet.create({
 });
 
 export default FormularioFema;
+

@@ -74,6 +74,16 @@ const FormularioFema5 = ({ navigation }) => {
   };
 
   const handleGuardar = () => {
+
+    if (
+      !pregunta1Fema5 ||
+      !pregunta2Fema5 ||
+      !inspeccionNivel
+      
+    ) {
+      alert('Por favor complete todos los campos.');
+      return;
+    }
     console.log('Datos guardados:', {
       pregunta1Fema5,
       pregunta2Fema5,

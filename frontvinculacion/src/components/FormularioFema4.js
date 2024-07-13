@@ -3,7 +3,7 @@ import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity, Activi
 import { Picker } from '@react-native-picker/picker';
 import { CheckBox } from 'react-native-elements';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { AppContext } from './AppContext'; 
+import { AppContext } from './AppContext';
 
 const FormularioFema4 = ({ navigation }) => {
   const [revisionExterior, setRevisionExterior] = useState([]);
@@ -13,32 +13,47 @@ const FormularioFema4 = ({ navigation }) => {
   const [error, setError] = useState(null);
   const [selectedValuerevisionExterior, setSelectedValueRevisionExterior] = useState('');
   const [selectedValuerevisionInterior, setSelectedValueRevisionInterior] = useState('');
-  
+
   const {
-    exterior, 
+    exterior,
     setExterior,
-    interior, 
+    interior,
     setInterior,
-    revisionPlanos, 
+    revisionPlanos,
     setRevisionPlanos,
     fuenteDelTipoDeSuelo,
     setFuenteDelTipoDeSuelo,
     fuenteDePeligrosGeologicos,
     setFuenteDePeligrosGeologicos,
-    contactoDeLaPersona, 
+    contactoDeLaPersona,
     setContactoDeLaPersona,
-    otrosPeligros1, 
+    otrosPeligros1,
     setOtrosPeligros1,
   } = useContext(AppContext);
 
   const handleNext = () => {
+    // Validación de campos obligatorios
+    if (
+      !exterior ||
+      !interior ||
+      !revisionPlanos ||
+      !fuenteDelTipoDeSuelo ||
+      !fuenteDePeligrosGeologicos ||
+      !contactoDeLaPersona ||
+      !otrosPeligros1
+    ) {
+      alert('Por favor complete todos los campos.');
+      return;
+    }
+
+    // Continuar con la navegación o el procesamiento de datos
     console.log('Datos guardados:', {
-      exterior, 
-      interior, 
-      revisionPlanos, 
-      fuenteDelTipoDeSuelo, 
+      exterior,
+      interior,
+      revisionPlanos,
+      fuenteDelTipoDeSuelo,
       fuenteDePeligrosGeologicos,
-      contactoDeLaPersona, 
+      contactoDeLaPersona,
       otrosPeligros1,
     });
     navigation.navigate('FormularioFema5');
@@ -84,10 +99,10 @@ const FormularioFema4 = ({ navigation }) => {
           throw new Error('Error en la red');
         }
         const result = await response.json();
-        setRevisionExterior(result);    
+        setRevisionExterior(result);
       } catch (error) {
         setError(error);
-        console.log(error);    
+        console.log(error);
       } finally {
         setLoading(false);
       }
@@ -102,10 +117,10 @@ const FormularioFema4 = ({ navigation }) => {
           throw new Error('Error en la red');
         }
         const result = await response.json();
-        setRevisionInterior(result);    
+        setRevisionInterior(result);
       } catch (error) {
         setError(error);
-        console.log(error);    
+        console.log(error);
       } finally {
         setLoading(false);
       }
@@ -120,10 +135,10 @@ const FormularioFema4 = ({ navigation }) => {
           throw new Error('Error en la red');
         }
         const result = await response.json();
-        setOtrosPeligros(result);  
+        setOtrosPeligros(result);
       } catch (error) {
         setError(error);
-        console.log(error);    
+        console.log(error);
       } finally {
         setLoading(false);
       }
@@ -165,6 +180,7 @@ const FormularioFema4 = ({ navigation }) => {
           selectedValue={selectedValuerevisionExterior}
           onValueChange={handleExteriorValueChange} // Utiliza el nuevo método
         >
+          <Picker.Item label="Seleccione" value="" />
           {revisionExterior.map((item, index) => (
             <Picker.Item label={item.descripcion} value={item.descripcion} key={index} />
           ))}
@@ -173,12 +189,13 @@ const FormularioFema4 = ({ navigation }) => {
 
       <View style={styles.row}>
         <Text style={styles.inputLabel}>Interior:</Text>
-        <View style={{ width: 65 }} /> 
+        <View style={{ width: 65 }} />
         <Picker
           style={[styles.input, styles.picker]}
           selectedValue={selectedValuerevisionInterior}
           onValueChange={handleInteriorValueChange} // Utiliza el nuevo método
         >
+          <Picker.Item label="Seleccione" value="" />
           {revisionInterior.map((item, index) => (
             <Picker.Item label={item.descripcion} value={item.descripcion} key={index} />
           ))}
@@ -187,12 +204,13 @@ const FormularioFema4 = ({ navigation }) => {
 
       <View style={styles.row}>
         <Text style={styles.inputLabel}>Revisión planos:</Text>
-        <View style={{ width: 5 }} /> 
+        <View style={{ width: 5 }} />
         <Picker
           style={[styles.input, styles.picker]}
           selectedValue={revisionPlanos}
           onValueChange={(itemValue) => setRevisionPlanos(itemValue)}
         >
+          <Picker.Item label="Seleccione" value="" />
           <Picker.Item label="Sí" value="si" />
           <Picker.Item label="No" value="no" />
         </Picker>
@@ -239,9 +257,9 @@ const FormularioFema4 = ({ navigation }) => {
                 containerStyle={styles.checkboxContainer}
                 textStyle={styles.checkboxText}
               />
-            </View>
+            </View>        
           ))}
-        </View>
+      </View>
         
       </View>
 
