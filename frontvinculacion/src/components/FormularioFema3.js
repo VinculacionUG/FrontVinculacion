@@ -164,9 +164,9 @@ const FormularioFema3 = ({ route, navigation }) => {
 
     let suma = parseFloat(resultadoBase);
 
-    if (includeResultadoBase) {
-      suma += parseFloat(resultadoBase);
-    }
+    // if (includeResultadoBase) {
+    //   suma += parseFloat(resultadoBase);
+    // }
     if (includeIrregularidadSevera) {
       suma += parseFloat(irregularidadVerticalSevera);
     }
@@ -200,22 +200,6 @@ const FormularioFema3 = ({ route, navigation }) => {
   
     setResultadoFinal(resultadoFinal.toString());
 
-
-    // Convertir los valores a números y sumarlos
-    // const resultadoFinal = parseFloat(resultadoBase) +
-    //   parseFloat(irregularidadVerticalSevera) +
-    //   parseFloat(irregularidadVerticalModerada) +
-    //   parseFloat(plantaIrregular) +
-    //   parseFloat(preCodigoSismico) +
-    //   parseFloat(postCodigoSismico) +
-    //   parseFloat(sueloTipoAB) +
-    //   parseFloat(sueloTipoE1a3) +
-    //   parseFloat(sueloTipoEMayor3) +
-    //   parseFloat(resultadoSmin);
-
-    // // Establecer el resultado en el estado resultadoFinal
-    // setResultadoFinal(resultadoFinal.toString());
-    //setResultadoFinal('Resultado calculado');
   };
 
   useEffect(() => {
@@ -267,38 +251,69 @@ const FormularioFema3 = ({ route, navigation }) => {
          setError(error.message);
        }
      };
-     if (selectedValueTipoEdificacion) {
-       fetchSubTipos(selectedValueTipoEdificacion);
-     }
+    //  if (selectedValueTipoEdificacion) {
+    //    fetchSubTipos(selectedValueTipoEdificacion);
+    //  }
    
 
     useEffect(() => {
       const fetchResultadoBase = async () => {
         //const url3 = 'https://www.fema.somee.com/FemaTres/consultarResultadoBase/1';
+
+        if (!selectedValueTipoEdificacion || !subTipo) {
+          return; // Si falta alguno de los valores, salimos de la función
+        }
+    
         const baseUrl  = 'https://www.fema.somee.com/FemaTres/consultarResultadoBase/';
-        try {
+        // const url3 = `${baseUrl}${numeroFinalUrl}`;
+        
           const tipoEdificacionMap = {
-            W: '1',
-            S: '4',
-            C: '9',
-            PC: '12',
-            RM: '14',
-            URM: '16',
-            MH: '17',
+            'W-W1': 1,
+            'W-W1A': 2,
+            'W-W2': 3,
+            'S-S1(MRF)': 4,
+            'S-S2(BR)': 5,
+            'S-S3(LM)': 6,
+            'S-S4(RCSW)': 7,
+            'S-S5(URMINF)': 8,
+            'C-C1(MRF)': 9,
+            'C-C2(SW)': 10,
+            'C-C3(URMINF)': 11,
+            'PC-PC1(TU)': 12,
+            'PC-PC2': 13,
+            'RM-RM1(FD)': 14,
+            'RM-RM2(RD)': 15,
+            'URM-URM': 16,
+            'MH-MH': 17,
           };
-          const numeroFinalUrl = tipoEdificacionMap[selectedValueTipoEdificacion];
-          const url3 = baseUrl + numeroFinalUrl;
-          
+
+          const key = `${selectedValueTipoEdificacion}-${subTipo}`;
+
+          // Verifica si existe una entrada válida en el mapa para la combinación Tipo de Edificación y Subtipo
+          if (!tipoEdificacionMap.hasOwnProperty(key)) {
+            //setNumeroFinalUrl(tipoEdificacionMap[key]);
+          //} else {
+            console.warn(`No se encontró una combinación válida para Tipo de Edificación: ${selectedValueTipoEdificacion} y Subtipo: ${subTipo}`);
+            return; // Si no hay una combinación válida, salimos de la función
+          }
+
+          //const numeroFinalUrl = tipoEdificacionMap[selectedValueTipoEdificacion];
+          const numeroFinalUrl = tipoEdificacionMap[key];
+          //const numeroFinalUrl = item.codSubtipoEdificacion;
+          //const url3 = baseUrl + numeroFinalUrl;
+          const url3 = `${baseUrl}${numeroFinalUrl}`;
+
           console.log('Número final de URL:', numeroFinalUrl);
           console.log('URL completa:', url3);
-
+          try {
           const response = await fetch(url3,
 		      {
 		  	    method: 'GET',
 		      }
 		      );
           if (!response.ok) {
-            throw new Error('Error en la red ' + response.status + ' ' + response.statusText);
+            //throw new Error('Error en la red ' + response.status + ' ' + response.statusText);
+            throw new Error(`Error en la red ${response.status} ${response.statusText}`);
           }
           const result = await response.json();
           console.log('Resultado desde URL2:', result); // Imprimir resultado en consola
@@ -309,12 +324,16 @@ const FormularioFema3 = ({ route, navigation }) => {
             result.forEach((item) => {
               //let valor = item.valor;
               // if (valor === null || valor === undefined) {
-              //   valor = "NA";   // Darle valor NA ya que si es null muestra otro valor
+              //   valor = 0;   // Darle valor NA ya que si es null muestra otro valor
               // } else {
-              //   valor = valor.toString();              // }
+              //   valor = valor.toString();               
+              // }
               // Verificar si item tiene la propiedad 'valor'
+              //let valor = item.valor !== undefined && item.valor !== null ? item.valor.toString() : '0';
+
               if (item.valor !== undefined && item.valor !== null) {
-                let valor = item.valor.toString(); // Convertir a string si no es null ni undefined
+                //let valor = item.valor.toString(); // Convertir a string si no es null ni undefined
+                let valor = item.valor !== undefined && item.valor !== null ? item.valor.toString() : '0';
                 
                 switch (item.codTipoPuntuacion) {
                   case 9:
@@ -357,6 +376,10 @@ const FormularioFema3 = ({ route, navigation }) => {
           } else {
             console.warn('El resultado obtenido no es un array válido o está vacío.');
           }
+
+          // Estado con el resultado obtenido
+          // setResultadoBase(result); // Suponiendo que tienes un estado para el resultado base
+          // setLoading(false); // Marca la carga como completada
 		    //console.log(result);
         } catch (error) {
           console.error('Error fetching data:', error);
@@ -367,18 +390,17 @@ const FormularioFema3 = ({ route, navigation }) => {
         }
       };
       if (selectedValueTipoEdificacion) {
-        fetchResultadoBase();
+        fetchSubTipos(selectedValueTipoEdificacion);
+        //fetchResultadoBase();
       }
-    //fetchResultadoBase();
+       if (selectedValueTipoEdificacion && subTipo) {
+         fetchResultadoBase();
+       }
+     //fetchResultadoBase();
   //}, []);
-    }, [selectedValueTipoEdificacion]);
-  //}, [tipoEdificacion]);
-  //}, [selectedValuetipoEdificacion, subTipo]);
+    }, [selectedValueTipoEdificacion, subTipo]);
 
   const handleSubTipoChange = (tipo) => {
-    // Aquí puedes implementar la lógica para obtener los subtipos según el tipo seleccionado
-    // Por ejemplo, una llamada a una API o una función local para obtener los subtipos
-    // y luego actualizar el estado de subTipos con los valores obtenidos.
     //Sin implementar por el problema con el endPoint de Subtipo
   };
 
@@ -401,57 +423,24 @@ const FormularioFema3 = ({ route, navigation }) => {
       <Text style={styles.title}>Formulario FEMA P-154</Text>
       <Text style={styles.subtitle}>Resultado Base, Modificadores y Resultado Final de Nivel 1 de Análisis, SL1</Text>
 
- {/*
-      <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>Tipo de Edificación:</Text>
-        <Picker
-          style={styles.picker}
-          selectedValue={tipoEdificacion}
-          onValueChange={handleTipoEdificacionChange}
-        >
-          <Picker.Item label="Seleccione..." value="" />
-          <Picker.Item label="W" value="W" />
-          <Picker.Item label="S" value="S" />
-          <Picker.Item label="C" value="C" />
-          <Picker.Item label="PC" value="PC" />
-          <Picker.Item label="RM" value="RM" />
-          <Picker.Item label="URM" value="URM" />
-          <Picker.Item label="MH" value="MH" />
-        </Picker>
-        <Text style={[styles.inputLabel, { marginLeft: 8 }]}>Sub Tipo:</Text>
-        <Picker
-          style={styles.picker}
-          selectedValue={subTipo}
-          onValueChange={(itemValue) => setSubTipo(itemValue)}
-        >
-          <Picker.Item label="Seleccione..." value="" />
-          {getSubTipos(tipoEdificacion).map((subTipo) => (
-            <Picker.Item key={subTipo} label={subTipo} value={subTipo} />
-          ))}
-        </Picker>
-      </View>
- */}
-
+ 
     <View style={styles.inputContainer}>
       <Text style={styles.inputLabel}>Tipo de Edificación:</Text>
-
 
       <Picker
           style={styles.picker}
           selectedValue={selectedValueTipoEdificacion}
           onValueChange={(itemValue) => {
             setSelectedValueTipoEdificacion(itemValue);
-            handleSubTipoChange(itemValue); // Implementa la lógica para obtener los subtipos aquí
+            // Aquí manejas la lógica para obtener los subtipos según el tipo de edificación seleccionado
+            // Esto es solo un ejemplo, deberías llamar a la función fetchSubTipos aquí o manejar los subtipos como necesites
+            // fetchSubTipos(itemValue);
           }}
         >
           <Picker.Item label="Seleccione..." value="" />
-          <Picker.Item label="W" value="W" />
-          <Picker.Item label="S" value="S" />
-          <Picker.Item label="C" value="C" />
-          <Picker.Item label="PC" value="PC" />
-          <Picker.Item label="RM" value="RM" />
-          <Picker.Item label="URM" value="URM" />
-          <Picker.Item label="MH" value="MH" />
+          {tipoEdificacion.map((item) => (
+            <Picker.Item key={item.codTipoEdificacion} label={item.descripcion} value={item.descripcion} />
+          ))}
         </Picker>
         <Text style={[styles.inputLabel, { marginLeft: 8 }]}>Sub Tipo:</Text>
         <Picker
@@ -465,32 +454,7 @@ const FormularioFema3 = ({ route, navigation }) => {
           ))}
         </Picker>
 
-      {/* <Picker
-       selectedValue={selectedValueTipoEdificacion}
-       onValueChange={(itemValue) => setSelectedValueTipoEdificacion(itemValue)}
-      >
-        <Picker.Item label="Seleccione..." value="" />
-        <Picker.Item label="W" value="W" />
-        <Picker.Item label="S" value="S" />
-        <Picker.Item label="C" value="C" />
-        <Picker.Item label="PC" value="PC" />
-        <Picker.Item label="RM" value="RM" />
-        <Picker.Item label="URM" value="URM" />
-        <Picker.Item label="MH" value="MH" />
-      </Picker>
-
-      <Text>Sub Tipo:</Text>
-      <Picker
-        selectedValue={subTipo}
-        onValueChange={(itemValue) => setSubTipo(itemValue)}
-      >
-        <Picker.Item label="Seleccione..." value="" />
-        {subTipos.map((subTipoItem, index) => (
-          <Picker.Item key={index} label={subTipoItem} value={subTipoItem} />
-        ))}
-      </Picker> */}
-
-
+      
      
     </View>
 
