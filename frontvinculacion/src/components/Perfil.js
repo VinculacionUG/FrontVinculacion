@@ -52,7 +52,7 @@ const Perfil = ({ navigation }) => {
        </View>
 
        <View style={styles.inputContainer}>
-        <Text style={[styles.label, { flex: 1 }]}>Correo)</Text>
+        <Text style={[styles.label, { flex: 1 }]}>Correo</Text>
         <TextInput
           style={[styles.input, { flex: 2 }]}
           placeholder="Correo"
