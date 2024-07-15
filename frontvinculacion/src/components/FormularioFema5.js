@@ -31,16 +31,16 @@ const FormularioFema5 = ({ navigation }) => {
 
     switch (codAccionPregunta) {
       case 1:
-        nuevaPregunta1Fema5 = "Sí, se desconoce el tipo de edificio según FEMA";
+        nuevaPregunta1Fema5 = 1;
         break;
       case 2:
-        nuevaPregunta1Fema5 = "No, existe amenaza de elementos no estructurales y deben ser mitigados, pero la evaluación detallada no es necesaria";
+        nuevaPregunta1Fema5 = 2;
         break;
       case 3:
-        nuevaPregunta1Fema5 = "Sí, otros peligros presentes";
+        nuevaPregunta1Fema5 = 3;
         break;
       case 4:
-        nuevaPregunta1Fema5 = "No";
+        nuevaPregunta1Fema5 = 4;
         break;
       default:
         break;
@@ -55,16 +55,16 @@ const FormularioFema5 = ({ navigation }) => {
 
     switch (codAccionPregunta) {
       case 5:
-        nuevaPregunta2Fema5 = "Sí, hay peligro de caída de elementos";
+        nuevaPregunta2Fema5 = 5;
         break;
       case 6:
-        nuevaPregunta2Fema5 = "No, existe amenaza de elementos no estructurales y deben ser mitigados, pero la evaluación detallada no es necesaria";
+        nuevaPregunta2Fema5 = 6;
         break;
       case 7:
-        nuevaPregunta2Fema5 = "No, no existe peligro de elementos no estructurales";
+        nuevaPregunta2Fema5 =7;
         break;
       case 8:
-        nuevaPregunta2Fema5 = "No, se sabe";
+        nuevaPregunta2Fema5 = 8;
         break;
       default:
         break;

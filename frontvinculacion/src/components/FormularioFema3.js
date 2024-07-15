@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 //import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity, CheckBox } from 'react-native';
 import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator,CheckBox } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { AppContext } from './AppContext';
 
 const FormularioFema3 = ({ route, navigation }) => {
 
@@ -23,7 +24,7 @@ const FormularioFema3 = ({ route, navigation }) => {
   //const [selectedValueTipoEdificacion, setSelectedValueTipoEdificacion] = useState('');
   //const [subTipo, setSubTipo] = useState('');
   const [subTipos, setSubTipos] = useState([]);
-  
+
   const [tipoEdificacionList, setTipoEdificacionList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -44,7 +45,8 @@ const FormularioFema3 = ({ route, navigation }) => {
   const [includeSueloTipoE1a3, setIncludeSueloTipoE1a3] = useState(false);
   const [includeSueloTipoEMayor3, setIncludeSueloTipoEMayor3] = useState(false);
   const [includeResultadoSmin, setIncludeResultadoSmin] = useState(false);
-  // Agrega estados similares para los demás checkboxes
+
+  const [isChecked, setIsChecked] = useState(false);
 
   const handleChangeCheckboxResultadoBase = () => {
     setIncludeResultadoBase(!includeResultadoBase);
@@ -61,7 +63,7 @@ const FormularioFema3 = ({ route, navigation }) => {
   const handleChangeCheckboxPlantaIrregular = () => {
     setIncludePlantaIrregular(!includePlantaIrregular);
   };
-  
+
   const handleChangeCheckboxPreCodigoSismico = () => {
     setIncludePreCodigoSismico(!includePreCodigoSismico);
   };
@@ -85,48 +87,18 @@ const FormularioFema3 = ({ route, navigation }) => {
   const handleChangeCheckboxResultadoSmin = () => {
     setIncludeResultadoSmin(!includeResultadoSmin);
   };
-  
 
+
+  const handleInputPress = (setCheckboxState, currentCheckboxState) => {
+    setCheckboxState(!currentCheckboxState); // Cambia el estado del checkbox
+  };
+
+  const {
+    resultado
+  } = useContext(AppContext);
 
   const handleNext = () => {
     navigation.navigate('FormularioFema4', {
-      direccion,
-      zip,
-      otrasIdentificaciones,
-      nombreEdificio,
-      uso,
-      latitud,
-      longitud,
-      inspector,
-      fecha,
-      hora,
-      files1,
-      files2,
-      numPisos,
-      sup,
-      info,
-      anioConstruccion,
-      areaTotalPiso,
-      anioCodigo,
-      anioConstruccion2,
-      ampliacion,
-      ocupacion,
-      tipoSuelo,
-      comentario,
-      //tipoEdificacion,
-      tipoEdificacion: selectedValuetipoEdificacion,
-      subTipo,
-      resultadoBase,
-      irregularidadVerticalSevera,
-      irregularidadVerticalModerada,
-      plantaIrregular,
-      preCodigoSismico,
-      postCodigoSismico,
-      sueloTipoAB,
-      sueloTipoE1a3,
-      sueloTipoEMayor3,
-      resultadoSmin,
-      resultadoFinal,
     });
   };
 
@@ -138,9 +110,9 @@ const FormularioFema3 = ({ route, navigation }) => {
 
     let suma = parseFloat(resultadoBase);
 
-    if (includeResultadoBase) {
-      suma += parseFloat(resultadoBase);
-    }
+    // if (includeResultadoBase) {
+    //   suma += parseFloat(resultadoBase);
+    // }
     if (includeIrregularidadSevera) {
       suma += parseFloat(irregularidadVerticalSevera);
     }
@@ -168,28 +140,10 @@ const FormularioFema3 = ({ route, navigation }) => {
     if (includeResultadoSmin) {
       suma += parseFloat(resultadoSmin);
     }
-    // Agrega condiciones similares para los demás checkboxes
-  
+
     const resultadoFinal = suma.toFixed(2); // Redondea a 2 decimales si es necesario
-  
     setResultadoFinal(resultadoFinal.toString());
 
-
-    // Convertir los valores a números y sumarlos
-    // const resultadoFinal = parseFloat(resultadoBase) +
-    //   parseFloat(irregularidadVerticalSevera) +
-    //   parseFloat(irregularidadVerticalModerada) +
-    //   parseFloat(plantaIrregular) +
-    //   parseFloat(preCodigoSismico) +
-    //   parseFloat(postCodigoSismico) +
-    //   parseFloat(sueloTipoAB) +
-    //   parseFloat(sueloTipoE1a3) +
-    //   parseFloat(sueloTipoEMayor3) +
-    //   parseFloat(resultadoSmin);
-
-    // // Establecer el resultado en el estado resultadoFinal
-    // setResultadoFinal(resultadoFinal.toString());
-    //setResultadoFinal('Resultado calculado');
   };
 
   useEffect(() => {
@@ -220,7 +174,7 @@ const FormularioFema3 = ({ route, navigation }) => {
     };
     fetchTipoEdificacion();
   }, []);
-    
+
 
      const fetchSubTipos = async (tipo) => {
       const url2 = 'https://www.fema.somee.com/Users/SubTipoEdificacion';
@@ -229,10 +183,8 @@ const FormularioFema3 = ({ route, navigation }) => {
          if (!response.ok) {
            throw new Error('Error al obtener los subtipos de edificación');
          }
-         //const data = await response.json();
          const result = await response.json();
-         // Mostrar los datos en la consola
-         console.log('Datos recibidos de SubTipoEdificacion: ', result);
+         //console.log('Datos recibidos de SubTipoEdificacion: ', result);
          const filteredSubTipos = result
            .filter(item => item.descripcion.startsWith(tipo))
            .map(item => item.descripcion);
@@ -241,55 +193,66 @@ const FormularioFema3 = ({ route, navigation }) => {
          setError(error.message);
        }
      };
-     if (selectedValueTipoEdificacion) {
-       fetchSubTipos(selectedValueTipoEdificacion);
-     }
-   
+    //  if (selectedValueTipoEdificacion) {
+    //    fetchSubTipos(selectedValueTipoEdificacion);
+    //  }
+
 
     useEffect(() => {
       const fetchResultadoBase = async () => {
-        //const url3 = 'https://www.fema.somee.com/FemaTres/consultarResultadoBase/1';
-        const baseUrl  = 'https://www.fema.somee.com/FemaTres/consultarResultadoBase/';
-        try {
-          const tipoEdificacionMap = {
-            W: '1',
-            S: '4',
-            C: '9',
-            PC: '12',
-            RM: '14',
-            URM: '16',
-            MH: '17',
-          };
-          const numeroFinalUrl = tipoEdificacionMap[selectedValueTipoEdificacion];
-          const url3 = baseUrl + numeroFinalUrl;
-          
-          console.log('Número final de URL:', numeroFinalUrl);
-          console.log('URL completa:', url3);
 
+        if (!selectedValueTipoEdificacion || !subTipo) {
+          return; // Si falta alguno de los valores, salimos de la función
+        }
+
+        const baseUrl  = 'https://www.fema.somee.com/FemaTres/consultarResultadoBase/';
+
+          const tipoEdificacionMap = {
+            'W-W1': 1,
+            'W-W1A': 2,
+            'W-W2': 3,
+            'S-S1(MRF)': 4,
+            'S-S2(BR)': 5,
+            'S-S3(LM)': 6,
+            'S-S4(RCSW)': 7,
+            'S-S5(URMINF)': 8,
+            'C-C1(MRF)': 9,
+            'C-C2(SW)': 10,
+            'C-C3(URMINF)': 11,
+            'PC-PC1(TU)': 12,
+            'PC-PC2': 13,
+            'RM-RM1(FD)': 14,
+            'RM-RM2(RD)': 15,
+            'URM-URM': 16,
+            'MH-MH': 17,
+          };
+
+          const key = `${selectedValueTipoEdificacion}-${subTipo}`;
+
+          // Verifica si existe una entrada válida en el mapa para la combinación Tipo de Edificación y Subtipo
+          if (!tipoEdificacionMap.hasOwnProperty(key)) {
+            console.warn(`No se encontró una combinación válida para Tipo de Edificación: ${selectedValueTipoEdificacion} y Subtipo: ${subTipo}`);
+            return; // Si no hay una combinación válida, salimos de la función
+          }
+
+          const numeroFinalUrl = tipoEdificacionMap[key];
+          const url3 = `${baseUrl}${numeroFinalUrl}`;
+
+          try {
           const response = await fetch(url3,
 		      {
 		  	    method: 'GET',
 		      }
 		      );
           if (!response.ok) {
-            throw new Error('Error en la red ' + response.status + ' ' + response.statusText);
+            throw new Error(`Error en la red ${response.status} ${response.statusText}`);
           }
           const result = await response.json();
-          console.log('Resultado desde URL2:', result); // Imprimir resultado en consola
-          //setResultadoBase(result);
 
           // Verificar si result es un array y no está vacío antes de iterar sobre él
           if (Array.isArray(result) && result.length > 0) {
             result.forEach((item) => {
-              //let valor = item.valor;
-              // if (valor === null || valor === undefined) {
-              //   valor = "NA";   // Darle valor NA ya que si es null muestra otro valor
-              // } else {
-              //   valor = valor.toString();              // }
-              // Verificar si item tiene la propiedad 'valor'
-              if (item.valor !== undefined && item.valor !== null) {
-                let valor = item.valor.toString(); // Convertir a string si no es null ni undefined
-                
+              const valor = item.valor ?? '0'; // Asigna '0' si item.valor es null o undefined
                 switch (item.codTipoPuntuacion) {
                   case 9:
                     setResultadoBase(valor);
@@ -324,14 +287,10 @@ const FormularioFema3 = ({ route, navigation }) => {
                   default:
                     break;
                 }
-              } else {
-                console.warn(`El item ${item.codTipoPuntuacion} no tiene la propiedad 'valor' definida correctamente.`);
-              }
             });
           } else {
             console.warn('El resultado obtenido no es un array válido o está vacío.');
           }
-		    //console.log(result);
         } catch (error) {
           console.error('Error fetching data:', error);
           setError(error);
@@ -341,21 +300,13 @@ const FormularioFema3 = ({ route, navigation }) => {
         }
       };
       if (selectedValueTipoEdificacion) {
-        fetchResultadoBase();
+        fetchSubTipos(selectedValueTipoEdificacion);
+        //fetchResultadoBase();
       }
-    //fetchResultadoBase();
-  //}, []);
-    }, [selectedValueTipoEdificacion]);
-  //}, [tipoEdificacion]);
-  //}, [selectedValuetipoEdificacion, subTipo]);
-
-  const handleSubTipoChange = (tipo) => {
-    // Aquí puedes implementar la lógica para obtener los subtipos según el tipo seleccionado
-    // Por ejemplo, una llamada a una API o una función local para obtener los subtipos
-    // y luego actualizar el estado de subTipos con los valores obtenidos.
-    //Sin implementar por el problema con el endPoint de Subtipo
-  };
-
+       if (selectedValueTipoEdificacion && subTipo) {
+         fetchResultadoBase();
+       }
+    }, [selectedValueTipoEdificacion, subTipo]);
 
   if (loading) {
     return <ActivityIndicator size="large" color="#0000ff" />;
@@ -375,57 +326,21 @@ const FormularioFema3 = ({ route, navigation }) => {
       <Text style={styles.title}>Formulario FEMA P-154</Text>
       <Text style={styles.subtitle}>Resultado Base, Modificadores y Resultado Final de Nivel 1 de Análisis, SL1</Text>
 
- {/*
-      <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>Tipo de Edificación:</Text>
-        <Picker
-          style={styles.picker}
-          selectedValue={tipoEdificacion}
-          onValueChange={handleTipoEdificacionChange}
-        >
-          <Picker.Item label="Seleccione..." value="" />
-          <Picker.Item label="W" value="W" />
-          <Picker.Item label="S" value="S" />
-          <Picker.Item label="C" value="C" />
-          <Picker.Item label="PC" value="PC" />
-          <Picker.Item label="RM" value="RM" />
-          <Picker.Item label="URM" value="URM" />
-          <Picker.Item label="MH" value="MH" />
-        </Picker>
-        <Text style={[styles.inputLabel, { marginLeft: 8 }]}>Sub Tipo:</Text>
-        <Picker
-          style={styles.picker}
-          selectedValue={subTipo}
-          onValueChange={(itemValue) => setSubTipo(itemValue)}
-        >
-          <Picker.Item label="Seleccione..." value="" />
-          {getSubTipos(tipoEdificacion).map((subTipo) => (
-            <Picker.Item key={subTipo} label={subTipo} value={subTipo} />
-          ))}
-        </Picker>
-      </View>
- */}
 
     <View style={styles.inputContainer}>
       <Text style={styles.inputLabel}>Tipo de Edificación:</Text>
-
 
       <Picker
           style={styles.picker}
           selectedValue={selectedValueTipoEdificacion}
           onValueChange={(itemValue) => {
             setSelectedValueTipoEdificacion(itemValue);
-            handleSubTipoChange(itemValue); // Implementa la lógica para obtener los subtipos aquí
           }}
         >
           <Picker.Item label="Seleccione..." value="" />
-          <Picker.Item label="W" value="W" />
-          <Picker.Item label="S" value="S" />
-          <Picker.Item label="C" value="C" />
-          <Picker.Item label="PC" value="PC" />
-          <Picker.Item label="RM" value="RM" />
-          <Picker.Item label="URM" value="URM" />
-          <Picker.Item label="MH" value="MH" />
+          {tipoEdificacion.map((item) => (
+            <Picker.Item key={item.codTipoEdificacion} label={item.descripcion} value={item.descripcion} />
+          ))}
         </Picker>
         <Text style={[styles.inputLabel, { marginLeft: 8 }]}>Sub Tipo:</Text>
         <Picker
@@ -439,42 +354,14 @@ const FormularioFema3 = ({ route, navigation }) => {
           ))}
         </Picker>
 
-      {/* <Picker
-       selectedValue={selectedValueTipoEdificacion}
-       onValueChange={(itemValue) => setSelectedValueTipoEdificacion(itemValue)}
-      >
-        <Picker.Item label="Seleccione..." value="" />
-        <Picker.Item label="W" value="W" />
-        <Picker.Item label="S" value="S" />
-        <Picker.Item label="C" value="C" />
-        <Picker.Item label="PC" value="PC" />
-        <Picker.Item label="RM" value="RM" />
-        <Picker.Item label="URM" value="URM" />
-        <Picker.Item label="MH" value="MH" />
-      </Picker>
-
-      <Text>Sub Tipo:</Text>
-      <Picker
-        selectedValue={subTipo}
-        onValueChange={(itemValue) => setSubTipo(itemValue)}
-      >
-        <Picker.Item label="Seleccione..." value="" />
-        {subTipos.map((subTipoItem, index) => (
-          <Picker.Item key={index} label={subTipoItem} value={subTipoItem} />
-        ))}
-      </Picker> */}
-
-
-     
     </View>
-
 
       <View style={styles.squareContainer}>
         <View style={styles.resultContainer}>
           <Text style={styles.resultLabel}>RESULTADO BASE:</Text>
           {/* <CheckBox value={includeResultadoBase} onValueChange={handleChangeCheckboxResultadoBase} /> */}
           <TextInput
-            style={[styles.resultInput1, { marginRight: 17 }]}
+            style={[styles.resultInput1, { marginRight: 17, backgroundColor: '#d4edda' }]}
             value={resultadoBase}
             onChangeText={setResultadoBase}
             keyboardType="numeric"
@@ -485,24 +372,40 @@ const FormularioFema3 = ({ route, navigation }) => {
         <View style={styles.squareContainer}>
           <View style={styles.resultContainer}>
             <Text style={styles.resultLabel}>Irregularidad Vertical Severa:</Text>
-            <CheckBox value={includeIrregularidadSevera} onValueChange={handleChangeCheckboxSevera} />
+            <TouchableOpacity onPress={() => handleInputPress(setIncludeIrregularidadSevera, includeIrregularidadSevera)}>
             <TextInput
-              style={styles.resultInput}
+              style={[
+                styles.resultInput,
+                includeIrregularidadSevera && { borderColor: 'green', borderWidth: 2, backgroundColor: '#d4edda' } // Aplica el marco verde si está marcado
+              ]}
               value={irregularidadVerticalSevera}
               onChangeText={setIrregularidadVerticalSevera}
-              keyboardType="numeric"
               editable={false}
+            />
+            </TouchableOpacity>
+            <CheckBox
+              value={includeIrregularidadSevera}
+              onValueChange={() => handleInputPress(setIncludeIrregularidadSevera, includeIrregularidadSevera)}
+              style={{ display: 'none' }} // Hiding the checkbox
             />
           </View>
           <View style={styles.resultContainer}>
             <Text style={styles.resultLabel}>Irregularidad Vertical Moderada:</Text>
-            <CheckBox value={includeIrregularidadModerada} onValueChange={handleChangeCheckboxModerada} />
-            <TextInput
-              style={styles.resultInput}
-              value={irregularidadVerticalModerada}
-              onChangeText={setIrregularidadVerticalModerada}
-              keyboardType="numeric"
-              editable={false}
+            <TouchableOpacity onPress={() => handleInputPress(setIncludeIrregularidadModerada, includeIrregularidadModerada)}>
+              <TextInput
+                style={[
+                  styles.resultInput,
+                  includeIrregularidadModerada && { borderColor: 'green', borderWidth: 2, backgroundColor: '#d4edda' }
+                ]}
+                value={irregularidadVerticalModerada}
+                onChangeText={setIrregularidadVerticalModerada}
+                editable={false}
+              />
+            </TouchableOpacity>
+            <CheckBox
+              value={includeIrregularidadModerada}
+              onValueChange={() => handleInputPress(setIncludeIrregularidadModerada, includeIrregularidadModerada)}
+              style={{ display: 'none' }}
             />
           </View>
         </View>
@@ -510,87 +413,143 @@ const FormularioFema3 = ({ route, navigation }) => {
         <View style={styles.squareContainer}>
           <View style={styles.resultContainer}>
             <Text style={styles.resultLabel}>Planta Irregular:</Text>
-            <CheckBox value={includePlantaIrregular} onValueChange={handleChangeCheckboxPlantaIrregular} />
-            <TextInput
-              style={styles.resultInput}
-              value={plantaIrregular}
-              onChangeText={setPlantaIrregular}
-              keyboardType="numeric"
-              editable={false}
+            <TouchableOpacity onPress={() => handleInputPress(setIncludePlantaIrregular, includePlantaIrregular)}>
+              <TextInput
+                style={[
+                  styles.resultInput,
+                  includePlantaIrregular && { borderColor: 'green', borderWidth: 2, backgroundColor: '#d4edda' }
+                ]}
+                value={plantaIrregular}
+                onChangeText={setPlantaIrregular}
+                editable={false}
+              />
+            </TouchableOpacity>
+            <CheckBox
+              value={includePlantaIrregular}
+              onValueChange={() => handleInputPress(setIncludePlantaIrregular, includePlantaIrregular)}
+              style={{ display: 'none' }}
             />
           </View>
         </View>
 
         <View style={styles.squareContainer}>
           <View style={styles.resultContainer}>
-            <Text style={styles.resultLabel}>Pre-código Sísmico:</Text>
-            <CheckBox value={includePreCodigoSismico} onValueChange={handleChangeCheckboxPreCodigoSismico} />
-            <TextInput
-              style={styles.resultInput}
-              value={preCodigoSismico}
-              onChangeText={setPreCodigoSismico}
-              keyboardType="numeric"
-              editable={false}
+            <Text style={styles.resultLabel}>Pre Código Sismico:</Text>
+            <TouchableOpacity onPress={() => handleInputPress(setIncludePreCodigoSismico, includePreCodigoSismico)}>
+              <TextInput
+                style={[
+                  styles.resultInput,
+                  includePreCodigoSismico && { borderColor: 'green', borderWidth: 2, backgroundColor: '#d4edda' }
+                ]}
+                value={preCodigoSismico}
+                onChangeText={setPreCodigoSismico}
+                editable={false}
+              />
+            </TouchableOpacity>
+            <CheckBox
+              value={includePreCodigoSismico}
+              onValueChange={() => handleInputPress(setIncludePreCodigoSismico, includePreCodigoSismico)}
+              style={{ display: 'none' }}
             />
           </View>
           <View style={styles.resultContainer}>
-            <Text style={styles.resultLabel}>Post-código Sísmico:</Text>
-            <CheckBox value={includePostCodigoSismico} onValueChange={handleChangeCheckboxPostCodigoSismico} />
-            <TextInput
-              style={styles.resultInput}
-              value={postCodigoSismico}
-              onChangeText={setPostCodigoSismico}
-              keyboardType="numeric"
-              editable={false}
+            <Text style={styles.resultLabel}>Post Código Sismico:</Text>
+            <TouchableOpacity onPress={() => handleInputPress(setIncludePostCodigoSismico, includePostCodigoSismico)}>
+              <TextInput
+                style={[
+                  styles.resultInput,
+                  includePostCodigoSismico && { borderColor: 'green', borderWidth: 2, backgroundColor: '#d4edda' }
+                ]}
+                value={postCodigoSismico}
+                onChangeText={setPostCodigoSismico}
+                editable={false}
+              />
+            </TouchableOpacity>
+            <CheckBox
+              value={includePostCodigoSismico}
+              onValueChange={() => handleInputPress(setIncludePostCodigoSismico, includePostCodigoSismico)}
+              style={{ display: 'none' }}
             />
           </View>
         </View>
 
         <View style={styles.squareContainer}>
           <View style={styles.resultContainer}>
-            <Text style={styles.resultLabel}>Suelo tipo A o B:</Text>
-            <CheckBox value={includeSueloTipoAB} onValueChange={handleChangeCheckboxSueloTipoAB} />
-            <TextInput
-              style={styles.resultInput}
-              value={sueloTipoAB}
-              onChangeText={setSueloTipoAB}
-              keyboardType="numeric"
-              editable={false}
+            <Text style={styles.resultLabel}>Suelo Tipo AB:</Text>
+            <TouchableOpacity onPress={() => handleInputPress(setIncludeSueloTipoAB, includeSueloTipoAB)}>
+              <TextInput
+                style={[
+                  styles.resultInput,
+                  includeSueloTipoAB && { borderColor: 'green', borderWidth: 2, backgroundColor: '#d4edda' }
+                ]}
+                value={sueloTipoAB}
+                onChangeText={setSueloTipoAB}
+                editable={false}
+              />
+            </TouchableOpacity>
+            <CheckBox
+              value={includeSueloTipoAB}
+              onValueChange={() => handleInputPress(setIncludeSueloTipoAB, includeSueloTipoAB)}
+              style={{ display: 'none' }}
             />
           </View>
           <View style={styles.resultContainer}>
-            <Text style={styles.resultLabel}>Suelo tipo E (1-3 pisos):</Text>
-            <CheckBox value={includeSueloTipoE1a3} onValueChange={handleChangeCheckboxSueloTipoE1a3} />
-            <TextInput
-              style={styles.resultInput}
-              value={sueloTipoE1a3}
-              onChangeText={setSueloTipoE1a3}
-              keyboardType="numeric"
-              editable={false}
+            <Text style={styles.resultLabel}>Suelo Tipo E1a3:</Text>
+            <TouchableOpacity onPress={() => handleInputPress(setIncludeSueloTipoE1a3, includeSueloTipoE1a3)}>
+              <TextInput
+                style={[
+                  styles.resultInput,
+                  includeSueloTipoE1a3 && { borderColor: 'green', borderWidth: 2, backgroundColor: '#d4edda' }
+                ]}
+                value={sueloTipoE1a3}
+                onChangeText={setSueloTipoE1a3}
+                editable={false}
+              />
+            </TouchableOpacity>
+            <CheckBox
+              value={includeSueloTipoE1a3}
+              onValueChange={() => handleInputPress(setIncludeSueloTipoE1a3, includeSueloTipoE1a3)}
+              style={{ display: 'none' }}
             />
           </View>
           <View style={styles.resultContainer}>
-            <Text style={styles.resultLabel}>Suelo tipo E (mayor a 3 pisos):</Text>
-            <CheckBox value={includeSueloTipoEMayor3} onValueChange={handleChangeCheckboxSueloTipoEMayor3} />
-            <TextInput
-              style={styles.resultInput}
-              value={sueloTipoEMayor3}
-              onChangeText={setSueloTipoEMayor3}
-              keyboardType="numeric"
-              editable={false}
+            <Text style={styles.resultLabel}>Suelo Tipo EMayor3:</Text>
+            <TouchableOpacity onPress={() => handleInputPress(setIncludeSueloTipoEMayor3, includeSueloTipoEMayor3)}>
+              <TextInput
+                style={[
+                  styles.resultInput,
+                  includeSueloTipoEMayor3 && { borderColor: 'green', borderWidth: 2, backgroundColor: '#d4edda' }
+                ]}
+                value={sueloTipoEMayor3}
+                onChangeText={setSueloTipoEMayor3}
+                editable={false}
+              />
+            </TouchableOpacity>
+            <CheckBox
+              value={includeSueloTipoEMayor3}
+              onValueChange={() => handleInputPress(setIncludeSueloTipoEMayor3, includeSueloTipoEMayor3)}
+              style={{ display: 'none' }}
             />
           </View>
         </View>
 
         <View style={styles.resultContainer}>
-          <Text style={styles.resultLabel}>RESULTADO SMIN:</Text>
-          <CheckBox value={includeResultadoSmin} onValueChange={handleChangeCheckboxResultadoSmin} />
-          <TextInput
-            style={[styles.resultInput, { marginRight: 18 }]}
-            value={resultadoSmin}
-            onChangeText={setResultadoSmin}
-            keyboardType="numeric"
-            editable={false}
+          <Text style={styles.resultLabel}>Resultado Smin:</Text>
+          <TouchableOpacity onPress={() => handleInputPress(setIncludeResultadoSmin, includeResultadoSmin)}>
+            <TextInput
+              style={[
+                styles.resultInput,
+                includeResultadoSmin && { borderColor: 'green', borderWidth: 2, backgroundColor: '#d4edda' }
+              ]}
+              value={resultadoSmin}
+              onChangeText={setResultadoSmin}
+              editable={false}
+            />
+          </TouchableOpacity>
+          <CheckBox
+            value={includeResultadoSmin}
+            onValueChange={() => handleInputPress(setIncludeResultadoSmin, includeResultadoSmin)}
+            style={{ display: 'none' }}
           />
         </View>
       </View>

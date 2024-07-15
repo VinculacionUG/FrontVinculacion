@@ -41,11 +41,15 @@ const FormularioFema2 = ({ navigation }) => {
   const handleNext = () => {
     // Validación de campos obligatorios
     if (!numeroPiso || !inf || !anoConstruccion || !areaTotalDePiso || !anoCodigo || !ampliacion || !anoDeContruccion ||
-      !selectedValuetipoocupacion || !selectedValuetipoSuelo || selectedCheckboxes.length === 0 || !comentario) {
+      !selectedValuetipoocupacion || !selectedValuetipoSuelo || selectedCheckboxes.length === 0 ) {
       alert('Por favor complete todos los campos.');
       return;
     }
-
+    const ocupacion = {
+      selectedCheckboxes,
+      tipoocupacion1,
+     
+    };
     // Continuar con la navegación o el procesamiento de datos
     console.log('Datos guardados:', {
       numeroPiso,
@@ -56,9 +60,8 @@ const FormularioFema2 = ({ navigation }) => {
       ampliacion,
       anoDeContruccion,
       tiposuelo1,
-      tipoocupacion1,
       comentario,
-      ocupacion: selectedCheckboxes,
+      ocupacion
     });
 
     navigation.navigate('FormularioFema3');
@@ -294,7 +297,7 @@ const FormularioFema2 = ({ navigation }) => {
         >
           <Picker.Item label="Seleccione" value="" />
           {tipoSuelo.map((item, index) => (
-            <Picker.Item label={item.descripcion} value={item.descripcion} key={index} />
+            <Picker.Item label={item.descripcion} value={item.codTipoSuelo} key={index} />
           ))}
         </Picker>
       </View>
