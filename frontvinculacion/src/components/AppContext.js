@@ -42,6 +42,10 @@ export const AppProvider = ({ children }) => {
   const [comentario, setComentario] = useState('');
   //fema 3
   const [resultado, setResultado] = useState('');
+  const [codpuntuacionMatriz, setcodpuntuacionMatriz] = useState(false);
+  const [resultadoFinal, setresultadoFinal] = useState(false);
+  const [esEst, setesEst] = useState(false);
+  const [esDnk, setesDnk] = useState(false);
   //fema 4
   const [exterior, setExterior] = useState('');
   const [interior, setInterior] = useState('');
