@@ -569,16 +569,34 @@ const FormularioFema3 = ({ route, navigation }) => {
       <View style={styles.checkboxContainer}>
         <CheckBox
           value={estChecked}
-          onValueChange={setEstChecked}
+          onValueChange={(newValue) => {
+            if (newValue) setDnkChecked(false);
+            setEstChecked(newValue);
+          }}
         />
         <Text style={styles.checkboxLabel}>EST</Text>
         <CheckBox
           value={dnkChecked}
-          onValueChange={setDnkChecked}
+          onValueChange={(newValue) => {
+            if (newValue) setEstChecked(false);
+            setDnkChecked(newValue);
+          }}
         />
         <Text style={styles.checkboxLabel}>DNK</Text>
         <TouchableOpacity style={styles.saveButton}>
-          <Text style={styles.saveButtonText}>Guardar</Text>
+          <Text style={styles.saveButtonText}
+          onPress={() => {
+            const seleccion = {
+              tipoEdificacion: selectedValueTipoEdificacion,
+              subTipo,
+              resultadoFinal,
+              estChecked,
+              dnkChecked
+            };
+            console.log(seleccion);
+            // Aquí puedes hacer lo necesario para guardar la selección, como enviar a una API o almacenarlo en un estado global
+          }}
+          >Guardar</Text>
         </TouchableOpacity>
       </View>
 
