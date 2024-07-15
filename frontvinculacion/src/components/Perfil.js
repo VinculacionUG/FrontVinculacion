@@ -28,7 +28,10 @@ const Perfil = ({ navigation }) => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>Perfil</Text>
+      <TouchableOpacity style={styles.goBackButton} onPress={() => navigation.goBack()}>
+        <MaterialCommunityIcons name="arrow-left" size={24} color="#001f3f" />
+      </TouchableOpacity>
+      <Text style={[styles.title, { marginTop: 25 }]}>Perfil</Text>
       <Text style={styles.title}>Nombre de Usuario</Text>
 
       <View style={styles.inputContainer}>
@@ -73,11 +76,10 @@ const Perfil = ({ navigation }) => {
 
       {/* Botones de Navegación            <MaterialCommunityIcons name="arrow-right" size={24} color="white" />     */}
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+        {/* <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
         <MaterialCommunityIcons name="arrow-left" size={24} color="white" />
         <Text style={styles.ButtonText}>Regresar</Text>
-
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TouchableOpacity style={styles.editarPerfilButton} onPress={handleEditarPerfil}>
           <Text style={styles.ButtonText}>Editar Perfil</Text>
         </TouchableOpacity>
@@ -101,8 +103,9 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 16,
+    justifyContent: 'center',
+    //marginBottom: 16,
+    marginTop: 16,
   },
   input: {
     height: 40,
@@ -126,8 +129,10 @@ const styles = StyleSheet.create({
   },
   ButtonText: {
     color: 'white',
-    fontSize: 18,
-    marginLeft: 8,
+    //fontSize: 18,
+    //marginLeft: 8,
+    alignSelf: 'center',
+    fontWeight: 'bold',
   },
   backButton: {
     backgroundColor: 'blue',
@@ -138,17 +143,24 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 12,
     paddingHorizontal: 24,
-    },
-    editarPerfilButton: {
-      backgroundColor: 'blue',
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'center',
-      paddingVertical: 12,
-      borderRadius: 10,
-      marginBottom: 12,
-      paddingHorizontal: 24,
-      },
+  },
+  editarPerfilButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    borderRadius: 20,
+    marginBottom: 12,
+    paddingHorizontal: 24,
+    backgroundColor: '#001f3f',
+    width: '80%',
+  },
+  goBackButton: {
+    position: 'absolute',
+    top: 20,
+    left: 20,
+    zIndex: 1, // Asegura que la flecha esté sobre otros elementos
+  },
 });
 
 export default Perfil;

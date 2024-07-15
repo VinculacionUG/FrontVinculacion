@@ -410,7 +410,7 @@ const styles = StyleSheet.create({
     width: '80%',
     maxWidth: 400,
     paddingBottom: 35, // Espacio adicional en la parte inferior para evitar que el último elemento se oculte detrás del botón de navegación
-
+    //backgroundColor: '#ffffff', // Cambiar al color deseado
   },
   heading: {
     fontSize: 24,

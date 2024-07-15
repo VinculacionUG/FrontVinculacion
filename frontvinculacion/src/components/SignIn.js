@@ -210,19 +210,21 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   eyeIcon: {
-    transform: [{ translateX: -35 }], //sobreponer el ojo horizontalmente
-    marginRight: -50, 
+    transform: [{ translateX: -35 },  { translateY: -10 },], //sobreponer el ojo horizontalmente
+    //marginRight: -50, 
+    position: 'absolute', // Asegúrate de que sea absoluto o relativo
+    zIndex: 999, // Un valor alto para superponer
   },
-  goBackButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#001f3f',
-    padding: 8,
-    borderRadius: 5,
-    marginTop: 10,
-    width: '100%',
-    justifyContent: 'center',
-  },
+  // goBackButton: {
+  //   flexDirection: 'row',
+  //   alignItems: 'center',
+  //   backgroundColor: '#001f3f',
+  //   padding: 8,
+  //   borderRadius: 5,
+  //   marginTop: 10,
+  //   width: '100%',
+  //   justifyContent: 'center',
+  // },
   goBackButtonText: {
     color: 'white',
     marginLeft: 10,

@@ -658,6 +658,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 16,
     textAlign: 'center',
+    marginTop: 30,
   },
   subtitle: {
     fontSize: 18,
@@ -675,11 +676,11 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   picker: {
-    height: 50,
+    height: 40,
     flex: 1,
     borderWidth: 1,
     borderColor: 'gray',
-    borderRadius: 5,
+    borderRadius: 10,
   },
   squareContainer: {
     borderWidth: 1,
@@ -717,7 +718,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
   },
   calculateButton: {
-    backgroundColor: 'navy',
+    backgroundColor: '#001f3f',
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 10,
@@ -738,7 +739,7 @@ const styles = StyleSheet.create({
     marginRight: 16,
   },
   saveButton: {
-    backgroundColor: 'navy',
+    backgroundColor: '#001f3f',
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 10,
@@ -752,7 +753,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between', // Distribuye los elementos horizontalmente
   },
   backButton: {
-    backgroundColor: 'navy',
+    backgroundColor: '#001f3f',
     flexDirection: 'row', // Alinea los elementos en una fila
     alignItems: 'center',
     justifyContent: 'center',
@@ -762,7 +763,7 @@ const styles = StyleSheet.create({
     marginRight: 10, // Agregué un margen derecho para separar los botones
   },
   nextButton: {
-    backgroundColor: 'navy',
+    backgroundColor: '#001f3f',
     flexDirection: 'row', // Alinea los elementos en una fila
     alignItems: 'center',
     justifyContent: 'center',
