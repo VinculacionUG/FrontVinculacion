@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 //import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity, CheckBox } from 'react-native';
 import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator,CheckBox } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { AppContext } from './AppContext';
 
 const FormularioFema3 = ({ route, navigation }) => {
 
@@ -92,47 +93,12 @@ const FormularioFema3 = ({ route, navigation }) => {
     setCheckboxState(!currentCheckboxState); // Cambia el estado del checkbox
   };
 
-
+  const {
+    resultado
+  } = useContext(AppContext);
 
   const handleNext = () => {
     navigation.navigate('FormularioFema4', {
-      direccion,
-      zip,
-      otrasIdentificaciones,
-      nombreEdificio,
-      uso,
-      latitud,
-      longitud,
-      inspector,
-      fecha,
-      hora,
-      files1,
-      files2,
-      numPisos,
-      sup,
-      info,
-      anioConstruccion,
-      areaTotalPiso,
-      anioCodigo,
-      anioConstruccion2,
-      ampliacion,
-      ocupacion,
-      tipoSuelo,
-      comentario,
-      //tipoEdificacion,
-      tipoEdificacion: selectedValuetipoEdificacion,
-      subTipo,
-      resultadoBase,
-      irregularidadVerticalSevera,
-      irregularidadVerticalModerada,
-      plantaIrregular,
-      preCodigoSismico,
-      postCodigoSismico,
-      sueloTipoAB,
-      sueloTipoE1a3,
-      sueloTipoEMayor3,
-      resultadoSmin,
-      resultadoFinal,
     });
   };
 
