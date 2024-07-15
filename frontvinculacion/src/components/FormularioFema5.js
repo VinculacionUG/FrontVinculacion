@@ -215,6 +215,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 16,
     textAlign: 'center',
+    marginTop: 30,
   },
   subtitle: {
     fontSize: 18,
@@ -247,7 +248,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     height: 40,
     marginHorizontal: 8,
-    backgroundColor: 'navy',
+    backgroundColor: '#001f3f',
     borderRadius: 10,
     paddingHorizontal: 12,
   },

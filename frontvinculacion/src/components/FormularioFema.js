@@ -99,6 +99,11 @@ const FormularioFema = ({ navigation }) => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      
+      <TouchableOpacity style={styles.goBackButton} onPress={() => navigation.goBack()}>
+        <MaterialCommunityIcons name="arrow-left" size={24} color="#001f3f" />
+      </TouchableOpacity>
+
       <Text style={styles.title}>Formulario FEMA P-154</Text>
 
       <View style={styles.section}>
@@ -144,7 +149,7 @@ const FormularioFema = ({ navigation }) => {
       <View style={styles.inputContainer}>
         <Text style={styles.inputLabel}>Dirección:</Text>
         <TextInput
-          style={[styles.input, { textAlign: 'center', paddingHorizontal: 20 }]}
+          style={[styles.input, { paddingHorizontal: 20 }]}
           value={direccion}
           onChangeText={(text) => setDireccion(text)}
         />
@@ -215,10 +220,21 @@ const FormularioFema = ({ navigation }) => {
           <TextInput
             style={[styles.input, styles.dateInput]}
             placeholder="MM"
-            maxLength={2}
+            //maxLength={2}
             keyboardType="numeric"
             value={fecha.month}
-            onChangeText={(text) => setFecha(prevState => ({ ...prevState, month: text }))}
+            //onChangeText={(text) => setFecha(prevState => ({ ...prevState, month: text }))}
+            onChangeText={(text) => {
+              const numericValue = text.replace(/[^a-zA-Z0-9]/g, ''); // Filtrar los caracteres no numéricos
+              const intValue = parseInt(numericValue, 10); // Convertir el valor a un número entero
+                if (
+                  (numericValue === '' || (intValue >= 1 && intValue <= 12)) &&  // Verificar si el valor está dentro del rango permitido (1 - 31)
+                  numericValue.length <= 2                                       // Filtrar la cantidad de números
+                ) {
+                //setDay(numericValue);
+                setFecha(prevState => ({ ...prevState, month: text }))                                       // Actualizar el estado con el valor filtrado
+               }
+            }}
           />
           <TextInput
             style={[styles.input, styles.dateInput]}
@@ -226,7 +242,18 @@ const FormularioFema = ({ navigation }) => {
             maxLength={2}
             keyboardType="numeric"
             value={fecha.day}
-            onChangeText={(text) => setFecha(prevState => ({ ...prevState, day: text }))}
+            // onChangeText={(text) => setFecha(prevState => ({ ...prevState, day: text }))}
+            onChangeText={(text) => {
+              const numericValue = text.replace(/[^a-zA-Z0-9]/g, ''); // Filtrar los caracteres no numéricos
+              const intValue = parseInt(numericValue, 10); // Convertir el valor a un número entero
+                if (
+                  (numericValue === '' || (intValue >= 1 && intValue <= 31)) &&  // Verificar si el valor está dentro del rango permitido (1 - 31)
+                  numericValue.length <= 2                                       // Filtrar la cantidad de números
+                ) {
+                //setDay(numericValue);
+                setFecha(prevState => ({ ...prevState, day: text }))                                            // Actualizar el estado con el valor filtrado
+               }
+            }}
           />
           <TextInput
             style={[styles.input, styles.dateInput]}
@@ -234,7 +261,18 @@ const FormularioFema = ({ navigation }) => {
             maxLength={4}
             keyboardType="numeric"
             value={fecha.year}
-            onChangeText={(text) => setFecha(prevState => ({ ...prevState, year: text }))}
+            //onChangeText={(text) => setFecha(prevState => ({ ...prevState, year: text }))}
+            onChangeText={(text) => {
+              const numericValue = text.replace(/[^a-zA-Z0-9]/g, ''); // Filtrar los caracteres no numéricos
+              const intValue = parseInt(numericValue, 10); // Convertir el valor a un número entero
+                if (
+                  (numericValue === '' || (intValue >= 1 && intValue <= 3000)) &&  // Verificar si el valor está dentro del rango permitido (1 - 31)
+                  numericValue.length <= 4                                       // Filtrar la cantidad de números
+                ) {
+                //setDay(numericValue);
+                setFecha(prevState => ({ ...prevState, year: text }))                                          // Actualizar el estado con el valor filtrado
+               }
+            }}
           />
         </View>
       </View>
@@ -249,10 +287,10 @@ const FormularioFema = ({ navigation }) => {
       </View>
 
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+        {/* <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
           <MaterialCommunityIcons name="arrow-left" size={24} color="white" />
           <Text style={styles.buttonText}>Regresar</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TouchableOpacity style={styles.backButton} onPress={handleNext}>
           <MaterialCommunityIcons name="arrow-right" size={24} color="white" />
           <Text style={styles.buttonText}>Siguiente</Text>
@@ -272,6 +310,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 16,
+    marginTop: 30,
     textAlign: 'center',
   },
   section: {
@@ -288,8 +327,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   uploadButton: {
-    backgroundColor: 'navy',
-    borderRadius: 10,
+    //backgroundColor: 'navy',
+    backgroundColor: '#001f3f',
+    borderRadius: 12,
     paddingHorizontal: 40,
     paddingVertical: 5,
   },
@@ -302,7 +342,7 @@ const styles = StyleSheet.create({
     padding: 8,
     borderWidth: 1,
     borderColor: 'gray',
-    borderRadius: 5,
+    borderRadius: 10,
     flex: 1,
     alignItems: 'center',
   },
@@ -312,7 +352,7 @@ const styles = StyleSheet.create({
   image: {
     width: 100,
     height: 100,
-    borderRadius: 5,
+    borderRadius: 10,
   },
   inputContainer: {
     flexDirection: 'row',
@@ -330,7 +370,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderWidth: 1,
     borderColor: 'gray',
-    borderRadius: 5,
+    borderRadius: 10,
     height: 40,
     padding: 0,
     paddingHorizontal: 10,
@@ -341,7 +381,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderWidth: 1,
     borderColor: 'gray',
-    borderRadius: 5,
+    borderRadius: 10,
     height: 40,
     width: 0,
     padding: 0,
@@ -350,18 +390,18 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     marginTop: 16,
   },
   backButton: {
-    backgroundColor: 'navy',
+    backgroundColor: '#001f3f',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 12,
-    borderRadius: 10,
+    borderRadius: 20,
     marginBottom: 12,
-    paddingHorizontal: 24,
+    paddingHorizontal: 80,
   },
   buttonText: {
     color: 'white',
@@ -384,6 +424,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 16,
+  },
+  goBackButton: {
+    position: 'absolute',
+    top: 20,
+    left: 20,
+    zIndex: 1, // Asegura que la flecha esté sobre otros elementos
   },
 });
 

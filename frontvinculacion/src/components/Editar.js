@@ -49,6 +49,9 @@ const Editar = ({ navigation }) => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      <TouchableOpacity style={styles.goBackButton} onPress={() => navigation.goBack()}>
+        <MaterialCommunityIcons name="arrow-left" size={24} color="#001f3f" />
+      </TouchableOpacity>
       <Text style={styles.title}>Editar FEMA P-154</Text>
 
       {/* Texto y búsqueda por nombre del edificio */}
@@ -110,9 +113,9 @@ const Editar = ({ navigation }) => {
         </View>
       )}
 
-      <TouchableOpacity style={[styles.backButton, styles.transparentButton]} onPress={() => navigation.goBack()}>
+      {/* <TouchableOpacity style={[styles.backButton, styles.transparentButton]} onPress={() => navigation.goBack()}>
         <MaterialCommunityIcons name="exit-to-app" size={24} color="black" />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </ScrollView>
   );
 };
@@ -128,6 +131,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 16,
     textAlign: 'center',
+    marginTop: 30,
   },
   searchContainer: {
     flexDirection: 'row',
@@ -189,6 +193,12 @@ const styles = StyleSheet.create({
     padding: 10,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  goBackButton: {
+    position: 'absolute',
+    top: 20,
+    left: 20,
+    zIndex: 1, // Asegura que la flecha esté sobre otros elementos
   },
 });
 
