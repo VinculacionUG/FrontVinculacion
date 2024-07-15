@@ -71,16 +71,16 @@ const FormularioFema4 = ({ navigation }) => {
 
     switch (codigoPeligro) {
       case 1:
-        otrosPeligros1 = 'Posible golpeteo entre edificios';
+        otrosPeligros1 = 1;
         break;
       case 2:
-        otrosPeligros1 = 'Riesgos de caídas de edificios adyacentes más altos';
+        otrosPeligros1 = 2;
         break;
       case 3:
-        otrosPeligros1 = 'Peligro geológico o suelo tipo F';
+        otrosPeligros1 = 3;
         break;
       case 4:
-        otrosPeligros1 = 'Daños significativos/deterioro del sistema estructural';
+        otrosPeligros1 = 4;
         break;
       default:
         otrosPeligros1 = 'Código de peligro no válido';
@@ -182,7 +182,7 @@ const FormularioFema4 = ({ navigation }) => {
         >
           <Picker.Item label="Seleccione" value="" />
           {revisionExterior.map((item, index) => (
-            <Picker.Item label={item.descripcion} value={item.descripcion} key={index} />
+            <Picker.Item label={item.descripcion} value={item.codEvalExterior} key={index} />
           ))}
         </Picker>
       </View>
@@ -197,7 +197,7 @@ const FormularioFema4 = ({ navigation }) => {
         >
           <Picker.Item label="Seleccione" value="" />
           {revisionInterior.map((item, index) => (
-            <Picker.Item label={item.descripcion} value={item.descripcion} key={index} />
+            <Picker.Item label={item.descripcion} value={item.codEvalInterior} key={index} />
           ))}
         </Picker>
       </View>
