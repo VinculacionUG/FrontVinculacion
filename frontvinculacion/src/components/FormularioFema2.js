@@ -277,7 +277,7 @@ const FormularioFema2 = ({ navigation }) => {
         >
           <Picker.Item label="Seleccione" value="" />
           {tipoocupacion.map((item, index) => (
-            <Picker.Item label={item.descripcion} value={item.descripcion} key={index} />
+            <Picker.Item label={item.descripcion} value={item.codTipoOcupacion} key={index} />
           ))}
         </Picker>
       </View>
