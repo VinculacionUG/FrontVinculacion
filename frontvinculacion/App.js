@@ -6,6 +6,7 @@ import Start from './src/components/Start';
 import SignIn from './src/components/SignIn';
 import Register from './src/components/Register';
 import Editar from './src/components/Editar';
+import Editar2 from './src/components/Editar2';
 import Ajuste from './src/components/Ajuste';
 import Dashboard from './src/components/Dashboard';
 import Consultar from './src/components/Consultar';
@@ -33,6 +34,7 @@ const App = () => {
         <Stack.Screen name="Start" component={Start} options={{ headerShown: false }} />
         <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
         <Stack.Screen name="Editar" component={Editar} options={{ headerShown: false }} />
+        <Stack.Screen name="Editar2" component={Editar2} options={{ headerShown: false }} />
         <Stack.Screen name="Consultar" component={Consultar} options={{ headerShown: false }} />
         <Stack.Screen name="Ajuste" component={Ajuste} options={{ headerShown: false }} />
         <Stack.Screen name="FormularioFema" component={FormularioFema} options={{ headerShown: false }} />

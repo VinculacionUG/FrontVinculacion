@@ -7,19 +7,24 @@ import * as DocumentPicker from 'expo-document-picker';
 const Editar2 = ({ navigation, route }) => {
   // Obtener los datos existentes de la ruta
   const { edificio } = route.params;
-  const { nombre, fecha, direccion: direccionExistente, zip: zipExistente, otrasIdentificaciones: otrasIdentificacionesExistente, uso: usoExistente, latitud: latitudExistente, longitud: longitudExistente, inspector: inspectorExistente, hora: horaExistente } = edificio;
+  //const { nombre, fecha, direccion: direccionExistente, zip: zipExistente, otrasIdentificaciones: otrasIdentificacionesExistente, uso: usoExistente, latitud: latitudExistente, longitud: longitudExistente, inspector: inspectorExistente, hora: horaExistente } = edificio;
+  const { direccion: direccionExistente, codigoPostal: zipExistente, otrosIdentificaciones: otrasIdentificacionesExistente, 
+    nomEdificacion: nomEdificacionExistente, codTipoUsoEdificacion: usoExistente, nomEncuestador: inspectorExistente,           
+    latitud: latitudExistente, longitud: longitudExistente, fechaEncuesta: fechaExistente, horaEncuesta: horaExistente } = edificio;
+
 
   // Establecer los estados con los datos existentes
   const [direccion, setDireccion] = useState(direccionExistente);
   const [zip, setZip] = useState(zipExistente);
   const [otrasIdentificaciones, setOtrasIdentificaciones] = useState(otrasIdentificacionesExistente);
-  const [nombreEdificio, setNombreEdificio] = useState(nombre);
+  //const [nombreEdificio, setNombreEdificio] = useState(nombre);
+  const [nombreEdificio, setNombreEdificio] = useState(nomEdificacionExistente);
   const [uso, setUso] = useState(usoExistente);
   const [latitud, setLatitud] = useState(latitudExistente);
   const [longitud, setLongitud] = useState(longitudExistente);
   const [inspector, setInspector] = useState(inspectorExistente);
-  const [fechaFormulario, setFechaFormulario] = useState(fecha);
-  const [hora, setHora] = useState(horaExistente);
+  const [fechaFormulario, setFechaFormulario] = useState(fechaExistente);
+  const [horaFormulario, setHoraFormulario] = useState(horaExistente);
   const [file1Name, setFile1Name] = useState('');
   const [file2Name, setFile2Name] = useState('');
   const [selectedFile1, setSelectedFile1] = useState(false);
@@ -202,8 +207,8 @@ const Editar2 = ({ navigation, route }) => {
         <TextInput
           style={[styles.input, styles.smallInput]}
           placeholder="Hora"
-          value={hora}
-          onChangeText={(text) => setHora(text)}
+          value={horaFormulario}
+          onChangeText={(text) => setHoraFormulario(text)}
         />
       </View>
 
