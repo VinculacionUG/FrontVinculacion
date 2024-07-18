@@ -227,7 +227,7 @@ const Editar = ({ navigation }) => {
       
       <TouchableOpacity style={[styles.backButton, styles.transparentButton]} onPress={() => navigation.goBack()}>
         <MaterialCommunityIcons name="exit-to-app" size={24} color="black" />
-      </TouchableOpacity> */}
+      </TouchableOpacity>
     </ScrollView>
   );
 };
