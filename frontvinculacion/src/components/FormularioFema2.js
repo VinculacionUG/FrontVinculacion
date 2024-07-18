@@ -22,10 +22,12 @@ const FormularioFema2 = ({ navigation }) => {
     setInf,
     anoConstruccion,
     setAnoConstruccion,
-    tiposuelo1,
-    setTiposuelo1,
+    ocupacion2,
+    setOcupacion2,
     tipoocupacion1,
     setTipoocupacion1,
+    tiposuelo1,
+    setTiposuelo1,
     areaTotalDePiso,
     setAreaTotalDePiso,
     anoCodigo,
@@ -61,12 +63,17 @@ const FormularioFema2 = ({ navigation }) => {
       anoDeContruccion,
       tiposuelo1,
       comentario,
-      ocupacion
+      ocupacion,
+      ocupacion2
+
     });
 
-    navigation.navigate('FormularioFema3');
+    navigation.navigate('FormularioFema4');
   };
 
+  useEffect(() => {
+    setOcupacion2(ocupacion);
+  }, [ocupacion]);
 
   useEffect(() => {
     const fetchTipoocupacion = async () => {

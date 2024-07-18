@@ -37,18 +37,7 @@ const FormularioFema5 = ({ navigation }) => {
     ampliacion,
     anoDeContruccion,
     tiposuelo1,
-    tipoocupacion1,
-    checkBox1,
-    checkBox2,
-    checkBox3,
-    checkBox4,
-    checkBox5,
-    checkBox6,
-    checkBox7,
-    checkBox8,
-    checkBox9,
-    ocupacion,
-    tipoocupacion,
+    ocupacion2,
     tipoSuelo,
     comentario,
     resultado,
@@ -252,18 +241,7 @@ const FormularioFema5 = ({ navigation }) => {
         <Text style={styles.contextDataText}>Ampliación: {ampliacion}</Text>
         <Text style={styles.contextDataText}>Año de Construcción: {anoDeContruccion}</Text>
         <Text style={styles.contextDataText}>Tipo de Suelo 1: {tiposuelo1}</Text>
-        <Text style={styles.contextDataText}>Tipo de Ocupación 1: {tipoocupacion1}</Text>
-        <Text style={styles.contextDataText}>CheckBox1: {checkBox1}</Text>
-        <Text style={styles.contextDataText}>CheckBox2: {checkBox2}</Text>
-        <Text style={styles.contextDataText}>CheckBox3: {checkBox3}</Text>
-        <Text style={styles.contextDataText}>CheckBox4: {checkBox4}</Text>
-        <Text style={styles.contextDataText}>CheckBox5: {checkBox5}</Text>
-        <Text style={styles.contextDataText}>CheckBox6: {checkBox6}</Text>
-        <Text style={styles.contextDataText}>CheckBox7: {checkBox7}</Text>
-        <Text style={styles.contextDataText}>CheckBox8: {checkBox8}</Text>
-        <Text style={styles.contextDataText}>CheckBox9: {checkBox9}</Text>
-        <Text style={styles.contextDataText}>Ocupación: {ocupacion}</Text>
-        <Text style={styles.contextDataText}>Tipo de Ocupación: {tipoocupacion}</Text>
+        <Text style={styles.contextDataText}>Tipo de Ocupación y ocupacion 1: {ocupacion2}</Text>
         <Text style={styles.contextDataText}>Tipo de Suelo: {tipoSuelo}</Text>
         <Text style={styles.contextDataText}>Comentario: {comentario}</Text>
         <Text style={styles.contextDataText}>Resultado: {resultado}</Text>
@@ -274,6 +252,10 @@ const FormularioFema5 = ({ navigation }) => {
         <Text style={styles.contextDataText}>Fuente de Peligros Geológicos: {fuenteDePeligrosGeologicos}</Text>
         <Text style={styles.contextDataText}>Contacto de la Persona: {contactoDeLaPersona}</Text>
         <Text style={styles.contextDataText}>Otros Peligros 1: {otrosPeligros1}</Text>
+        <Text style={styles.contextDataText}>fema5preg1: {pregunta1Fema5}</Text>
+        <Text style={styles.contextDataText}>fema5preg2:  {pregunta2Fema5}</Text>
+        <Text style={styles.contextDataText}>nivel de inspecion: {inspeccionNivel}</Text>
+
       </View>
 
       {/* Botones de Navegación */}
