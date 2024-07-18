@@ -36,7 +36,8 @@ export const AppProvider = ({ children }) => {
   const [checkBox7, setCheckBox7] = useState(false);
   const [checkBox8, setCheckBox8] = useState(false);
   const [checkBox9, setCheckBox9] = useState(false);
-  const [ocupacion, setOcupacion] = useState('');
+  // const [ocupacion, setOcupacion] = useState('');
+  const [ocupacion, setOcupacion] = useState([]);
   const [tipoocupacion, setTipoocupacion] = useState('');
   const [tipoSuelo, setTipoSuelo] = useState('');
   const [comentario, setComentario] = useState('');

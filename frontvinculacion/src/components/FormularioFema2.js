@@ -6,7 +6,7 @@ import { AppContext } from './AppContext';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const FormularioFema2 = ({ navigation }) => {
-  const [ocupacion, setOcupacion] = useState([]);
+  // const [ocupacion, setOcupacion] = useState([]);
   const [tipoocupacion, setTipoocupacion] = useState([]);
   const [tipoSuelo, setTipoSuelo] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
@@ -22,6 +22,8 @@ const FormularioFema2 = ({ navigation }) => {
     setInf,
     anoConstruccion,
     setAnoConstruccion,
+    ocupacion,
+    setOcupacion,
     tiposuelo1,
     setTiposuelo1,
     tipoocupacion1,
@@ -45,11 +47,13 @@ const FormularioFema2 = ({ navigation }) => {
       alert('Por favor complete todos los campos.');
       return;
     }
-    const ocupacion = {
-      selectedCheckboxes,
-      tipoocupacion1,
+    // const ocupacion = {
+    //   selectedCheckboxes,
+    //   tipoocupacion1,
      
-    };
+    // };
+    setOcupacion(selectedCheckboxes);
+
     // Continuar con la navegación o el procesamiento de datos
     console.log('Datos guardados:', {
       numeroPiso,
@@ -61,7 +65,7 @@ const FormularioFema2 = ({ navigation }) => {
       anoDeContruccion,
       tiposuelo1,
       comentario,
-      ocupacion
+      ocupacion: selectedCheckboxes
     });
 
     navigation.navigate('FormularioFema3');
