@@ -6,7 +6,6 @@ import { AppContext } from './AppContext';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const FormularioFema2 = ({ navigation }) => {
-  // const [ocupacion, setOcupacion] = useState([]);
   const [tipoocupacion, setTipoocupacion] = useState([]);
   const [tipoSuelo, setTipoSuelo] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
@@ -41,20 +40,23 @@ const FormularioFema2 = ({ navigation }) => {
   } = useContext(AppContext);
 
   const handleNext = () => {
-    // Validación de campos obligatorios
     if (!numeroPiso || !inf || !anoConstruccion || !areaTotalDePiso || !anoCodigo || !ampliacion || !anoDeContruccion ||
       !selectedValuetipoocupacion || !selectedValuetipoSuelo || selectedCheckboxes.length === 0 ) {
       alert('Por favor complete todos los campos.');
       return;
     }
-    // const ocupacion = {
-    //   selectedCheckboxes,
-    //   tipoocupacion1,
-     
-    // };
-    setOcupacion(selectedCheckboxes);
 
-    // Continuar con la navegación o el procesamiento de datos
+    // Replicar tiposuelo1 tantas veces como elementos seleccionados
+    const replicatedTiposuelo = new Array(selectedCheckboxes.length).fill(tiposuelo1);
+
+    // Combinar selectedCheckboxes y replicatedTiposuelo en un solo array
+    const ocupacionArray = selectedCheckboxes.map((checkbox, index) => ({
+      ocupacion: checkbox,
+      tiposuelo: replicatedTiposuelo[index]
+    }));
+
+    setOcupacion(ocupacionArray);
+
     console.log('Datos guardados:', {
       numeroPiso,
       inf,
@@ -65,12 +67,11 @@ const FormularioFema2 = ({ navigation }) => {
       anoDeContruccion,
       tiposuelo1,
       comentario,
-      ocupacion: selectedCheckboxes
+      ocupacion: ocupacionArray
     });
 
     navigation.navigate('FormularioFema3');
   };
-
 
   useEffect(() => {
     const fetchTipoocupacion = async () => {
@@ -167,7 +168,7 @@ const FormularioFema2 = ({ navigation }) => {
         >
           <Picker.Item label="Seleccione" value="" />
           {Array.from({ length: 26 }, (_, i) => (
-   <Picker.Item key={i} label={`${i}`} value={`${i}`} />
+            <Picker.Item key={i} label={`${i}`} value={`${i}`} />
           ))}
         </Picker>
 
@@ -179,9 +180,8 @@ const FormularioFema2 = ({ navigation }) => {
         >
           <Picker.Item label="Seleccione" value="" />
           {Array.from({ length: 6 }, (_, i) => (
-             <Picker.Item key={i} label={`${i}`} value={`${i}`} />
-            ))}
-  
+            <Picker.Item key={i} label={`${i}`} value={`${i}`} />
+          ))}
         </Picker>
       </View>
 
@@ -235,9 +235,7 @@ const FormularioFema2 = ({ navigation }) => {
 
       <View style={styles.inputContainer}>
         <Text style={styles.inputLabel}>Año de Construcción:</Text>
-
         <TextInput
-          //style={[styles.input, { width: 20, height: 20 }]}
           style={styles.inputText}
           value={anoDeContruccion}
           onChangeText={(text) => {
@@ -279,7 +277,7 @@ const FormularioFema2 = ({ navigation }) => {
           selectedValue={selectedValuetipoocupacion}
           onValueChange={(itemValue) => {
             setSelectedValueTipoOcupacion(itemValue);
-            setTipoocupacion1(itemValue); // Guardar el valor seleccionado en tipoocupacion1
+            setTipoocupacion1(itemValue);
           }}
         >
           <Picker.Item label="Seleccione" value="" />
@@ -296,7 +294,7 @@ const FormularioFema2 = ({ navigation }) => {
           selectedValue={selectedValuetipoSuelo}
           onValueChange={(itemValue) => {
             setSelectedValueTipoSuelo(itemValue);
-            setTiposuelo1(itemValue); // Guardar el valor seleccionado en tiposuelo1
+            setTiposuelo1(itemValue);
           }}
         >
           <Picker.Item label="Seleccione" value="" />
@@ -328,11 +326,9 @@ const FormularioFema2 = ({ navigation }) => {
         <MaterialCommunityIcons name="arrow-right" size={24} color="white" />
         <Text style={styles.buttonText}>Siguiente</Text>
       </TouchableOpacity>
-
     </ScrollView>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
