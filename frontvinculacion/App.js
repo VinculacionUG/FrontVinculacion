@@ -5,8 +5,12 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Start from './src/components/Start';
 import SignIn from './src/components/SignIn';
 import Register from './src/components/Register';
+import EditarInicio from './src/components/EditarInicio';
 import Editar from './src/components/Editar';
 import Editar2 from './src/components/Editar2';
+import Editar3 from './src/components/Editar3';
+import Editar4 from './src/components/Editar4';
+import Editar5 from './src/components/Editar5';
 import Ajuste from './src/components/Ajuste';
 import Dashboard from './src/components/Dashboard';
 import Consultar from './src/components/Consultar';
@@ -33,8 +37,12 @@ const App = () => {
         <Stack.Screen name="SignIn" component={SignIn} options={{ headerShown: false }} />
         <Stack.Screen name="Start" component={Start} options={{ headerShown: false }} />
         <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
+        <Stack.Screen name="EditarInicio" component={EditarInicio} options={{ headerShown: false }} />
         <Stack.Screen name="Editar" component={Editar} options={{ headerShown: false }} />
         <Stack.Screen name="Editar2" component={Editar2} options={{ headerShown: false }} />
+        <Stack.Screen name="Editar3" component={Editar3} options={{ headerShown: false }} />
+        <Stack.Screen name="Editar4" component={Editar4} options={{ headerShown: false }} />
+        <Stack.Screen name="Editar5" component={Editar5} options={{ headerShown: false }} />
         <Stack.Screen name="Consultar" component={Consultar} options={{ headerShown: false }} />
         <Stack.Screen name="Ajuste" component={Ajuste} options={{ headerShown: false }} />
         <Stack.Screen name="FormularioFema" component={FormularioFema} options={{ headerShown: false }} />
