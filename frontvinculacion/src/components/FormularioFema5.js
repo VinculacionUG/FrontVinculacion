@@ -6,6 +6,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AppContext } from './AppContext';
 
 const FormularioFema5 = ({ navigation }) => {
+
   const [accionPreguntas, setAccionPreguntas] = useState([]);
   const [selectedCheckbox, setSelectedCheckbox] = useState(null);
   const [selectedCheckbox2, setSelectedCheckbox2] = useState(null);
@@ -17,13 +18,54 @@ const FormularioFema5 = ({ navigation }) => {
   const pregunta2 = accionPreguntas2.find(item => item.codAccionPregunta === 5);
 
   const {
+    adjuntarFotografica,
+    adjuntarGrafico,
+    direccion,
+    zip,
+    otrasIdentificaciones,
+    nombreEdificio,
+    uso,
+    latitud,
+    longitud,
+    fecha,
+    hora,
+    numeroPiso,
+    inf,
+    anoConstruccion,
+    areaTotalDePiso,
+    anoCodigo,
+    ampliacion,
+    anoDeContruccion,
+    tiposuelo1,
+    tipoocupacion1,
+    checkBox1,
+    checkBox2,
+    checkBox3,
+    checkBox4,
+    checkBox5,
+    checkBox6,
+    checkBox7,
+    checkBox8,
+    checkBox9,
+    ocupacion,
+    tipoocupacion,
+    tipoSuelo,
+    comentario,
+    resultado,
+    exterior,
+    interior,
+    revisionPlanos,
+    fuenteDelTipoDeSuelo,
+    fuenteDePeligrosGeologicos,
+    contactoDeLaPersona,
+    otrosPeligros1,
     pregunta1Fema5,
-    setPregunta1Fema5,
     pregunta2Fema5,
-    setPregunta2Fema5,
     inspeccionNivel,
-    setInspeccionNivel,
   } = useContext(AppContext);
+
+
+
 
   const handleCheckboxChange = (codAccionPregunta) => {
     setSelectedCheckbox(codAccionPregunta);
@@ -187,6 +229,51 @@ const FormularioFema5 = ({ navigation }) => {
           <Picker.Item label="Si" value="si" />
           <Picker.Item label="No" value="no" />
         </Picker>
+      </View>
+
+  {/* Mostrar otras variables del contexto */}
+  <View style={styles.contextDataContainer}>
+        <Text style={styles.contextDataText}>Adjuntar Fotográfica: {adjuntarFotografica}</Text>
+        <Text style={styles.contextDataText}>Adjuntar Gráfico: {adjuntarGrafico}</Text>
+        <Text style={styles.contextDataText}>Dirección: {direccion}</Text>
+        <Text style={styles.contextDataText}>ZIP: {zip}</Text>
+        <Text style={styles.contextDataText}>Otras Identificaciones: {otrasIdentificaciones}</Text>
+        <Text style={styles.contextDataText}>Nombre del Edificio: {nombreEdificio}</Text>
+        <Text style={styles.contextDataText}>Uso: {uso}</Text>
+        <Text style={styles.contextDataText}>Latitud: {latitud}</Text>
+        <Text style={styles.contextDataText}>Longitud: {longitud}</Text>
+        <Text style={styles.contextDataText}>Fecha: {fecha.year}-{fecha.month}-{fecha.day}</Text>
+        <Text style={styles.contextDataText}>Hora: {hora}</Text>
+        <Text style={styles.contextDataText}>Número de Piso: {numeroPiso}</Text>
+        <Text style={styles.contextDataText}>Inf: {inf}</Text>
+        <Text style={styles.contextDataText}>Año de Construcción: {anoConstruccion}</Text>
+        <Text style={styles.contextDataText}>Área Total de Piso: {areaTotalDePiso}</Text>
+        <Text style={styles.contextDataText}>Año del Código: {anoCodigo}</Text>
+        <Text style={styles.contextDataText}>Ampliación: {ampliacion}</Text>
+        <Text style={styles.contextDataText}>Año de Construcción: {anoDeContruccion}</Text>
+        <Text style={styles.contextDataText}>Tipo de Suelo 1: {tiposuelo1}</Text>
+        <Text style={styles.contextDataText}>Tipo de Ocupación 1: {tipoocupacion1}</Text>
+        <Text style={styles.contextDataText}>CheckBox1: {checkBox1}</Text>
+        <Text style={styles.contextDataText}>CheckBox2: {checkBox2}</Text>
+        <Text style={styles.contextDataText}>CheckBox3: {checkBox3}</Text>
+        <Text style={styles.contextDataText}>CheckBox4: {checkBox4}</Text>
+        <Text style={styles.contextDataText}>CheckBox5: {checkBox5}</Text>
+        <Text style={styles.contextDataText}>CheckBox6: {checkBox6}</Text>
+        <Text style={styles.contextDataText}>CheckBox7: {checkBox7}</Text>
+        <Text style={styles.contextDataText}>CheckBox8: {checkBox8}</Text>
+        <Text style={styles.contextDataText}>CheckBox9: {checkBox9}</Text>
+        <Text style={styles.contextDataText}>Ocupación: {ocupacion}</Text>
+        <Text style={styles.contextDataText}>Tipo de Ocupación: {tipoocupacion}</Text>
+        <Text style={styles.contextDataText}>Tipo de Suelo: {tipoSuelo}</Text>
+        <Text style={styles.contextDataText}>Comentario: {comentario}</Text>
+        <Text style={styles.contextDataText}>Resultado: {resultado}</Text>
+        <Text style={styles.contextDataText}>Exterior: {exterior}</Text>
+        <Text style={styles.contextDataText}>Interior: {interior}</Text>
+        <Text style={styles.contextDataText}>Revisión de Planos: {revisionPlanos}</Text>
+        <Text style={styles.contextDataText}>Fuente del Tipo de Suelo: {fuenteDelTipoDeSuelo}</Text>
+        <Text style={styles.contextDataText}>Fuente de Peligros Geológicos: {fuenteDePeligrosGeologicos}</Text>
+        <Text style={styles.contextDataText}>Contacto de la Persona: {contactoDeLaPersona}</Text>
+        <Text style={styles.contextDataText}>Otros Peligros 1: {otrosPeligros1}</Text>
       </View>
 
       {/* Botones de Navegación */}
