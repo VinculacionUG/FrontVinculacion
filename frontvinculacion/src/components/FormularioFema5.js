@@ -116,7 +116,52 @@ const FormularioFema5 = ({ navigation }) => {
   };
 
   const handleGuardar = () => {
-
+    console.log('Datos del AppContext:', {
+      adjuntarFotografica,
+      adjuntarGrafico,
+      direccion,
+      zip,
+      otrasIdentificaciones,
+      nombreEdificio,
+      uso,
+      latitud,
+      longitud,
+      fecha,
+      hora,
+      numeroPiso,
+      inf,
+      anoConstruccion,
+      areaTotalDePiso,
+      anoCodigo,
+      ampliacion,
+      anoDeContruccion,
+      tiposuelo1,
+      tipoocupacion1,
+      checkBox1,
+      checkBox2,
+      checkBox3,
+      checkBox4,
+      checkBox5,
+      checkBox6,
+      checkBox7,
+      checkBox8,
+      checkBox9,
+      ocupacion,
+      tipoocupacion,
+      tipoSuelo,
+      comentario,
+      resultado,
+      exterior,
+      interior,
+      revisionPlanos,
+      fuenteDelTipoDeSuelo,
+      fuenteDePeligrosGeologicos,
+      contactoDeLaPersona,
+      otrosPeligros1,
+      pregunta1Fema5,
+      pregunta2Fema5,
+      inspeccionNivel,
+    });
     if (
       !pregunta1Fema5 ||
       !pregunta2Fema5 ||
@@ -130,7 +175,10 @@ const FormularioFema5 = ({ navigation }) => {
       pregunta1Fema5,
       pregunta2Fema5,
       inspeccionNivel,
-    });
+    },
+    
+  );
+    
     Alert.alert(
       "¡Formulario guardado con éxito!",
       "",
@@ -233,7 +281,7 @@ const FormularioFema5 = ({ navigation }) => {
 
   {/* Mostrar otras variables del contexto */}
   <View style={styles.contextDataContainer}>
-        <Text style={styles.contextDataText}>Adjuntar Fotográfica: {adjuntarFotografica}</Text>
+        {/* <Text style={styles.contextDataText}>Adjuntar Fotográfica: {adjuntarFotografica}</Text>
         <Text style={styles.contextDataText}>Adjuntar Gráfico: {adjuntarGrafico}</Text>
         <Text style={styles.contextDataText}>Dirección: {direccion}</Text>
         <Text style={styles.contextDataText}>ZIP: {zip}</Text>
@@ -273,7 +321,7 @@ const FormularioFema5 = ({ navigation }) => {
         <Text style={styles.contextDataText}>Fuente del Tipo de Suelo: {fuenteDelTipoDeSuelo}</Text>
         <Text style={styles.contextDataText}>Fuente de Peligros Geológicos: {fuenteDePeligrosGeologicos}</Text>
         <Text style={styles.contextDataText}>Contacto de la Persona: {contactoDeLaPersona}</Text>
-        <Text style={styles.contextDataText}>Otros Peligros 1: {otrosPeligros1}</Text>
+        <Text style={styles.contextDataText}>Otros Peligros 1: {otrosPeligros1}</Text> */}
       </View>
 
       {/* Botones de Navegación */}
