@@ -7,6 +7,8 @@ const RecoveryPassword = () => {
   const navigation = useNavigation();
   const [correo, setCorreo] = useState('');
 
+  const esCorreoValido = correo => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo);
+
   const handleSendEmail = async () => {    
     if (!correo) {
         Alert.alert('¡Revise correo porfavor, esta incompleto!');
@@ -59,6 +61,15 @@ const RecoveryPassword = () => {
             value={correo}
             onChangeText={setCorreo}
           />
+          {!esCorreoValido(correo) && correo.trim() !== '' && (
+            <View style={[styles.errorContainer, { justifyContent: 'flex-start' }]}>
+              <View style={{ marginTop: -3, marginBottom: 10}}>
+                <Text style={{ color: 'red' }}>
+                  <MaterialCommunityIcons name="alert-circle" size={20} color="red" /> Correo electrónico inválido
+                </Text>
+              </View>
+            </View>
+          )}
           <TouchableOpacity style={styles.button} onPress={handleSendEmail}>
             <MaterialCommunityIcons name="email-send" size={24} color="white" />
             <Text style={styles.buttonText}>Enviar</Text>

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-//import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SignIn = () => {
   const navigation = useNavigation();
@@ -10,12 +10,16 @@ const SignIn = () => {
   //const [usuario, setusuario] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false); // Nueva variable de estado
+  const esUsuarioValido = nombre => /^[0-9]+$/.test(nombre);
+  const [userData, setUserData] = useState(null); // Nuevo estado para almacenar los datos del usuario
+
+
 
   const handleSubmit = async () => {    
     try {
       if (!nombre || !password) {
         Alert.alert('Error', 'Por favor completa todos los campos.');
-        console.log('Campos vacíos PRUEBA');
+        console.log('Campos vacíos PRUEBA'); //Mensaje de prueba
         return;
       }
       const response = await fetch('https://www.fema.somee.com/Auth/login',{
@@ -31,27 +35,41 @@ const SignIn = () => {
       });
 
       if (response.ok) {
+        //await AsyncStorage.setItem('userData', JSON.stringify(responseData)); // Almacena los datos del usuario en AsyncStorage
+        
         //const responseData = await response.json();
         //await AsyncStorage.setItem('userData', JSON.stringify(responseData));
 
         //const responseData = response.json
         //console.log
+        
+        ////const responseData = await response.json();
+        ////await AsyncStorage.setItem('token', responseData.token); // Guardar el token en AsyncStorage
+
+        const responseData = await response.json();
+        await AsyncStorage.setItem('userData', JSON.stringify(responseData.userInfo)); // Almacena los datos del usuario en AsyncStorage
+        setUserData(responseData.userInfo); // Almacenar los datos del usuario en el estado
+
+        //console.log('Datos del usuario:', responseData.userInfo); // Mostrar los datos por consola
+        // console.log('Nombre del usuario:', responseData.userInfo.nombre); // Mostrar los datos por consola
+        // console.log('Apellido del usuario:', responseData.userInfo.apellido); // Mostrar los datos por consola
+
         navigation.navigate('Dashboard');
       } else {
         const responseData = await response.json(); // Obtener el mensaje de error del cuerpo de la respuesta
         if (responseData && responseData.error === 'invalid_password') {
-          console.log('Contraseña Invalida PRUEBA');
+          console.log('Contraseña Invalida PRUEBA'); //Mensaje de prueba
           Alert.alert('Error', 'Contraseña inválida. Por favor, inténtalo de nuevo.');
                 } else {
-          console.log('Credenciales incorrectas PRUEBA');
+          console.log('Credenciales incorrectas PRUEBA'); //Mensaje de prueba
           Alert.alert('Error', 'Credenciales incorrectas. Por favor, inténtalo de nuevo.');
         }
       }
     } catch (error) {
       //console.console('Error al procesar la solicitud:', error.message);
-      console.error('Error al procesar la solicitud:', error.message);
+      console.error('Error al procesar la solicitud:', error.message); //Mensaje de prueba
       Alert.alert('Error', 'Ha ocurrido un error al iniciar sesión. Por favor, inténtalo de nuevo más tarde.');
-      console.log('Error solicitud PRUEBA');
+      console.log('Error solicitud PRUEBA'); //Mensaje de prueba
     }
   };
 
@@ -70,18 +88,28 @@ const SignIn = () => {
         <View style={styles.formContainer}>
           <TextInput
             placeholder="Usuario"
-            keyboardType="email-address"
+            //keyboardType="email-address"
+            keyboardType="numeric"
             autoCapitalize="none"
             style={[styles.input, { color: nombre ? 'black' : 'gray' }]}
             value={nombre}
-            onChangeText={setEmail}
-            //onChangeText={text => {
+            //onChangeText={setEmail}
+            onChangeText={text => {
               // Filtrar caracteres no deseados
-            //  const filteredText = text.replace(/[^0-9]/g, ''); // Solo permite números
-            //  setEmail(filteredText);
-            //}}
+              const filteredText = text.replace(/[^0-9]/g, ''); // Solo permite números
+              setEmail(filteredText);
+            }}
           />
         </View>
+        {/*{!esUsuarioValido(nombre) && nombre.trim() !== '' && (
+          <View style={[styles.inputContainer, { justifyContent: 'flex-start' }]}> 
+            <View style={{ marginTop: -12 , marginBottom: 10}}>
+              <Text style={{ color: 'red' }}>
+                <MaterialCommunityIcons name="alert-circle" size={20} color="red" /> Solo números
+              </Text>
+            </View>
+          </View>
+        )}*/}
           
         <View style={styles.inputContainer}>  
           <TextInput
