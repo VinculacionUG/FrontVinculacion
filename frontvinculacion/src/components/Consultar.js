@@ -1,5 +1,4 @@
-// Consultar.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
@@ -8,43 +7,49 @@ const Consultar = ({ navigation }) => {
   const [busquedaCodigo, setBusquedaCodigo] = useState('');
   const [edificiosEncontrados, setEdificiosEncontrados] = useState([]);
   const [mostrarResultados, setMostrarResultados] = useState(false);
+  const [datosFema, setDatosFema] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const url = 'https://www.fema.somee.com/Users/FormularioFEMAHistAll';
+
+  const fetchDatosFema = async () => {
+    try {
+      const response = await fetch(url, { method: 'GET' });
+      if (!response.ok) {
+        throw new Error('Error en la red');
+      }
+      const result = await response.json();
+      // console.log('Datos recibidos de FormularioFEMAHistAll: ', result);
+      setDatosFema(result);
+    } catch (error) {
+      setError(error);
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchDatosFema();
+  }, []);
 
   // Función para buscar el edificio en la base de datos por nombre
   const buscarEdificioPorNombre = async () => {
-    // Simulación de búsqueda asincrónica ficticia
-    setTimeout(() => {
-      const edificios = [
-        {
-          nombre: 'Nombre del edificio 1',
-          fecha: 'Fecha del formulario 1',
-        },
-        {
-          nombre: 'Nombre del edificio 2',
-          fecha: 'Fecha del formulario 2',
-        },
-      ];
-      setEdificiosEncontrados(edificios);
-      setMostrarResultados(true);
-    }, 1000);
+    const resultados = datosFema.filter(edificio =>
+      edificio.nomEdificacion.toLowerCase().includes(busquedaNombre.toLowerCase())
+    );
+    setEdificiosEncontrados(resultados);
+    setMostrarResultados(true);
   };
 
   // Función para buscar el edificio en la base de datos por código
   const buscarEdificioPorCodigo = async () => {
-    // Simulación de búsqueda asincrónica ficticia
-    setTimeout(() => {
-      const edificios = [
-        {
-          nombre: 'Nombre del edificio 3',
-          fecha: 'Fecha del formulario 3',
-        },
-        {
-          nombre: 'Nombre del edificio 4',
-          fecha: 'Fecha del formulario 4',
-        },
-      ];
-      setEdificiosEncontrados(edificios);
-      setMostrarResultados(true);
-    }, 1000);
+    const resultados = datosFema.filter(edificio =>
+      edificio.otrosIdentificaciones.includes(busquedaCodigo)
+    );
+    setEdificiosEncontrados(resultados);
+    setMostrarResultados(true);
   };
 
   return (
@@ -79,7 +84,12 @@ const Consultar = ({ navigation }) => {
           style={styles.input}
           placeholder="Código del formulario"
           value={busquedaCodigo}
-          onChangeText={(text) => setBusquedaCodigo(text)}
+          onChangeText={(text) => {
+            // Filtrar entrada para permitir solo números
+            const numericText = text.replace(/[^0-9]/g, '');
+            setBusquedaCodigo(numericText);
+          }}
+          keyboardType="numeric"
         />
         <TouchableOpacity
           style={[styles.searchButton, styles.transparentButton]}
@@ -93,34 +103,41 @@ const Consultar = ({ navigation }) => {
       </View>
 
       {/* Mostrar detalles de los edificios encontrados si hay resultados */}
-      {mostrarResultados && (
-        <View style={styles.edificiosEncontradosContainer}>
-          {edificiosEncontrados.map((edificio, index) => (
-            <View key={index} style={styles.edificioEncontrado}>
-              <MaterialCommunityIcons name="file-document" size={24} color="black" />
-              <View>
-                <Text style={styles.formularioTitle}>FEMA P-154</Text>
-                <Text style={styles.formularioFecha}>{edificio.fecha}</Text>
-              </View>
-              <TouchableOpacity
-                style={[styles.editButton, styles.transparentButton]}
-                onPress={() => navigation.navigate('Editar2', { edificio })}
-              >
-                <MaterialCommunityIcons name="pencil" size={24} color="black" />
-              </TouchableOpacity>
-            </View>
-          ))}
-        </View>
-      )}
+      <ScrollView contentContainerStyle={styles.contener}>
+        {mostrarResultados && (
 
-      {/* <TouchableOpacity style={[styles.backButton, styles.transparentButton]} onPress={() => navigation.goBack()}>
-        <MaterialCommunityIcons name="exit-to-app" size={24} color="black" />
-      </TouchableOpacity> */}
+          <View style={styles.edificiosEncontradosContainer}>
+            {edificiosEncontrados.map((edificio, index) => (
+              <View key={index} style={styles.edificioEncontrado}>
+                <MaterialCommunityIcons name="file-document" size={24} color="black" />
+                <View>
+                  <Text style={styles.formularioTitle}>FEMA P-154</Text>
+                  <Text style={styles.formularioFecha}>{" " + edificio.fechaEncuesta}</Text>
+                  <Text style={styles.formularioFecha}>{" " + edificio.nomEncuestador}</Text>
+                </View>
+                {/* <TouchableOpacity
+                  style={[styles.editButton, styles.transparentButton]}
+                // onPress={() => navigation.navigate('Editar2', { edificio })}
+                >
+                  <MaterialCommunityIcons name="pencil" size={24} color="black" />
+                </TouchableOpacity> */}
+              </View>
+            ))}
+          </View>
+        )}
+      </ScrollView>
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  contener:{
+    display: "flex",
+    width: "100%",
+    alignitems: "center",
+    height: "6px",
+    border: "none"
+  },
   container: {
     flexGrow: 1,
     padding: 16,
@@ -168,16 +185,16 @@ const styles = StyleSheet.create({
   },
   edificiosEncontradosContainer: {
     marginTop: 16,
-    borderWidth: 1,
-    borderColor: 'gray',
     borderRadius: 10,
   },
   edificioEncontrado: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: 8,
-    borderBottomWidth: 1,
-    borderBottomColor: 'gray',
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 10, 
+    marginBottom: 8, 
   },
   formularioTitle: {
     fontSize: 20,
