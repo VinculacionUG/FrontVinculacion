@@ -357,11 +357,11 @@ const FormularioFema3 = ({ route, navigation }) => {
     };
   
     setSelectedValues([...selectedValues, newSelection]); // Agrega la nueva selección al array
-    setResultado([newSelection])
+    setResultado(prevResultado => [...prevResultado, selectedItems]); // Añade la nueva selección al resultado
 
-    // Aquí puedes hacer lo necesario para guardar la selección, como enviar a una API o almacenarlo en un estado global
-    console.log(newSelection);
-    console.log("Resultado: ",setResultado([newSelection]));
+  // Aquí puedes hacer lo necesario para guardar la selección, como enviar a una API o almacenarlo en un estado global
+  console.log(newSelection);
+  console.log(resultado);
   };
 
   useEffect(() => {

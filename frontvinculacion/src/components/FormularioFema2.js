@@ -47,7 +47,7 @@ const FormularioFema2 = ({ navigation }) => {
     }
 
     // Replicar tiposuelo1 tantas veces como elementos seleccionados
-    const replicatedTiposuelo = new Array(selectedCheckboxes.length).fill(tiposuelo1);
+    const replicatedTiposuelo = new Array(selectedCheckboxes.length).fill(tipoocupacion1);
 
     // Combinar selectedCheckboxes y replicatedTiposuelo en un solo array
     const ocupacionArray = selectedCheckboxes.map((checkbox, index) => ({

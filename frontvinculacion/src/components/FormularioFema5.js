@@ -8,8 +8,8 @@ import { AppContext } from './AppContext';
 const FormularioFema5 = ({ navigation }) => {
 
   const [accionPreguntas, setAccionPreguntas] = useState([]);
-  const [selectedCheckbox, setSelectedCheckbox] = useState(null);
-  const [selectedCheckbox2, setSelectedCheckbox2] = useState(null);
+  const [selectedCheckbox, setSelectedCheckbox] = useState('');
+  const [selectedCheckbox2, setSelectedCheckbox2] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const accionPreguntas1 = accionPreguntas.filter(item => item.codAccionPregunta >= 1 && item.codAccionPregunta <= 4);
@@ -59,9 +59,9 @@ const FormularioFema5 = ({ navigation }) => {
     fuenteDePeligrosGeologicos,
     contactoDeLaPersona,
     otrosPeligros1,
-    pregunta1Fema5,
-    pregunta2Fema5,
-    inspeccionNivel,
+    pregunta1Fema5, setPregunta1Fema5,
+      pregunta2Fema5, setPregunta2Fema5,
+      inspeccionNivel, setInspeccionNivel
   } = useContext(AppContext);
 
 
@@ -69,6 +69,7 @@ const FormularioFema5 = ({ navigation }) => {
 
   const handleCheckboxChange = (codAccionPregunta) => {
     setSelectedCheckbox(codAccionPregunta);
+    setPregunta1Fema5(codAccionPregunta);
     let nuevaPregunta1Fema5 = codAccionPregunta;
 
     switch (codAccionPregunta) {
@@ -93,6 +94,7 @@ const FormularioFema5 = ({ navigation }) => {
 
   const handleCheckboxChange2 = (codAccionPregunta) => {
     setSelectedCheckbox2(codAccionPregunta);
+    setPregunta2Fema5(codAccionPregunta)
     let nuevaPregunta2Fema5 = codAccionPregunta;
 
     switch (codAccionPregunta) {
@@ -168,6 +170,11 @@ const FormularioFema5 = ({ navigation }) => {
       !inspeccionNivel
       
     ) {
+      console.log('Datos guardados:', {
+        pregunta1Fema5,
+        pregunta2Fema5,
+        inspeccionNivel,
+      })
       alert('Por favor complete todos los campos.');
       return;
     }
@@ -272,7 +279,10 @@ const FormularioFema5 = ({ navigation }) => {
         <Picker
           style={[styles.input, styles.pickerSmall]}
           selectedValue={inspeccionNivel}
-          onValueChange={(itemValue) => setInspeccionNivel(itemValue)}
+          onValueChange={(itemValue) => {
+            console.log('Seleccionado:', itemValue);
+            setInspeccionNivel(itemValue);
+          }}
         >
           <Picker.Item label="Si" value="si" />
           <Picker.Item label="No" value="no" />
