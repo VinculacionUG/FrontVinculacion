@@ -46,7 +46,6 @@ const FormularioFema5 = ({ navigation }) => {
     checkBox6,
     checkBox7,
     checkBox8,
-    checkBox9,
     ocupacion,
     tipoocupacion,
     tipoSuelo,
@@ -60,8 +59,8 @@ const FormularioFema5 = ({ navigation }) => {
     contactoDeLaPersona,
     otrosPeligros1,
     pregunta1Fema5, setPregunta1Fema5,
-      pregunta2Fema5, setPregunta2Fema5,
-      inspeccionNivel, setInspeccionNivel
+    pregunta2Fema5, setPregunta2Fema5,
+    inspeccionNivel, setInspeccionNivel
   } = useContext(AppContext);
 
 
@@ -105,7 +104,7 @@ const FormularioFema5 = ({ navigation }) => {
         nuevaPregunta2Fema5 = 6;
         break;
       case 7:
-        nuevaPregunta2Fema5 =7;
+        nuevaPregunta2Fema5 = 7;
         break;
       case 8:
         nuevaPregunta2Fema5 = 8;
@@ -117,86 +116,103 @@ const FormularioFema5 = ({ navigation }) => {
     setPregunta2Fema5(nuevaPregunta2Fema5);
   };
 
-  const handleGuardar = () => {
-    console.log('Datos del AppContext:', {
-      adjuntarFotografica,
-      adjuntarGrafico,
-      direccion,
-      zip,
-      otrasIdentificaciones,
-      nombreEdificio,
-      uso,
-      latitud,
-      longitud,
-      fecha,
-      hora,
-      numeroPiso,
-      inf,
-      anoConstruccion,
-      areaTotalDePiso,
-      anoCodigo,
-      ampliacion,
-      anoDeContruccion,
-      tiposuelo1,
-      tipoocupacion1,
-      checkBox1,
-      checkBox2,
-      checkBox3,
-      checkBox4,
-      checkBox5,
-      checkBox6,
-      checkBox7,
-      checkBox8,
-      checkBox9,
-      ocupacion,
-      tipoocupacion,
-      tipoSuelo,
-      comentario,
-      resultado,
-      exterior,
-      interior,
-      revisionPlanos,
-      fuenteDelTipoDeSuelo,
-      fuenteDePeligrosGeologicos,
-      contactoDeLaPersona,
-      otrosPeligros1,
-      pregunta1Fema5,
-      pregunta2Fema5,
-      inspeccionNivel,
-    });
+  const handleGuardar = async () => {
     if (
       !pregunta1Fema5 ||
       !pregunta2Fema5 ||
       !inspeccionNivel
-      
     ) {
-      console.log('Datos guardados:', {
-        pregunta1Fema5,
-        pregunta2Fema5,
-        inspeccionNivel,
-      })
-      alert('Por favor complete todos los campos.');
+      Alert.alert('Por favor complete todos los campos.');
       return;
     }
-    console.log('Datos guardados:', {
-      pregunta1Fema5,
-      pregunta2Fema5,
-      inspeccionNivel,
-    },
-    
-  );
-    
-    Alert.alert(
-      "¡Formulario guardado con éxito!",
-      "",
-      [
-        {
-          text: "Ok",
-          onPress: () => navigation.navigate('Dashboard')
-        }
-      ],
-      { cancelable: false }
-    );
+  
+    try {
+      // const response = await fetch('https://www.fema.somee.com/api/FemaCinco/guardarDatos', {
+      const response = await fetch('https://localhost:7040/Users/FormularioFEMA', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          direccion,
+          zip,
+          otrasIdentificaciones,
+          nombreEdificio,
+          uso,
+          latitud,
+          longitud,
+          fecha,
+          hora,
+          comentario,
+
+                    
+          
+          
+          ocupacion,
+          resultado,
+          adjuntarFotografica,
+          adjuntarGrafico,
+          
+          
+          anoCodigo,
+          numeroPiso,
+          inf,
+          anoDeContruccion,
+          anoConstruccion,
+          areaTotalDePiso,          
+          ampliacion,
+
+          tiposuelo1,
+          tipoocupacion1,
+          
+          
+          tipoocupacion,
+          tipoSuelo,
+          
+          exterior,
+          interior,
+          revisionPlanos,
+          fuenteDelTipoDeSuelo,
+          fuenteDePeligrosGeologicos,
+          contactoDeLaPersona,
+          otrosPeligros1,
+          pregunta1Fema5,
+          pregunta2Fema5,
+          inspeccionNivel,
+
+          checkBox1,
+          checkBox2,
+          checkBox3,
+          checkBox4,
+          checkBox5,
+          checkBox6,
+          checkBox7,
+          checkBox8,
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Error al guardar los datos');
+      }
+  
+      const result = await response.json();
+      console.log('Datos guardados con éxito:', result);
+  
+      Alert.alert(
+        "¡Formulario guardado con éxito!",
+        "",
+        [
+          {
+            text: "Ok",
+            onPress: () => navigation.navigate('Dashboard'),
+          },
+        ],
+        { cancelable: false }
+      );
+    } catch (error) {
+      console.error('Error al guardar los datos:', error);
+      Alert.alert('Error', 'Ocurrió un error al guardar los datos.');
+    }
   };
 
   useEffect(() => {
@@ -289,8 +305,8 @@ const FormularioFema5 = ({ navigation }) => {
         </Picker>
       </View>
 
-  {/* Mostrar otras variables del contexto */}
-  <View style={styles.contextDataContainer}>
+      {/* Mostrar otras variables del contexto */}
+      <View style={styles.contextDataContainer}>
         {/* <Text style={styles.contextDataText}>Adjuntar Fotográfica: {adjuntarFotografica}</Text>
         <Text style={styles.contextDataText}>Adjuntar Gráfico: {adjuntarGrafico}</Text>
         <Text style={styles.contextDataText}>Dirección: {direccion}</Text>
