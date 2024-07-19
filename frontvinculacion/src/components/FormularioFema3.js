@@ -109,6 +109,33 @@ const FormularioFema3 = ({ route, navigation }) => {
     navigation.goBack();
   };
 
+  // Función para resetear los valores mostrados
+  const resetearValoresMostrados = () => {
+    setResultadoBase('');
+    setIrregularidadVerticalSevera('');
+    setIrregularidadVerticalModerada('');
+    setPlantaIrregular('');
+    setPreCodigoSismico('');
+    setPostCodigoSismico('');
+    setSueloTipoAB('');
+    setSueloTipoE1a3('');
+    setSueloTipoEMayor3('');
+    setResultadoSmin('');
+    setResultadoFinal('');
+
+    // Resetear estados de los checkboxes
+    setIncludeResultadoBase(false);
+    setIncludeIrregularidadSevera(false);
+    setIncludeIrregularidadModerada(false);
+    setIncludePlantaIrregular(false);
+    setIncludePreCodigoSismico(false);
+    setIncludePostCodigoSismico(false);
+    setIncludeSueloTipoAB(false);
+    setIncludeSueloTipoE1a3(false);
+    setIncludeSueloTipoEMayor3(false);
+    setIncludeResultadoSmin(false);
+  };
+
   const calcularResultadoFinal = () => {
 
     let suma = parseFloat(resultadoBase);
@@ -203,9 +230,11 @@ const FormularioFema3 = ({ route, navigation }) => {
 
   useEffect(() => {
     const fetchResultadoBase = async () => {
-
-      if (!selectedValueTipoEdificacion || !subTipo) {
-        return; // Si falta alguno de los valores, salimos de la función
+      resetearValoresMostrados(); // Resetear los valores mostrados al comenzar la carga de nueva información
+      if (!selectedValueTipoEdificacion || !subTipo || subTipo === 'Seleccione') {
+        // Si falta alguno de los valores o subTipo es 'Seleccione', reseteamos los valores mostrados
+        resetearValoresMostrados(); 
+        return;
       }
 
       const baseUrl = 'https://www.fema.somee.com/FemaTres/consultarResultadoBase/';
@@ -234,6 +263,7 @@ const FormularioFema3 = ({ route, navigation }) => {
 
       // Verifica si existe una entrada válida en el mapa para la combinación Tipo de Edificación y Subtipo
       if (!tipoEdificacionMap.hasOwnProperty(key)) {
+        resetearValoresMostrados(); 
         console.warn(`No se encontró una combinación válida para Tipo de Edificación: ${selectedValueTipoEdificacion} y Subtipo: ${subTipo}`);
         return; // Si no hay una combinación válida, salimos de la función
       }
@@ -302,6 +332,22 @@ const FormularioFema3 = ({ route, navigation }) => {
         setLoading(false);
       }
     };
+
+    // // Función para resetear los valores mostrados
+    // const resetearValoresMostrados = () => {
+    //   setResultadoBase('');
+    //   setIrregularidadVerticalSevera('');
+    //   setIrregularidadVerticalModerada('');
+    //   setPlantaIrregular('');
+    //   setPreCodigoSismico('');
+    //   setPostCodigoSismico('');
+    //   setSueloTipoAB('');
+    //   setSueloTipoE1a3('');
+    //   setSueloTipoEMayor3('');
+    //   setResultadoSmin('');
+    //   setResultadoFinal('');
+    // };
+
     if (selectedValueTipoEdificacion) {
       fetchSubTipos(selectedValueTipoEdificacion);
       //fetchResultadoBase();
@@ -374,24 +420,28 @@ const FormularioFema3 = ({ route, navigation }) => {
         <Text style={styles.inputLabel}>Tipo de Edificación:</Text>
 
         <Picker
+          // placeholder="Seleccione..."
           style={styles.picker}
           selectedValue={selectedValueTipoEdificacion}
           onValueChange={(itemValue) => {
             setSelectedValueTipoEdificacion(itemValue);
+            //setSubTipo(''); // Reiniciar el subtipo seleccionado cuando cambia el tipo de edificación
           }}
         >
-          <Picker.Item label="Seleccione..." value="" />
+          <Picker.Item label="Seleccione..." value="" enabled={false}/>
           {tipoEdificacion.map((item) => (
             <Picker.Item key={item.codTipoEdificacion} label={item.descripcion} value={item.descripcion} />
           ))}
         </Picker>
         <Text style={[styles.inputLabel, { marginLeft: 8 }]}>Sub Tipo:</Text>
         <Picker
+          // placeholder="Seleccione..."
           style={styles.picker}
           selectedValue={subTipo}
           onValueChange={(itemValue) => setSubTipo(itemValue)}
         >
-          <Picker.Item label="Seleccione..." value="" />
+          {/* <Picker.Item label="Seleccione..." value="" enabled={false}/> */}
+          <Picker.Item label="Seleccione..." value=""/>
           {subTipos.map((subTipoItem, index) => (
             <Picker.Item key={index} label={subTipoItem} value={subTipoItem} />
           ))}
