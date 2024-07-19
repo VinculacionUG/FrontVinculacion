@@ -97,7 +97,8 @@ const FormularioFema3 = ({ route, navigation }) => {
   };
 
   const {
-    resultado
+    resultado,
+    setResultado
   } = useContext(AppContext);
 
   const handleNext = () => {
@@ -199,7 +200,18 @@ const FormularioFema3 = ({ route, navigation }) => {
   //  if (selectedValueTipoEdificacion) {
   //    fetchSubTipos(selectedValueTipoEdificacion);
   //  }
-
+  const [codPuntuacionMap, setCodPuntuacionMap] = useState({
+    resultadoBase: '',
+    irregularidadVerticalSevera: '',
+    irregularidadVerticalModerada: '',
+    plantaIrregular: '',
+    preCodigoSismico: '',
+    postCodigoSismico: '',
+    sueloTipoAB: '',
+    sueloTipoE1a3: '',
+    sueloTipoEMayor3: '',
+    resultadoSmin: ''
+  });
 
   useEffect(() => {
     const fetchResultadoBase = async () => {
@@ -242,64 +254,67 @@ const FormularioFema3 = ({ route, navigation }) => {
       const url3 = `${baseUrl}${numeroFinalUrl}`;
 
       try {
-        const response = await fetch(url3,
-          {
-            method: 'GET',
-          }
-        );
-        if (!response.ok) {
-          throw new Error(`Error en la red ${response.status} ${response.statusText}`);
-        }
+        const response = await fetch(url3);
+        if (!response.ok) throw new Error(`Error en la red ${response.status} ${response.statusText}`);
         const result = await response.json();
-
-        // Verificar si result es un array y no está vacío antes de iterar sobre él
+    
         if (Array.isArray(result) && result.length > 0) {
+          const updatedCodPuntuacionMap = { ...codPuntuacionMap };
           result.forEach((item) => {
-            const valor = item.valor ?? '0'; // Asigna '0' si item.valor es null o undefined
-              switch (item.codTipoPuntuacion) {
-                case 9:
-                  setResultadoBase(valor);
-                  break;
-                case 1:
-                  setIrregularidadVerticalSevera(valor);
-                  break;
-                case 2:
-                  setIrregularidadVerticalModerada(valor);
-                  break;
-                case 3:
-                  setPlantaIrregular(valor);
-                  break;
-                case 4:
-                  setPreCodigoSismico(valor);
-                  break;
-                case 5:
-                  setPostCodigoSismico(valor);
-                  break;
-                case 6:
-                  setSueloTipoAB(valor);
-                  break;
-                case 7:
-                  setSueloTipoE1a3(valor);
-                  break;
-                case 8:
-                  setSueloTipoEMayor3(valor);
-                  break;
-                case 10:
-                  setResultadoSmin(valor);
-                  break;
-                default:
-                  break;
-              }
+            const valor = item.valor ?? '0';
+            const codPuntuacionMatrizSec = item.codPuntuacionMatrizSec;
+    
+            switch (item.codTipoPuntuacion) {
+              case 9:
+                setResultadoBase(valor);
+                updatedCodPuntuacionMap.resultadoBase = codPuntuacionMatrizSec;
+                break;
+              case 1:
+                setIrregularidadVerticalSevera(valor);
+                updatedCodPuntuacionMap.irregularidadVerticalSevera = codPuntuacionMatrizSec;
+                break;
+              case 2:
+                setIrregularidadVerticalModerada(valor);
+                updatedCodPuntuacionMap.irregularidadVerticalModerada = codPuntuacionMatrizSec;
+                break;
+              case 3:
+                setPlantaIrregular(valor);
+                updatedCodPuntuacionMap.plantaIrregular = codPuntuacionMatrizSec;
+                break;
+              case 4:
+                setPreCodigoSismico(valor);
+                updatedCodPuntuacionMap.preCodigoSismico = codPuntuacionMatrizSec;
+                break;
+              case 5:
+                setPostCodigoSismico(valor);
+                updatedCodPuntuacionMap.postCodigoSismico = codPuntuacionMatrizSec;
+                break;
+              case 6:
+                setSueloTipoAB(valor);
+                updatedCodPuntuacionMap.sueloTipoAB = codPuntuacionMatrizSec;
+                break;
+              case 7:
+                setSueloTipoE1a3(valor);
+                updatedCodPuntuacionMap.sueloTipoE1a3 = codPuntuacionMatrizSec;
+                break;
+              case 8:
+                setSueloTipoEMayor3(valor);
+                updatedCodPuntuacionMap.sueloTipoEMayor3 = codPuntuacionMatrizSec;
+                break;
+              case 10:
+                setResultadoSmin(valor);
+                updatedCodPuntuacionMap.resultadoSmin = codPuntuacionMatrizSec;
+                break;
+              default:
+                console.warn(`Código de puntuación desconocido: ${item.codTipoPuntuacion}`);
+            }
           });
+          setCodPuntuacionMap(updatedCodPuntuacionMap);
         } else {
-          console.warn(`No se encontró resultado para Tipo de Edificación: ${selectedValueTipoEdificacion} y Subtipo: ${subTipo}`);
+          console.warn('La respuesta de la API no contiene datos');
         }
       } catch (error) {
-        console.error('Error fetching data:', error);
-        setError(error);
-        // console.log(error);
-      } finally {
-        setLoading(false);
+        console.error('Error en la solicitud:', error);
       }
     };
     if (selectedValueTipoEdificacion) {
@@ -312,19 +327,40 @@ const FormularioFema3 = ({ route, navigation }) => {
   }, [selectedValueTipoEdificacion, subTipo]);
 
   const handleSaveSelection = () => {
+    // Aquí defines los elementos con su correspondiente valor en codPuntuacionMatrizSec
+    const codPuntuacionMatrizSec = [
+      { id: 1, value: 'Irregularidad Vertical Severa', isChecked: includeIrregularidadSevera, data: irregularidadVerticalSevera, codPuntuacionMatrizSec: codPuntuacionMap.irregularidadVerticalSevera },
+      { id: 2, value: 'Irregularidad Vertical Moderada', isChecked: includeIrregularidadModerada, data: irregularidadVerticalModerada, codPuntuacionMatrizSec: codPuntuacionMap.irregularidadVerticalModerada },
+      { id: 3, value: 'Planta Irregular', isChecked: includePlantaIrregular, data: plantaIrregular, codPuntuacionMatrizSec: codPuntuacionMap.plantaIrregular },
+      { id: 4, value: 'Pre Código Sismico', isChecked: includePreCodigoSismico, data: preCodigoSismico, codPuntuacionMatrizSec: codPuntuacionMap.preCodigoSismico },
+      { id: 5, value: 'Post Código Sismico', isChecked: includePostCodigoSismico, data: postCodigoSismico, codPuntuacionMatrizSec: codPuntuacionMap.postCodigoSismico },
+      { id: 6, value: 'Suelo Tipo AB', isChecked: includeSueloTipoAB, data: sueloTipoAB, codPuntuacionMatrizSec: codPuntuacionMap.sueloTipoAB },
+      { id: 7, value: 'Suelo Tipo E1a3', isChecked: includeSueloTipoE1a3, data: sueloTipoE1a3, codPuntuacionMatrizSec: codPuntuacionMap.sueloTipoE1a3 },
+      { id: 8, value: 'Suelo Tipo EMayor3', isChecked: includeSueloTipoEMayor3, data: sueloTipoEMayor3, codPuntuacionMatrizSec: codPuntuacionMap.sueloTipoEMayor3 },
+      { id: 9, value: 'Resultado Smin', isChecked: includeResultadoSmin, data: resultadoSmin, codPuntuacionMatrizSec: codPuntuacionMap.resultadoSmin }
+    ];
+  
+    // Filtrar los elementos que están marcados
+    const selectedItems = codPuntuacionMatrizSec
+      .filter(item => item.isChecked)
+      .map(item => ({
+        codPuntuacionMatrizSec: item.codPuntuacionMatrizSec // Incluye el codPuntuacionMatrizSec
+      }));
+  
     const newSelection = {
       tipoEdificacion: selectedValueTipoEdificacion,
       subTipo,
       resultadoFinal,
       estChecked,
       dnkChecked,
-      codPuntuacionMatrizSec
+      codPuntuacionMatrizSec: selectedItems // Guardar solo los elementos seleccionados con sus datos
     };
-    setSelectedValues([selectedValues, newSelection]); // Agrega la nueva selección al array
-
+  
+    setSelectedValues([...selectedValues, newSelection]); // Agrega la nueva selección al array
+  
     // Aquí puedes hacer lo necesario para guardar la selección, como enviar a una API o almacenarlo en un estado global
     console.log(newSelection);
-  }
+  };
 
   useEffect(() => {
     calcularResultadoFinal();

@@ -42,7 +42,7 @@ export const AppProvider = ({ children }) => {
   const [tipoSuelo, setTipoSuelo] = useState('');
   const [comentario, setComentario] = useState('');
   //fema 3
-  const [resultado, setResultado] = useState('');
+  const [resultado, setResultado] = useState([]);
   const [codpuntuacionMatriz, setcodpuntuacionMatriz] = useState(false);
   const [resultadoFinal, setresultadoFinal] = useState(false);
   const [esEst, setesEst] = useState(false);
