@@ -344,22 +344,24 @@ const FormularioFema3 = ({ route, navigation }) => {
     const selectedItems = codPuntuacionMatrizSec
       .filter(item => item.isChecked)
       .map(item => ({
-        codPuntuacionMatrizSec: item.codPuntuacionMatrizSec // Incluye el codPuntuacionMatrizSec
+        codPuntuacionMatrizSec: item.codPuntuacionMatrizSec, // Incluye el codPuntuacionMatrizSec
+        resultadoFinal,
+      estChecked,
+      dnkChecked,
       }));
   
     const newSelection = {
-      tipoEdificacion: selectedValueTipoEdificacion,
-      subTipo,
-      resultadoFinal,
-      estChecked,
-      dnkChecked,
-      codPuntuacionMatrizSec: selectedItems // Guardar solo los elementos seleccionados con sus datos
+      // tipoEdificacion: selectedValueTipoEdificacion,
+      // subTipo,
+      selectedItems  // Guardar solo los elementos seleccionados con sus datos
     };
   
     setSelectedValues([...selectedValues, newSelection]); // Agrega la nueva selección al array
-  
+    setResultado([newSelection])
+
     // Aquí puedes hacer lo necesario para guardar la selección, como enviar a una API o almacenarlo en un estado global
     console.log(newSelection);
+    console.log("Resultado: ",setResultado([newSelection]));
   };
 
   useEffect(() => {
