@@ -27,8 +27,6 @@ const FormularioFema2 = ({ navigation }) => {
     setTiposuelo1,
     tipoocupacion1,
     setTipoocupacion1,
-    tiposuelo1,
-    setTiposuelo1,
     areaTotalDePiso,
     setAreaTotalDePiso,
     anoCodigo,
@@ -453,4 +451,5 @@ const styles = StyleSheet.create({
   }, 
 });
 export default FormularioFema2;
+
 

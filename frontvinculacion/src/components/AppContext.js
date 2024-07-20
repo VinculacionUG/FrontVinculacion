@@ -84,7 +84,6 @@ export const AppProvider = ({ children }) => {
       anoDeContruccion, setAnoDeContruccion,
       tiposuelo1, setTiposuelo1,
       tipoocupacion1, setTipoocupacion1,
-      ocupacion2, setOcupacion2,
       tipoSuelo, setTipoSuelo,
       comentario, setComentario,
       //fema 3
