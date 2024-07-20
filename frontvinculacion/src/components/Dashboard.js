@@ -143,7 +143,7 @@ const Dashboard = () => {
 
         <TouchableOpacity
           style={styles.card}
-          onPress={() => handleCardPress('Editar')}
+          onPress={() => handleCardPress('EditarInicio')}
         >
           <MaterialCommunityIcons name="pencil" size={40} color="#001f3f" />
           <Text style={styles.cardText}>Editar</Text>

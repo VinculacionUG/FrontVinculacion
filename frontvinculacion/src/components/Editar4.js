@@ -5,14 +5,14 @@ import { CheckBox } from 'react-native-elements';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AppContext } from './AppContext';
 
-const FormularioFema4 = ({ navigation }) => {
-  const [revisionExterior, setRevisionExterior] = useState([]);
-  const [revisionInterior, setRevisionInterior] = useState([]);
-  const [otrosPeligros, setOtrosPeligros] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [selectedValuerevisionExterior, setSelectedValueRevisionExterior] = useState('');
-  const [selectedValuerevisionInterior, setSelectedValueRevisionInterior] = useState('');
+const Editar4 = ({ navigation, route }) => {
+  // Obtener los datos existentes de la ruta
+  const { edificio } = route.params;
+  const { fuenteTipoSuelo: fuenteTipoSueloExistente, fuentePeligroGeologicos: fuentePeligroGeologicosExistente,
+          nombreContacto: nombreContactoExistente, peligorsGeologicos: peligorsGeologicosExistente, 
+          codEvalExterior: codEvalExteriorExistente, codEvalInterior: codEvalInteriorExistente, 
+          revisionPlanos: revisionPlanosExistente
+  } = edificio;
 
   const {
     exterior,
@@ -21,16 +21,32 @@ const FormularioFema4 = ({ navigation }) => {
     setInterior,
     revisionPlanos,
     setRevisionPlanos,
-    fuenteDelTipoDeSuelo,
-    setFuenteDelTipoDeSuelo,
-    fuenteDePeligrosGeologicos,
-    setFuenteDePeligrosGeologicos,
-    contactoDeLaPersona,
-    setContactoDeLaPersona,
+    //fuenteDelTipoDeSuelo,
+    //setFuenteDelTipoDeSuelo,
+    //fuenteDePeligrosGeologicos,
+    //setFuenteDePeligrosGeologicos,
+    //contactoDeLaPersona,
+    //setContactoDeLaPersona,
     otrosPeligros1,
     setOtrosPeligros1,
   } = useContext(AppContext);
 
+
+  const [revisionExterior, setRevisionExterior] = useState([]);
+  const [revisionInterior, setRevisionInterior] = useState([]);
+  const [otrosPeligros, setOtrosPeligros] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [selectedValuerevisionExterior, setSelectedValueRevisionExterior] = useState('');
+  const [selectedValuerevisionInterior, setSelectedValueRevisionInterior] = useState('');
+
+
+  // Establecer los estados con los datos existentes
+  const [fuenteDelTipoDeSuelo, setFuenteDelTipoDeSuelo] = useState(fuenteTipoSueloExistente);
+  const [fuenteDePeligrosGeologicos, setFuenteDePeligrosGeologicos] = useState(fuentePeligroGeologicosExistente);
+  const [contactoDeLaPersona, setContactoDeLaPersona] = useState(nombreContactoExistente);
+
+  
   const handleNext = () => {
     // Validación de campos obligatorios
     if (
@@ -56,7 +72,7 @@ const FormularioFema4 = ({ navigation }) => {
       contactoDeLaPersona,
       otrosPeligros1,
     });
-    navigation.navigate('FormularioFema5');
+    navigation.navigate('Editar5', { edificio }); 
   };
 
   const [selectedCheckbox, setSelectedCheckbox] = useState(null);
@@ -299,7 +315,7 @@ const styles = StyleSheet.create({
     height: 40,
     borderColor: 'gray',
     borderWidth: 1,
-    borderRadius: 10,
+    borderRadius: 5,
     justifyContent: 'center',
     width: 150,
   },
@@ -313,7 +329,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 16,
     textAlign: 'center',
-    marginTop: 30,
   },
   subtitle: {
     fontSize: 18,
@@ -326,7 +341,7 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     borderWidth: 1,
     paddingHorizontal: 10,
-    borderRadius: 10,
+    borderRadius: 5,
     marginBottom: 16,
   },
   buttonContainer: {
@@ -343,22 +358,21 @@ const styles = StyleSheet.create({
     borderTopColor: 'lightgray',
   },
   prevButton: {
-    //backgroundColor: 'navy',
-    backgroundColor: '#001f3f',
+    backgroundColor: 'navy',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 12,
-    borderRadius: 20,
+    borderRadius: 10,
     paddingHorizontal: 24,
   },
   nextButton: {
-    backgroundColor: '#001f3f',
+    backgroundColor: 'navy',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 12,
-    borderRadius: 20,
+    borderRadius: 10,
     paddingHorizontal: 24,
   },
   buttonText: {
@@ -391,18 +405,4 @@ const styles = StyleSheet.create({
   },  
 });
 
-export default FormularioFema4;
-
-
-
-
-          
-  
-
-
-
-
-
-
-    
-
+export default Editar4;

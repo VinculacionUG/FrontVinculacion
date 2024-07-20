@@ -1,216 +1,370 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert } from 'react-native';
+import React, { useEffect, useState, useContext } from 'react';
+import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
+import { CheckBox } from 'react-native-elements';
+import { AppContext } from './AppContext';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import * as DocumentPicker from 'expo-document-picker';
 
-const Editar2 = ({ navigation, route }) => {
-  // Obtener los datos existentes de la ruta
-  const { edificio } = route.params;
-  const { nombre, fecha, direccion: direccionExistente, zip: zipExistente, otrasIdentificaciones: otrasIdentificacionesExistente, uso: usoExistente, latitud: latitudExistente, longitud: longitudExistente, inspector: inspectorExistente, hora: horaExistente } = edificio;
+//const FormularioFema2 = ({ navigation }) => {
+  const Editar2 = ({ navigation, route }) => {
+    // Obtener los datos existentes de la ruta
+    const { edificio } = route.params;
+        const {
+          nroPisosSup: numeroPisoExistente,
+          nroPisosInf: infExistente,
+          anioContruccion: anioContruccionExistente,
+          areaTotalPiso: areaTotalDePisoExistente,
+          anioCodigo: anioCodigoExistente,
+          ampliacion: ampliacionExistente,
+          amplAnioConstruccion: amplAnioConstruccionExistente,
+          codOcupacion: ocupacionExistente,
+          codTipoOcupacion: tipoocupacionExistente,
+          codTipoSuelo: tipoSueloExistente,
+          comentarios: comentariosExistente
+        } = edificio;
 
-  // Establecer los estados con los datos existentes
-  const [direccion, setDireccion] = useState(direccionExistente);
-  const [zip, setZip] = useState(zipExistente);
-  const [otrasIdentificaciones, setOtrasIdentificaciones] = useState(otrasIdentificacionesExistente);
-  const [nombreEdificio, setNombreEdificio] = useState(nombre);
-  const [uso, setUso] = useState(usoExistente);
-  const [latitud, setLatitud] = useState(latitudExistente);
-  const [longitud, setLongitud] = useState(longitudExistente);
-  const [inspector, setInspector] = useState(inspectorExistente);
-  const [fechaFormulario, setFechaFormulario] = useState(fecha);
-  const [hora, setHora] = useState(horaExistente);
-  const [file1Name, setFile1Name] = useState('');
-  const [file2Name, setFile2Name] = useState('');
-  const [selectedFile1, setSelectedFile1] = useState(false);
-  const [selectedFile2, setSelectedFile2] = useState(false);
+  const [anoConstruccion, setAnoConstruccion] = useState(anioContruccionExistente);
+  const [areaTotalDePiso, setAreaTotalDePiso] = useState(areaTotalDePisoExistente);
+  const [anoCodigo, setAnoCodigo] = useState(anioCodigoExistente);
+  const [anoDeContruccion, setAnoDeContruccion] = useState(amplAnioConstruccionExistente);
+  const [comentario, setComentario] = useState(comentariosExistente);
 
-  // Función para actualizar los datos
-  const handleUpdate = async () => {
-    try {
-      // Implementación de la lógica para actualizar los datos
-      // ...
+  
+  const [ocupacion, setOcupacion] = useState([]);
+  const [tipoocupacion, setTipoocupacion] = useState([]);
+  const [tipoSuelo, setTipoSuelo] = useState([]);
+  const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
+  const [selectedValuetipoocupacion, setSelectedValueTipoOcupacion] = useState('');
+  const [selectedValuetipoSuelo, setSelectedValueTipoSuelo] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-      // Muestra una notificación de actualización exitosa
-      Alert.alert('Actualización exitosa', 'Los datos han sido actualizados correctamente');
-    } catch (error) {
-      console.error('Error al actualizar los datos:', error);
-      // Manejar el error de actualización
-      Alert.alert('Error', 'Hubo un problema al actualizar los datos. Por favor, inténtalo de nuevo.');
+
+
+  const {
+    numeroPiso,
+    setNumeroPiso,
+    inf,
+    setInf,
+//  anoConstruccion,
+//  setAnoConstruccion,
+    tiposuelo1,
+    setTiposuelo1,
+    tipoocupacion1,
+    setTipoocupacion1,
+//  areaTotalDePiso,
+//  setAreaTotalDePiso,
+//  anoCodigo,
+//  setAnoCodigo,
+    ampliacion,
+    setAmpliacion,
+//  anoDeContruccion,
+//  setAnoDeContruccion,
+//  comentario,
+//  setComentario,
+  } = useContext(AppContext);
+
+  /*
+    // Establecer los estados con los datos existentes
+    const [ocupacion, setOcupacion] = useState(ocupacionExistente);
+    const [tipoocupacion, setTipoocupacion] = useState(tipoocupacionExistente);
+    const [tipoSuelo, setTipoSuelo] = useState(tipoSueloExistente);
+    const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
+    const [selectedValuetipoocupacion, setSelectedValueTipoOcupacion] = useState('');
+    const [selectedValuetipoSuelo, setSelectedValueTipoSuelo] = useState('');
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+*/
+
+  const handleNext = () => {
+    // Validación de campos obligatorios
+    if (!numeroPiso || !inf || !anoConstruccion || !areaTotalDePiso || !anoCodigo || !ampliacion || !anoDeContruccion ||
+      !selectedValuetipoocupacion || !selectedValuetipoSuelo || selectedCheckboxes.length === 0 ) {
+      alert('Por favor complete todos los campos.');
+      return;
     }
+    const ocupacion = {
+      selectedCheckboxes,
+      tipoocupacion1,
+     
+    };
+    // Continuar con la navegación o el procesamiento de datos
+    console.log('Datos guardados:', {
+      numeroPiso,
+      inf,
+      anoConstruccion,
+      areaTotalDePiso,
+      anoCodigo,
+      ampliacion,
+      anoDeContruccion,
+      tiposuelo1,
+      comentario,
+      ocupacion
+    });
+
+    navigation.navigate('Editar3', { edificio }); 
   };
 
-  // Funciones para manejar la selección de documentos
-  const handleDocument1 = async () => {
-    try {
-      const result = await DocumentPicker.getDocumentAsync({
-        type: ['application/pdf', 'image/jpeg'],
-      });
-      if (result.assets.length > 0) {
-        setFile1Name(result.assets[0].name);
-        setSelectedFile1(true);
+
+  useEffect(() => {
+    const fetchTipoocupacion = async () => {
+      try {
+        const response = await fetch('https://www.fema.somee.com/Users/TipoOcupacion', {
+          method: 'GET',
+        });
+        if (!response.ok) {
+          throw new Error('Error en la red');
+        }
+        const result = await response.json();
+        setTipoocupacion(result);
+      } catch (error) {
+        setError(error);
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.error('Error al seleccionar documento 1:', error);
-      // Manejar el error al seleccionar el documento
-      Alert.alert('Error', 'Hubo un problema al seleccionar el documento 1. Por favor, inténtalo de nuevo.');
-    }
-  };
+    };
 
-  const handleDocument2 = async () => {
-    try {
-      const result = await DocumentPicker.getDocumentAsync({
-        type: ['application/pdf', 'image/jpeg'],
-      });
-      if (result.assets.length > 0) {
-        setFile2Name(result.assets[0].name);
-        setSelectedFile2(true);
+    const fetchTipoSuelo = async () => {
+      try {
+        const response = await fetch('https://www.fema.somee.com/Users/TipoSuelo', {
+          method: 'GET',
+        });
+        if (!response.ok) {
+          throw new Error('Error en la red');
+        }
+        const result = await response.json();
+        setTipoSuelo(result);
+      } catch (error) {
+        setError(error);
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.error('Error al seleccionar documento 2:', error);
-      // Manejar el error al seleccionar el documento
-      Alert.alert('Error', 'Hubo un problema al seleccionar el documento 2. Por favor, inténtalo de nuevo.');
-    }
+    };
+
+    const fetchOcupacion = async () => {
+      try {
+        const response = await fetch('https://www.fema.somee.com/Users/Ocupacion', {
+          method: 'GET',
+        });
+        if (!response.ok) {
+          throw new Error('Error en la red');
+        }
+        const result = await response.json();
+        setOcupacion(result);
+      } catch (error) {
+        setError(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTipoocupacion();
+    fetchTipoSuelo();
+    fetchOcupacion();
+  }, []);
+
+  const handleCheckboxChange = (codOcupacion) => {
+    setSelectedCheckboxes(prevState => {
+      const updatedCheckboxes = prevState.includes(codOcupacion)
+        ? prevState.filter(item => item !== codOcupacion)
+        : [...prevState, codOcupacion];
+
+      return updatedCheckboxes;
+    });
   };
 
+  if (loading) {
+    return <ActivityIndicator size="large" color="#0000ff" />;
+  }
+
+  if (error) {
+    return (
+      <View>
+        <Text>Error: {error.message}</Text>
+      </View>
+    );
+  }
+
+  const selectedDescriptions = ocupacion
+    .filter(checkbox => selectedCheckboxes.includes(checkbox.codOcupacion))
+    .map(checkbox => checkbox.descripcion);
+
+    //numeroPiso =8;
+    //inf =3;
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Formulario FEMA P-154</Text>
-
-      {/* Sección para adjuntar fotografía */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Adjuntar Fotografía</Text>
-        <View style={styles.uploadButtonContainer}>
-          <TouchableOpacity style={styles.uploadButton} onPress={handleDocument1}>
-            <Text style={styles.uploadButtonText}>Subir</Text>
-          </TouchableOpacity>
-          {selectedFile1 ? (
-            <Text>{file1Name}</Text>
-          ) : (
-            <Text>No se eligió ningún archivo</Text>
-          )}
-        </View>
-      </View>
-
-      {/* Sección para adjuntar gráfico */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Adjuntar Gráfico</Text>
-        <View style={styles.uploadButtonContainer}>
-          <TouchableOpacity style={styles.uploadButton} onPress={handleDocument2}>
-            <Text style={styles.uploadButtonText}>Subir</Text>
-          </TouchableOpacity>
-          {selectedFile2 ? (
-            <Text>{file2Name}</Text>
-          ) : (
-            <Text>No se eligió ningún archivo</Text>
-          )}
-        </View>
-      </View>
-
-      {/* Inputs para la información del edificio */}
       <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>Dirección</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Ingrese la dirección"
-          value={direccion}
-          onChangeText={(text) => setDireccion(text)}
-        />
-      </View>
-
-      <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>ZIP</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="ZIP"
-          value={zip}
-          onChangeText={(text) => setZip(text)}
-        />
-      </View>
-
-      <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>Otras Identificaciones</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Otras Identificaciones"
-          value={otrasIdentificaciones}
-          onChangeText={(text) => setOtrasIdentificaciones(text)}
-        />
-      </View>
-
-      <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>Nombre del Edificio</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Nombre del Edificio"
-          value={nombreEdificio}
-          onChangeText={(text) => setNombreEdificio(text)}
-        />
-      </View>
-
-      <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>Uso</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Uso"
-          value={uso}
-          onChangeText={(text) => setUso(text)}
-        />
-      </View>
-
-      <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>Latitud</Text>
-        <TextInput
-          style={[styles.input, styles.smallInput]}
-          placeholder="Latitud"
-          value={latitud}
-          onChangeText={(text) => setLatitud(text)}
-        />
-        <Text style={styles.inputLabel}>Longitud</Text>
-        <TextInput
-          style={[styles.input, styles.smallInput]}
-          placeholder="Longitud"
-          value={longitud}
-          onChangeText={(text) => setLongitud(text)}
-        />
-      </View>
-
-      <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>Inspector</Text>
+        <Text style={styles.inputLabel}>N° de Pisos:</Text>
         <Picker
-          style={styles.input}
-          selectedValue={inspector}
-          onValueChange={(itemValue) => setInspector(itemValue)}
+          style={styles.smallPicker}
+          selectedValue={numeroPiso}
+          onValueChange={(itemValue) => setNumeroPiso(itemValue)}
         >
-          <Picker.Item label="Inspector 1" value="inspector1" />
-          <Picker.Item label="Inspector 2" value="inspector2" />
+          <Picker.Item label="Seleccione" value="" />
+          {Array.from({ length: 26 }, (_, i) => (
+   <Picker.Item key={i} label={`${i}`} value={`${i}`} />
+          ))}
+        </Picker>
+
+        <Text style={[styles.inputLabel, styles.infLabel]}>Inf:</Text>
+        <Picker
+          style={styles.smallPicker}
+          selectedValue={inf}
+          onValueChange={(itemValue) => setInf(itemValue)}
+        >
+          <Picker.Item label="Seleccione" value="" />
+          {Array.from({ length: 6 }, (_, i) => (
+             <Picker.Item key={i} label={`${i}`} value={`${i}`} />
+            ))}
+  
         </Picker>
       </View>
 
       <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>Fecha</Text>
+        <Text style={styles.inputLabel}>Año Construcción:</Text>
         <TextInput
-          style={[styles.input, styles.smallInput]}
-          placeholder="Fecha"
-          value={fechaFormulario}
-          onChangeText={(text) => setFechaFormulario(text)}
+          style={[styles.input, { width: 50 }]}
+          value={anoConstruccion}
+          maxLength={4}
+          onChangeText={(text) => {
+            const numericValue = text.replace(/[^0-9]/g, '');
+            setAnoConstruccion(numericValue);
+          }}
+        />
+        <Text style={[styles.inputLabel, { marginLeft: 10, width: 150 }]}>Área total de piso (m2):</Text>
+        <TextInput
+          style={[styles.input, { width: 60 }]}
+          value={areaTotalDePiso}
+          onChangeText={(text) => {
+            const numericValue = text.replace(/[^0-9]/g, '');
+            setAreaTotalDePiso(numericValue);
+          }}
+          maxLength={5}
         />
       </View>
 
       <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>Hora</Text>
+        <Text style={styles.inputLabel}>Año de código:</Text>
         <TextInput
-          style={[styles.input, styles.smallInput]}
-          placeholder="Hora"
-          value={hora}
-          onChangeText={(text) => setHora(text)}
+          style={[styles.input, { width: 50 }]}
+          value={anoCodigo}
+          onChangeText={(text) => {
+            const numericValue = text.replace(/[^0-9]/g, '');
+            setAnoCodigo(numericValue);
+          }}
+        />
+
+        <Text style={[styles.inputLabel, { marginLeft: 10 }]}>Ampliación:</Text>
+        <Picker
+          style={styles.smallPicker}
+          selectedValue={ampliacion}
+          onValueChange={(itemValue) => {
+            setAmpliacion(itemValue);
+          }}
+        >
+          <Picker.Item label="Seleccione" value="" />
+          <Picker.Item label="Sí" value="si" />
+          <Picker.Item label="No" value="no" />
+        </Picker>
+      </View>
+
+      <View style={styles.inputContainer}>
+        <Text style={styles.inputLabel}>Año de Construcción:</Text>
+
+        <TextInput
+          //style={[styles.input, { width: 20, height: 20 }]}
+          style={styles.inputText}
+          value={anoDeContruccion}
+          onChangeText={(text) => {
+            const numericValue = text.replace(/[^0-9]/g, '');
+            setAnoDeContruccion(numericValue);
+          }}
+          maxLength={4}
         />
       </View>
 
-      {/* Botón para guardar cambios */}
-      <TouchableOpacity style={styles.updateButton} onPress={handleUpdate}>
-        <Text style={styles.updateButtonText}>Guardar Cambios</Text>
+      <Text style={[styles.subtitle, styles.centerText]}>Ocupación:</Text>
+
+      <View style={styles.checkboxGrid}>
+        {ocupacion.map((checkbox) => (
+          <View key={checkbox.codOcupacion} style={styles.checkboxContainer}>
+            <CheckBox
+              title={checkbox.descripcion}
+              checked={selectedCheckboxes.includes(checkbox.codOcupacion)}
+              onPress={() => handleCheckboxChange(checkbox.codOcupacion)}
+              containerStyle={styles.checkbox}
+              textStyle={styles.checkboxLabel}
+              checkedIcon={<MaterialCommunityIcons name="checkbox-marked" size={24} color="green" />}
+              uncheckedIcon={<MaterialCommunityIcons name="checkbox-blank-outline" size={24} color="gray" />}
+            />
+          </View>
+        ))}
+      </View>
+
+      {selectedCheckboxes.length > 0 && (
+        <Text style={styles.resultado}>
+          Seleccionaste: {selectedDescriptions.join(', ')}
+        </Text>
+      )}
+
+      <View style={styles.inputContainer}>
+        <Text style={styles.inputLabel}>Tipo de Ocupación:</Text>
+        <Picker
+          style={styles.smallPicker}
+          selectedValue={selectedValuetipoocupacion}
+          onValueChange={(itemValue) => {
+            setSelectedValueTipoOcupacion(itemValue);
+            setTipoocupacion1(itemValue); // Guardar el valor seleccionado en tipoocupacion1
+          }}
+        >
+          <Picker.Item label="Seleccione" value="" />
+          {tipoocupacion.map((item, index) => (
+            <Picker.Item label={item.descripcion} value={item.codTipoOcupacion} key={index} />
+          ))}
+        </Picker>
+      </View>
+
+      <View style={styles.inputContainer}>
+        <Text style={styles.inputLabel}>Tipo de Suelo:</Text>
+        <Picker
+          style={styles.smallPicker}
+          selectedValue={selectedValuetipoSuelo}
+          onValueChange={(itemValue) => {
+            setSelectedValueTipoSuelo(itemValue);
+            setTiposuelo1(itemValue); // Guardar el valor seleccionado en tiposuelo1
+          }}
+        >
+          <Picker.Item label="Seleccione" value="" />
+          {tipoSuelo.map((item, index) => (
+            <Picker.Item label={item.descripcion} value={item.codTipoSuelo} key={index} />
+          ))}
+        </Picker>
+      </View>
+
+      <View style={styles.inputContainer}>
+        <Text style={styles.inputLabel}>Comentario:</Text>
+      </View>
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={[styles.input, styles.multilineText]}
+          multiline
+          numberOfLines={4}
+          value={comentario}
+          onChangeText={(text) => setComentario(text)}
+        />
+      </View>
+
+      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+        <MaterialCommunityIcons name="arrow-left" size={24} color="white" />
+        <Text style={styles.buttonText}>Regresar</Text>
       </TouchableOpacity>
+
+      <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
+        <MaterialCommunityIcons name="arrow-right" size={24} color="white" />
+        <Text style={styles.buttonText}>Siguiente</Text>
+      </TouchableOpacity>
+
     </ScrollView>
   );
 };
@@ -220,35 +374,13 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     padding: 16,
     backgroundColor: 'white',
+    paddingBottom: 100,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 16,
     textAlign: 'center',
-  },
-  section: {
-    marginBottom: 16,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 8,
-  },
-  uploadButtonContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  uploadButton: {
-    backgroundColor: 'blue',
-    borderRadius: 10,
-    paddingHorizontal: 24,
-    paddingVertical: 12,
-  },
-  uploadButtonText: {
-    color: 'white',
-    fontSize: 16,
   },
   inputContainer: {
     flexDirection: 'row',
@@ -257,8 +389,11 @@ const styles = StyleSheet.create({
   },
   inputLabel: {
     fontSize: 16,
-    marginLeft: 8,
-    fontWeight: 'bold',
+    marginRight: 4, // Espacio de 4 píxeles para los 2 mm
+    fontWeight: 'normal',
+  },
+  infLabel: {
+    marginLeft: 20, // Espacio de 4 píxeles entre el primer selector y el texto "Inf:"
   },
   input: {
     flex: 1,
@@ -266,40 +401,92 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     borderWidth: 1,
     paddingHorizontal: 10,
-    borderRadius: 10,
+    borderRadius: 5,
+  },
+  smallPicker: {
+    flex: 1,
+    height: 40, // Reducir altura del selector
+    borderColor: 'gray',
+    borderWidth: 1,
+    borderRadius: 5,
+    justifyContent: 'center',
+    width: 80, // Reducir el ancho del selector
   },
   backButton: {
-    backgroundColor: 'gray',
+    backgroundColor: 'navy',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 12,
     borderRadius: 10,
-    marginBottom: 12,
+    paddingHorizontal: 24,
+    position: 'absolute',
+    bottom: 16,
+    left: 16,
   },
-  backButtonText: {
+  nextButton: {
+    backgroundColor: 'navy',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    borderRadius: 10,
+    paddingHorizontal: 24,
+    position: 'absolute',
+    bottom: 16,
+    right: 16,
+  },
+  buttonText: {
     color: 'white',
     fontSize: 18,
     marginLeft: 8,
   },
-  updateButton: {
-    backgroundColor: 'blue',
-    padding: 12,
-    borderRadius: 10,
+  multilineText: {
+    minHeight: 100,
+  },
+  CheckBoxContainer: {
+    flexGrow: 1,
+    justifyContent: 'center',
     alignItems: 'center',
+    paddingHorizontal: 0,
+    paddingVertical: 20,
   },
-  updateButtonText: {
-    color: 'white',
+  checkboxGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    paddingHorizontal: 0,
+    //justifyContent: 'space-between',
+  },
+  checkboxContainer: {
+    width: '30%',
+    padding: 0,
+  },
+  checkbox: {
+    backgroundColor: 'transparent',
+    borderWidth: 0,
+  },
+  button: {
+    marginTop: 20,
+    width: '100%',
+    backgroundColor: '#2196F3',
+  },
+  resultado: {
+    marginTop: 20,
     fontSize: 18,
+    color: 'green',
   },
-  smallInput: {
-    width: 100,
-    marginRight: 10,
-  },
+  inputText: {
+    flex: .20,
+    flexDirection: 'row',
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 5,
+    height: 40,
+    width: 0,
+    padding: 0,
+    paddingHorizontal: 10,
+    marginRight: 2,
+    //backgroundColor: 'red',
+  }, 
 });
-
 export default Editar2;
-
-
-
-

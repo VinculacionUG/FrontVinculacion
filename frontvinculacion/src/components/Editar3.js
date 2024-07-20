@@ -1,11 +1,29 @@
 import React, { useEffect, useState, useContext } from 'react';
 //import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity, CheckBox } from 'react-native';
-import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator, CheckBox } from 'react-native';
+import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator,CheckBox } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AppContext } from './AppContext';
 
-const FormularioFema3 = ({ route, navigation }) => {
+//const Editar3 = ({ route, navigation }) => {
+  const Editar3 = ({ navigation, route }) => {
+    // Obtener los datos existentes de la ruta
+    const { edificio } = route.params;
+        const {
+          nroPisosSup: numeroPisoExistente,
+          nroPisosInf: infExistente,
+          anioContruccion: anioContruccionExistente,
+          areaTotalPiso: areaTotalDePisoExistente,
+          anioCodigo: anioCodigoExistente,
+          ampliacion: ampliacionExistente,
+          amplAnioConstruccion: amplAnioConstruccionExistente,
+          codOcupacion: ocupacionExistente,
+          codTipoOcupacion: tipoocupacionExistente,
+          codTipoSuelo: tipoSueloExistente,
+          comentarios: comentariosExistente
+        } = edificio;
+
+
 
   const [tipoEdificacion, setTipoEdificacion] = useState([]);
   const [subTipo, setSubTipo] = useState('');
@@ -34,8 +52,6 @@ const FormularioFema3 = ({ route, navigation }) => {
   const [estChecked, setEstChecked] = useState(false);
   const [dnkChecked, setDnkChecked] = useState(false);
 
-  const [selectedValues, setSelectedValues] = useState([]);
-
   //Suma
   const [includeResultadoBase, setIncludeResultadoBase] = useState(false);
   const [includeIrregularidadSevera, setIncludeIrregularidadSevera] = useState(false);
@@ -49,7 +65,6 @@ const FormularioFema3 = ({ route, navigation }) => {
   const [includeResultadoSmin, setIncludeResultadoSmin] = useState(false);
 
   const [isChecked, setIsChecked] = useState(false);
-  const [codPuntuacionMatrizSec, setCodPuntuacionMatrizSec] = useState('');
 
   const handleChangeCheckboxResultadoBase = () => {
     setIncludeResultadoBase(!includeResultadoBase);
@@ -101,8 +116,7 @@ const FormularioFema3 = ({ route, navigation }) => {
   } = useContext(AppContext);
 
   const handleNext = () => {
-    navigation.navigate('FormularioFema4', {
-    });
+    navigation.navigate('Editar4', { edificio }); 
   };
 
   const handleBack = () => {
@@ -155,10 +169,10 @@ const FormularioFema3 = ({ route, navigation }) => {
     const fetchTipoEdificacion = async () => {
       try {
         const response = await fetch(url,
-          {
-            method: 'GET',
-          }
-        );
+		    {
+		     	method: 'GET',
+		    }
+		    );
         if (!response.ok) {
           throw new Error('Error en la red');
         }
@@ -167,10 +181,10 @@ const FormularioFema3 = ({ route, navigation }) => {
         //if (result.length > 0) {
         //  setTipoEdificacion(result[0].descripcion); // Adjust based on your API response structure
         //}
-        //console.log(result);
+		    //console.log(result);
       } catch (error) {
         setError(error);
-        console.log(error);
+		    console.log(error);
       } finally {
         setLoading(false);
       }
@@ -179,177 +193,137 @@ const FormularioFema3 = ({ route, navigation }) => {
   }, []);
 
 
-  const fetchSubTipos = async (tipo) => {
-    const url2 = 'https://www.fema.somee.com/Users/SubTipoEdificacion';
-    try {
-      const response = await fetch(url2);
-      if (!response.ok) {
-        throw new Error('Error al obtener los subtipos de edificación');
-      }
-      const result = await response.json();
-      //console.log('Datos recibidos de SubTipoEdificacion: ', result);
-      const filteredSubTipos = result
-        .filter(item => item.descripcion.startsWith(tipo))
-        .map(item => item.descripcion);
-      setSubTipos(filteredSubTipos);
-    } catch (error) {
-      setError(error.message);
-    }
-  };
-  //  if (selectedValueTipoEdificacion) {
-  //    fetchSubTipos(selectedValueTipoEdificacion);
-  //  }
+     const fetchSubTipos = async (tipo) => {
+      const url2 = 'https://www.fema.somee.com/Users/SubTipoEdificacion';
+       try {
+         const response = await fetch(url2);
+         if (!response.ok) {
+           throw new Error('Error al obtener los subtipos de edificación');
+         }
+         const result = await response.json();
+         //console.log('Datos recibidos de SubTipoEdificacion: ', result);
+         const filteredSubTipos = result
+           .filter(item => item.descripcion.startsWith(tipo))
+           .map(item => item.descripcion);
+         setSubTipos(filteredSubTipos);
+       } catch (error) {
+         setError(error.message);
+       }
+     };
+    //  if (selectedValueTipoEdificacion) {
+    //    fetchSubTipos(selectedValueTipoEdificacion);
+    //  }
 
 
-  useEffect(() => {
-    const fetchResultadoBase = async () => {
+    useEffect(() => {
+      const fetchResultadoBase = async () => {
 
-      if (!selectedValueTipoEdificacion || !subTipo) {
-        return; // Si falta alguno de los valores, salimos de la función
-      }
+        if (!selectedValueTipoEdificacion || !subTipo) {
+          return; // Si falta alguno de los valores, salimos de la función
+        }
 
-      const baseUrl = 'https://www.fema.somee.com/FemaTres/consultarResultadoBase/';
+        const baseUrl  = 'https://www.fema.somee.com/FemaTres/consultarResultadoBase/';
 
-      const tipoEdificacionMap = {
-        'W-W1': 1,
-        'W-W1A': 2,
-        'W-W2': 3,
-        'S-S1(MRF)': 4,
-        'S-S2(BR)': 5,
-        'S-S3(LM)': 6,
-        'S-S4(RCSW)': 7,
-        'S-S5(URMINF)': 8,
-        'C-C1(MRF)': 9,
-        'C-C2(SW)': 10,
-        'C-C3(URMINF)': 11,
-        'PC-PC1(TU)': 12,
-        'PC-PC2': 13,
-        'RM-RM1(FD)': 14,
-        'RM-RM2(RD)': 15,
-        'URM-URM': 16,
-        'MH-MH': 17,
-      };
+          const tipoEdificacionMap = {
+            'W-W1': 1,
+            'W-W1A': 2,
+            'W-W2': 3,
+            'S-S1(MRF)': 4,
+            'S-S2(BR)': 5,
+            'S-S3(LM)': 6,
+            'S-S4(RCSW)': 7,
+            'S-S5(URMINF)': 8,
+            'C-C1(MRF)': 9,
+            'C-C2(SW)': 10,
+            'C-C3(URMINF)': 11,
+            'PC-PC1(TU)': 12,
+            'PC-PC2': 13,
+            'RM-RM1(FD)': 14,
+            'RM-RM2(RD)': 15,
+            'URM-URM': 16,
+            'MH-MH': 17,
+          };
 
-      const key = `${selectedValueTipoEdificacion}-${subTipo}`;
+          const key = `${selectedValueTipoEdificacion}-${subTipo}`;
 
-      // Verifica si existe una entrada válida en el mapa para la combinación Tipo de Edificación y Subtipo
-      if (!tipoEdificacionMap.hasOwnProperty(key)) {
-        console.warn(`No se encontró una combinación válida para Tipo de Edificación: ${selectedValueTipoEdificacion} y Subtipo: ${subTipo}`);
-        return; // Si no hay una combinación válida, salimos de la función
-      }
-
-      const numeroFinalUrl = tipoEdificacionMap[key];
-      const url3 = `${baseUrl}${numeroFinalUrl}`;
-
-      try {
-        const response = await fetch(url3,
-          {
-            method: 'GET',
+          // Verifica si existe una entrada válida en el mapa para la combinación Tipo de Edificación y Subtipo
+          if (!tipoEdificacionMap.hasOwnProperty(key)) {
+            console.warn(`No se encontró una combinación válida para Tipo de Edificación: ${selectedValueTipoEdificacion} y Subtipo: ${subTipo}`);
+            return; // Si no hay una combinación válida, salimos de la función
           }
-        );
-        if (!response.ok) {
-          throw new Error(`Error en la red ${response.status} ${response.statusText}`);
-        }
-        const result = await response.json();
 
-        // Verificar si result es un array y no está vacío antes de iterar sobre él
-        if (Array.isArray(result) && result.length > 0) {
-          result.forEach((item) => {
-            const valor = item.valor ?? '0'; // Asigna '0' si item.valor es null o undefined
-              switch (item.codTipoPuntuacion) {
-                case 9:
-                  setResultadoBase(valor);
-                  break;
-                case 1:
-                  setIrregularidadVerticalSevera(valor);
-                  break;
-                case 2:
-                  setIrregularidadVerticalModerada(valor);
-                  break;
-                case 3:
-                  setPlantaIrregular(valor);
-                  break;
-                case 4:
-                  setPreCodigoSismico(valor);
-                  break;
-                case 5:
-                  setPostCodigoSismico(valor);
-                  break;
-                case 6:
-                  setSueloTipoAB(valor);
-                  break;
-                case 7:
-                  setSueloTipoE1a3(valor);
-                  break;
-                case 8:
-                  setSueloTipoEMayor3(valor);
-                  break;
-                case 10:
-                  setResultadoSmin(valor);
-                  break;
-                default:
-                  break;
-              }
-          });
-        } else {
-          console.warn(`No se encontró resultado para Tipo de Edificación: ${selectedValueTipoEdificacion} y Subtipo: ${subTipo}`);
+          const numeroFinalUrl = tipoEdificacionMap[key];
+          const url3 = `${baseUrl}${numeroFinalUrl}`;
+
+          try {
+          const response = await fetch(url3,
+		      {
+		  	    method: 'GET',
+		      }
+		      );
+          if (!response.ok) {
+            throw new Error(`Error en la red ${response.status} ${response.statusText}`);
+          }
+          const result = await response.json();
+
+          // Verificar si result es un array y no está vacío antes de iterar sobre él
+          if (Array.isArray(result) && result.length > 0) {
+            result.forEach((item) => {
+              const valor = item.valor ?? '0'; // Asigna '0' si item.valor es null o undefined
+                switch (item.codTipoPuntuacion) {
+                  case 9:
+                    setResultadoBase(valor);
+                    break;
+                  case 1:
+                    setIrregularidadVerticalSevera(valor);
+                    break;
+                  case 2:
+                    setIrregularidadVerticalModerada(valor);
+                    break;
+                  case 3:
+                    setPlantaIrregular(valor);
+                    break;
+                  case 4:
+                    setPreCodigoSismico(valor);
+                    break;
+                  case 5:
+                    setPostCodigoSismico(valor);
+                    break;
+                  case 6:
+                    setSueloTipoAB(valor);
+                    break;
+                  case 7:
+                    setSueloTipoE1a3(valor);
+                    break;
+                  case 8:
+                    setSueloTipoEMayor3(valor);
+                    break;
+                  case 10:
+                    setResultadoSmin(valor);
+                    break;
+                  default:
+                    break;
+                }
+            });
+          } else {
+            console.warn('El resultado obtenido no es un array válido o está vacío.');
+          }
+        } catch (error) {
+          console.error('Error fetching data:', error);
+          setError(error);
+		      // console.log(error);
+        } finally {
+          setLoading(false);
         }
-      } catch (error) {
-        console.error('Error fetching data:', error);
-        setError(error);
-        // console.log(error);
-      } finally {
-        setLoading(false);
+      };
+      if (selectedValueTipoEdificacion) {
+        fetchSubTipos(selectedValueTipoEdificacion);
+        //fetchResultadoBase();
       }
-    };
-    if (selectedValueTipoEdificacion) {
-      fetchSubTipos(selectedValueTipoEdificacion);
-      //fetchResultadoBase();
-    }
-    if (selectedValueTipoEdificacion && subTipo) {
-      fetchResultadoBase();
-    }
-  }, [selectedValueTipoEdificacion, subTipo]);
-
-  const handleSaveSelection = () => {
-    const newSelection = {
-      tipoEdificacion: selectedValueTipoEdificacion,
-      subTipo,
-      resultadoFinal,
-      estChecked,
-      dnkChecked,
-      codPuntuacionMatrizSec
-    };
-    setSelectedValues([selectedValues, newSelection]); // Agrega la nueva selección al array
-
-    // Aquí puedes hacer lo necesario para guardar la selección, como enviar a una API o almacenarlo en un estado global
-    console.log(newSelection);
-  }
-
-  useEffect(() => {
-    calcularResultadoFinal();
-  }, [
-    resultadoBase,
-    includeIrregularidadSevera,
-    irregularidadVerticalSevera,
-    includeIrregularidadModerada,
-    irregularidadVerticalModerada,
-    includePlantaIrregular,
-    plantaIrregular,
-    includePreCodigoSismico,
-    preCodigoSismico,
-    includePostCodigoSismico,
-    postCodigoSismico,
-    includeSueloTipoAB,
-    sueloTipoAB,
-    includeSueloTipoE1a3,
-    sueloTipoE1a3,
-    includeSueloTipoEMayor3,
-    sueloTipoEMayor3,
-    includeResultadoSmin,
-    resultadoSmin,
-  ]);
-
+       if (selectedValueTipoEdificacion && subTipo) {
+         fetchResultadoBase();
+       }
+    }, [selectedValueTipoEdificacion, subTipo]);
 
   if (loading) {
     return <ActivityIndicator size="large" color="#0000ff" />;
@@ -370,10 +344,10 @@ const FormularioFema3 = ({ route, navigation }) => {
       <Text style={styles.subtitle}>Resultado Base, Modificadores y Resultado Final de Nivel 1 de Análisis, SL1</Text>
 
 
-      <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>Tipo de Edificación:</Text>
+    <View style={styles.inputContainer}>
+      <Text style={styles.inputLabel}>Tipo de Edificación:</Text>
 
-        <Picker
+      <Picker
           style={styles.picker}
           selectedValue={selectedValueTipoEdificacion}
           onValueChange={(itemValue) => {
@@ -397,7 +371,7 @@ const FormularioFema3 = ({ route, navigation }) => {
           ))}
         </Picker>
 
-      </View>
+    </View>
 
       <View style={styles.squareContainer}>
         <View style={styles.resultContainer}>
@@ -416,15 +390,15 @@ const FormularioFema3 = ({ route, navigation }) => {
           <View style={styles.resultContainer}>
             <Text style={styles.resultLabel}>Irregularidad Vertical Severa:</Text>
             <TouchableOpacity onPress={() => handleInputPress(setIncludeIrregularidadSevera, includeIrregularidadSevera)}>
-              <TextInput
-                style={[
-                  styles.resultInput,
-                  includeIrregularidadSevera && { borderColor: 'green', borderWidth: 2, backgroundColor: '#d4edda' } // Aplica el marco verde si está marcado
-                ]}
-                value={irregularidadVerticalSevera}
-                onChangeText={setIrregularidadVerticalSevera}
-                editable={false}
-              />
+            <TextInput
+              style={[
+                styles.resultInput,
+                includeIrregularidadSevera && { borderColor: 'green', borderWidth: 2, backgroundColor: '#d4edda' } // Aplica el marco verde si está marcado
+              ]}
+              value={irregularidadVerticalSevera}
+              onChangeText={setIrregularidadVerticalSevera}
+              editable={false}
+            />
             </TouchableOpacity>
             <CheckBox
               value={includeIrregularidadSevera}
@@ -612,37 +586,29 @@ const FormularioFema3 = ({ route, navigation }) => {
       <View style={styles.checkboxContainer}>
         <CheckBox
           value={estChecked}
-          onValueChange={(newValue) => {
-            if (newValue) setDnkChecked(false);
-            setEstChecked(newValue);
-          }}
+          onValueChange={setEstChecked}
         />
         <Text style={styles.checkboxLabel}>EST</Text>
         <CheckBox
           value={dnkChecked}
-          onValueChange={(newValue) => {
-            if (newValue) setEstChecked(false);
-            setDnkChecked(newValue);
-          }}
+          onValueChange={setDnkChecked}
         />
         <Text style={styles.checkboxLabel}>DNK</Text>
         <TouchableOpacity style={styles.saveButton}>
-          <Text style={styles.saveButtonText}
-            onPress={handleSaveSelection}
-          >Guardar</Text>
+          <Text style={styles.saveButtonText}>Guardar</Text>
         </TouchableOpacity>
       </View>
 
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-          <MaterialCommunityIcons name="arrow-left" size={24} color="white" />
-          <Text style={styles.buttonText}>Regresar</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
-          <Text style={styles.buttonText}>Siguiente</Text>
-          <MaterialCommunityIcons name="arrow-right" size={24} color="white" />
-        </TouchableOpacity>
-      </View>
+  <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+    <MaterialCommunityIcons name="arrow-left" size={24} color="white" />
+    <Text style={styles.buttonText}>Regresar</Text>
+  </TouchableOpacity>
+  <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
+    <Text style={styles.buttonText}>Siguiente</Text>
+    <MaterialCommunityIcons name="arrow-right" size={24} color="white" />
+  </TouchableOpacity>
+</View>
 
     </ScrollView>
   );
@@ -658,7 +624,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 16,
     textAlign: 'center',
-    marginTop: 30,
   },
   subtitle: {
     fontSize: 18,
@@ -676,11 +641,11 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   picker: {
-    height: 40,
+    height: 50,
     flex: 1,
     borderWidth: 1,
     borderColor: 'gray',
-    borderRadius: 10,
+    borderRadius: 5,
   },
   squareContainer: {
     borderWidth: 1,
@@ -718,7 +683,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
   },
   calculateButton: {
-    backgroundColor: '#001f3f',
+    backgroundColor: 'navy',
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 10,
@@ -739,7 +704,7 @@ const styles = StyleSheet.create({
     marginRight: 16,
   },
   saveButton: {
-    backgroundColor: '#001f3f',
+    backgroundColor: 'navy',
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 10,
@@ -753,7 +718,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between', // Distribuye los elementos horizontalmente
   },
   backButton: {
-    backgroundColor: '#001f3f',
+    backgroundColor: 'navy',
     flexDirection: 'row', // Alinea los elementos en una fila
     alignItems: 'center',
     justifyContent: 'center',
@@ -763,7 +728,7 @@ const styles = StyleSheet.create({
     marginRight: 10, // Agregué un margen derecho para separar los botones
   },
   nextButton: {
-    backgroundColor: '#001f3f',
+    backgroundColor: 'navy',
     flexDirection: 'row', // Alinea los elementos en una fila
     alignItems: 'center',
     justifyContent: 'center',
@@ -778,4 +743,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default FormularioFema3;
+export default Editar3;

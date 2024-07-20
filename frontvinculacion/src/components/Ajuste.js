@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/Ionicons'; // Importa el icono desde la biblioteca de iconos
 
 const Advertencia = ({ mensaje }) => (
@@ -22,6 +23,8 @@ const Ajuste = () => {
   const [confirmarContraseña, setConfirmarContraseña] = useState('');
   const [contraseñaError, setContraseñaError] = useState('');
   const [cambioExitosoVisible, setCambioExitosoVisible] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   useEffect(() => {
     const obtenerNombreUsuario = async () => {
@@ -95,57 +98,74 @@ const Ajuste = () => {
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
-        <Text style={styles.title}>Ajustes</Text>
+        
+        <TouchableOpacity style={styles.goBackButton} onPress={() => navigation.goBack()}>
+          <MaterialCommunityIcons name="arrow-left" size={24} color="#001f3f" />
+        </TouchableOpacity>
 
-        <Text style={[styles.subtitle, styles.centerText]}>Cambio de Contraseña</Text>
+        <View style={styles.formContainer}>
 
-        <View style={styles.inputContainer}>
-          <Text style={[styles.label, { flex: 1 }]}>Usuario :</Text>
-          <TextInput
-            style={[styles.input, { flex: 2 }]}
-            value={usuario}
-            editable={false} // Campo de solo lectura
-          />
-        </View>
+            <Text style={styles.title}>Ajustes</Text>
 
-        <View style={styles.inputContainer}>
-          <Text style={[styles.label, { flex: 1 }]}>Contraseña :</Text>
-          <TextInput
-            style={[styles.input, { flex: 2 }]}
-            secureTextEntry={true}
-            value={contraseña}
-            onChangeText={(text) => {
-              setContraseña(text);
-              setContraseñaError('');
-            }}
-          />
-        </View>
-        {contraseñaError ? <Advertencia mensaje={contraseñaError} /> : null}
+            <Text style={[styles.subtitle, styles.centerText]}>Cambio de Contraseña</Text>
 
-        <View style={styles.inputContainer}>
-          <Text style={[styles.label, { flex: 1 }]}>Confirmar Contraseña :</Text>
-          <TextInput
-            style={[styles.input, { flex: 2 }]}
-            secureTextEntry={true}
-            value={confirmarContraseña}
-            onChangeText={setConfirmarContraseña}
-          />
+            <View style={styles.inputContainer}>
+              <Text style={[styles.label, { flex: 1 }]}>Usuario :</Text>
+              <TextInput
+                style={[styles.input, { flex: 2, marginRight: 12 }]}
+                value={usuario}
+                editable={false} // Campo de solo lectura
+              />
+            </View>
+
+            <View style={styles.inputContainer}>
+              <Text style={[styles.label, { flex: 1 }]}>Contraseña :</Text>
+              <TextInput
+                style={[styles.input, { flex: 2 }]}
+                //secureTextEntry={true}
+                secureTextEntry={!showPassword} // Cambiar a texto visible si showPassword es verdadero
+                value={contraseña}
+                onChangeText={(text) => {
+                  setContraseña(text);
+                  setContraseñaError('');
+                }}
+              />
+              <TouchableOpacity style={[styles.normalText, {marginBottom: 15, marginRight: 5, marginLeft: 10}]} onPress={() => setShowPassword(!showPassword)}>        
+                <MaterialCommunityIcons name={showPassword ? 'eye-off' : 'eye'} size={24} color="black" style={styles.eyeIcon}/>
+              </TouchableOpacity>
+            </View>
+            
+
+            <View style={styles.inputContainer}>
+              <Text style={[styles.label, { flex: 1 }]}>Confirmar Contraseña :</Text>
+              <TextInput
+                style={[styles.input, { flex: 2 }]}
+                secureTextEntry={!showConfirmPassword}
+                //secureTextEntry={true}
+                value={confirmarContraseña}
+                onChangeText={setConfirmarContraseña}
+              />
+              <TouchableOpacity style={[styles.normalText, {marginBottom: 15, marginRight: 5, marginLeft: 10}]} onPress={() => setShowConfirmPassword(!showConfirmPassword)}>        
+                <MaterialCommunityIcons name={showConfirmPassword ? 'eye-off' : 'eye'} size={24} color="black" style={styles.eyeIcon}/>
+              </TouchableOpacity>
+            </View>
+            {contraseñaError ? <Advertencia mensaje={contraseñaError} /> : null}
+
+          {/* <TouchableOpacity style={styles.regresarButton} onPress={() => navigation.goBack()}>
+            <Icon name="exit-outline" size={24} color="black" /> 
+          </TouchableOpacity> */}
+
+          <TouchableOpacity style={styles.guardarButton} onPress={guardarCambios}>
+            <Text style={styles.guardarButtonText}>Guardar</Text>
+          </TouchableOpacity>
+
+          {cambioExitosoVisible && (
+            <View style={styles.cambioExitosoContainer}>
+              <Text style={styles.cambioExitosoText}>Cambio exitoso</Text>
+            </View>
+          )}
         </View>
       </ScrollView>
-
-      <TouchableOpacity style={styles.regresarButton} onPress={() => navigation.goBack()}>
-        <Icon name="exit-outline" size={24} color="black" /> {/* Icono de salida */}
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.guardarButton} onPress={guardarCambios}>
-        <Text style={styles.guardarButtonText}>Guardar</Text>
-      </TouchableOpacity>
-
-      {cambioExitosoVisible && (
-        <View style={styles.cambioExitosoContainer}>
-          <Text style={styles.cambioExitosoText}>Cambio exitoso</Text>
-        </View>
-      )}
     </View>
   );
 };
@@ -155,6 +175,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     paddingHorizontal: 16,
+  },
+  formContainer: {
+    paddingTop: 40,
   },
   scrollViewContent: {
     flexGrow: 1,
@@ -168,7 +191,7 @@ const styles = StyleSheet.create({
   subtitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: 8,
+    marginBottom: 16,
     marginTop: 16,
   },
   centerText: {
@@ -178,6 +201,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 16,
+    marginLeft: 10,
   },
   label: {
     fontSize: 16,
@@ -192,28 +216,36 @@ const styles = StyleSheet.create({
     flex: 2,
   },
   guardarButton: {
-    backgroundColor: 'blue',
-    borderRadius: 10,
-    padding: 12,
+    flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 24,
+    justifyContent: 'center',
+    backgroundColor: '#001f3f',
+    borderRadius: 20,
+    padding: 12,
+    marginTop: 16,
     alignSelf: 'center', // Alinea el botón en el centro horizontalmente
-    width: '100%',
+    width: '80%',
   },
   guardarButtonText: {
     color: 'white',
     fontWeight: 'bold',
     fontSize: 16,
   },
-  regresarButton: {
-    backgroundColor: 'rgba(0, 0, 0, 0.0)', // Fondo transparente con opacidad del 0%
-    borderRadius: 10,
-    padding: 12,
-    alignItems: 'center',
-    marginBottom: 24,
+  // regresarButton: {
+  //   backgroundColor: 'rgba(0, 0, 0, 0.0)', // Fondo transparente con opacidad del 0%
+  //   borderRadius: 10,
+  //   padding: 12,
+  //   alignItems: 'center',
+  //   marginBottom: 24,
+  //   position: 'absolute',
+  //   right: 16, // Posiciona el botón en la esquina superior derecha
+  //   top: 16, // Puedes ajustar la posición vertical según tus necesidades
+  // },
+  goBackButton: {
     position: 'absolute',
-    right: 16, // Posiciona el botón en la esquina superior derecha
-    top: 16, // Puedes ajustar la posición vertical según tus necesidades
+    top: 20,
+    left: 10,
+    zIndex: 1, // Asegura que la flecha esté sobre otros elementos
   },
   regresarButtonText: {
     color: 'white',
@@ -262,6 +294,12 @@ const styles = StyleSheet.create({
   cambioExitosoText: {
     color: 'white',
     fontWeight: 'bold',
+  },
+  eyeIcon: {
+    transform: [{ translateX: -40 },  { translateY: -5 },], //sobreponer el ojo horizontalmente
+    position: 'absolute', // Asegúrate de que sea absoluto o relativo
+    zIndex: 999, // Un valor alto para superponer
+    
   },
 });
 

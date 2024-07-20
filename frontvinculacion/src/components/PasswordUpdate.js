@@ -196,7 +196,7 @@ const PasswordUpdate = () => {
 
         {/* Botón de envío */}
         <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-          <Text style={styles.buttonText}>Continuar</Text>
+          <Text style={styles.buttonText}>Actualizar</Text>
         </TouchableOpacity>
       </View>
      </ScrollView>
@@ -214,9 +214,8 @@ const styles = StyleSheet.create({
   },
   formContainer: {
     width: '80%',
-    maxWidth: 400,
+    //maxWidth: 400,
     paddingBottom: 35, // Espacio adicional en la parte inferior para evitar que el último elemento se oculte detrás del botón de navegación
-
   },
   heading: {
     fontSize: 24,
@@ -284,6 +283,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'white',
     //marginLeft: 120,
+    fontWeight: 'bold',
     textAlign: 'center',
   },
 
@@ -313,7 +313,10 @@ const styles = StyleSheet.create({
   },
   eyeIcon: {
     transform: [{ translateX: -28 }], //sobreponer el ojo horizontalmente
-    marginRight: -40, 
+    //marginRight: -40, 
+    position: 'absolute', // Asegúrate de que sea absoluto o relativo
+    zIndex: 999, // Un valor alto para superponer
+    
   },
 
 });
