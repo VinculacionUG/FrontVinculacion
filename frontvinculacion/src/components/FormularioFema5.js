@@ -126,17 +126,6 @@ const FormularioFema5 = ({ navigation }) => {
       anoDeContruccion,
       tiposuelo1,
       tipoocupacion1,
-      checkBox1,
-      checkBox2,
-      checkBox3,
-      checkBox4,
-      checkBox5,
-      checkBox6,
-      checkBox7,
-      checkBox8,
-      checkBox9,
-      ocupacion,
-      tipoocupacion,
       tipoSuelo,
       comentario,
       resultado,
@@ -268,41 +257,6 @@ const FormularioFema5 = ({ navigation }) => {
         </Picker>
       </View>
 
-  {/* Mostrar otras variables del contexto */}
-  <View style={styles.contextDataContainer}>
-        {/* <Text style={styles.contextDataText}>Adjuntar Fotográfica: {adjuntarFotografica}</Text>
-        <Text style={styles.contextDataText}>Adjuntar Gráfico: {adjuntarGrafico}</Text>
-        <Text style={styles.contextDataText}>Dirección: {direccion}</Text>
-        <Text style={styles.contextDataText}>ZIP: {zip}</Text>
-        <Text style={styles.contextDataText}>Otras Identificaciones: {otrasIdentificaciones}</Text>
-        <Text style={styles.contextDataText}>Nombre del Edificio: {nombreEdificio}</Text>
-        <Text style={styles.contextDataText}>Uso: {uso}</Text>
-        <Text style={styles.contextDataText}>Latitud: {latitud}</Text>
-        <Text style={styles.contextDataText}>Longitud: {longitud}</Text>
-        <Text style={styles.contextDataText}>Fecha: {fecha.year}-{fecha.month}-{fecha.day}</Text>
-        <Text style={styles.contextDataText}>Hora: {hora}</Text>
-        <Text style={styles.contextDataText}>Número de Piso: {numeroPiso}</Text>
-        <Text style={styles.contextDataText}>Inf: {inf}</Text>
-        <Text style={styles.contextDataText}>Año de Construcción: {anoConstruccion}</Text>
-        <Text style={styles.contextDataText}>Área Total de Piso: {areaTotalDePiso}</Text>
-        <Text style={styles.contextDataText}>Año del Código: {anoCodigo}</Text>
-        <Text style={styles.contextDataText}>Ampliación: {ampliacion}</Text>
-        <Text style={styles.contextDataText}>Año de Construcción: {anoDeContruccion}</Text>
-        <Text style={styles.contextDataText}>Tipo de Suelo 1: {tiposuelo1}</Text>
-        <Text style={styles.contextDataText}>Tipo de Ocupación y ocupacion 1: {ocupacion2}</Text>
-        <Text style={styles.contextDataText}>Tipo de Suelo: {tipoSuelo}</Text>
-        <Text style={styles.contextDataText}>Comentario: {comentario}</Text>
-        <Text style={styles.contextDataText}>Resultado: {resultado}</Text>
-        <Text style={styles.contextDataText}>Exterior: {exterior}</Text>
-        <Text style={styles.contextDataText}>Interior: {interior}</Text>
-        <Text style={styles.contextDataText}>Revisión de Planos: {revisionPlanos}</Text>
-        <Text style={styles.contextDataText}>Fuente del Tipo de Suelo: {fuenteDelTipoDeSuelo}</Text>
-        <Text style={styles.contextDataText}>Fuente de Peligros Geológicos: {fuenteDePeligrosGeologicos}</Text>
-        <Text style={styles.contextDataText}>Contacto de la Persona: {contactoDeLaPersona}</Text>
-        <Text style={styles.contextDataText}>Otros Peligros 1: {otrosPeligros1}</Text>
-      </View>
-
-      {/* Botones de Navegación */}
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={[styles.button, { backgroundColor: 'navy' }]} onPress={() => navigation.goBack()}>
           <MaterialCommunityIcons name="arrow-left" size={24} color="white" />

@@ -68,7 +68,7 @@ const FormularioFema2 = ({ navigation }) => {
 
     });
 
-    navigation.navigate('FormularioFema4');
+    navigation.navigate('FormularioFema3');
   };
 
   useEffect(() => {
