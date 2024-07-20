@@ -452,4 +452,3 @@ const styles = StyleSheet.create({
 });
 export default FormularioFema2;
 
-
