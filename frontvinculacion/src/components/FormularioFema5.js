@@ -128,7 +128,7 @@ const FormularioFema5 = ({ navigation }) => {
   
     try {
       // const response = await fetch('https://www.fema.somee.com/api/FemaCinco/guardarDatos', {
-      const response = await fetch('https://localhost:7040/Users/FormularioFEMA', {
+      const response = await fetch('http://localhost:7040/Users/FormularioFEMA', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -144,16 +144,10 @@ const FormularioFema5 = ({ navigation }) => {
           fecha,
           hora,
           comentario,
-
-                    
-          
-          
           ocupacion,
           resultado,
           adjuntarFotografica,
           adjuntarGrafico,
-          
-          
           anoCodigo,
           numeroPiso,
           inf,
