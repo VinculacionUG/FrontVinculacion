@@ -8,8 +8,8 @@ import { AppContext } from './AppContext';
 const FormularioFema5 = ({ navigation }) => {
 
   const [accionPreguntas, setAccionPreguntas] = useState([]);
-  const [selectedCheckbox, setSelectedCheckbox] = useState(null);
-  const [selectedCheckbox2, setSelectedCheckbox2] = useState(null);
+  const [selectedCheckbox, setSelectedCheckbox] = useState('');
+  const [selectedCheckbox2, setSelectedCheckbox2] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const accionPreguntas1 = accionPreguntas.filter(item => item.codAccionPregunta >= 1 && item.codAccionPregunta <= 4);
@@ -37,7 +37,17 @@ const FormularioFema5 = ({ navigation }) => {
     ampliacion,
     anoDeContruccion,
     tiposuelo1,
-    ocupacion2,
+    tipoocupacion1,
+    checkBox1,
+    checkBox2,
+    checkBox3,
+    checkBox4,
+    checkBox5,
+    checkBox6,
+    checkBox7,
+    checkBox8,
+    ocupacion,
+    tipoocupacion,
     tipoSuelo,
     comentario,
     resultado,
@@ -48,9 +58,9 @@ const FormularioFema5 = ({ navigation }) => {
     fuenteDePeligrosGeologicos,
     contactoDeLaPersona,
     otrosPeligros1,
-    pregunta1Fema5,
-    pregunta2Fema5,
-    inspeccionNivel,
+    pregunta1Fema5, setPregunta1Fema5,
+    pregunta2Fema5, setPregunta2Fema5,
+    inspeccionNivel, setInspeccionNivel
   } = useContext(AppContext);
 
 
@@ -58,6 +68,7 @@ const FormularioFema5 = ({ navigation }) => {
 
   const handleCheckboxChange = (codAccionPregunta) => {
     setSelectedCheckbox(codAccionPregunta);
+    setPregunta1Fema5(codAccionPregunta);
     let nuevaPregunta1Fema5 = codAccionPregunta;
 
     switch (codAccionPregunta) {
@@ -82,6 +93,7 @@ const FormularioFema5 = ({ navigation }) => {
 
   const handleCheckboxChange2 = (codAccionPregunta) => {
     setSelectedCheckbox2(codAccionPregunta);
+    setPregunta2Fema5(codAccionPregunta)
     let nuevaPregunta2Fema5 = codAccionPregunta;
 
     switch (codAccionPregunta) {
@@ -92,7 +104,7 @@ const FormularioFema5 = ({ navigation }) => {
         nuevaPregunta2Fema5 = 6;
         break;
       case 7:
-        nuevaPregunta2Fema5 =7;
+        nuevaPregunta2Fema5 = 7;
         break;
       case 8:
         nuevaPregunta2Fema5 = 8;
@@ -104,70 +116,103 @@ const FormularioFema5 = ({ navigation }) => {
     setPregunta2Fema5(nuevaPregunta2Fema5);
   };
 
-  const handleGuardar = () => {
-    console.log('Datos del AppContext:', {
-      adjuntarFotografica,
-      adjuntarGrafico,
-      direccion,
-      zip,
-      otrasIdentificaciones,
-      nombreEdificio,
-      uso,
-      latitud,
-      longitud,
-      fecha,
-      hora,
-      numeroPiso,
-      inf,
-      anoConstruccion,
-      areaTotalDePiso,
-      anoCodigo,
-      ampliacion,
-      anoDeContruccion,
-      tiposuelo1,
-      tipoocupacion1,
-      tipoSuelo,
-      comentario,
-      resultado,
-      exterior,
-      interior,
-      revisionPlanos,
-      fuenteDelTipoDeSuelo,
-      fuenteDePeligrosGeologicos,
-      contactoDeLaPersona,
-      otrosPeligros1,
-      pregunta1Fema5,
-      pregunta2Fema5,
-      inspeccionNivel,
-    });
+  const handleGuardar = async () => {
     if (
       !pregunta1Fema5 ||
       !pregunta2Fema5 ||
       !inspeccionNivel
-      
     ) {
-      alert('Por favor complete todos los campos.');
+      Alert.alert('Por favor complete todos los campos.');
       return;
     }
-    console.log('Datos guardados:', {
-      pregunta1Fema5,
-      pregunta2Fema5,
-      inspeccionNivel,
-    },
-    
-  );
-    
-    Alert.alert(
-      "¡Formulario guardado con éxito!",
-      "",
-      [
-        {
-          text: "Ok",
-          onPress: () => navigation.navigate('Dashboard')
-        }
-      ],
-      { cancelable: false }
-    );
+  
+    try {
+      // const response = await fetch('https://www.fema.somee.com/api/FemaCinco/guardarDatos', {
+      const response = await fetch('https://localhost:7040/Users/FormularioFEMA', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          direccion,
+          zip,
+          otrasIdentificaciones,
+          nombreEdificio,
+          uso,
+          latitud,
+          longitud,
+          fecha,
+          hora,
+          comentario,
+
+                    
+          
+          
+          ocupacion,
+          resultado,
+          adjuntarFotografica,
+          adjuntarGrafico,
+          
+          
+          anoCodigo,
+          numeroPiso,
+          inf,
+          anoDeContruccion,
+          anoConstruccion,
+          areaTotalDePiso,          
+          ampliacion,
+
+          tiposuelo1,
+          tipoocupacion1,
+          
+          
+          tipoocupacion,
+          tipoSuelo,
+          
+          exterior,
+          interior,
+          revisionPlanos,
+          fuenteDelTipoDeSuelo,
+          fuenteDePeligrosGeologicos,
+          contactoDeLaPersona,
+          otrosPeligros1,
+          pregunta1Fema5,
+          pregunta2Fema5,
+          inspeccionNivel,
+
+          checkBox1,
+          checkBox2,
+          checkBox3,
+          checkBox4,
+          checkBox5,
+          checkBox6,
+          checkBox7,
+          checkBox8,
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Error al guardar los datos');
+      }
+  
+      const result = await response.json();
+      console.log('Datos guardados con éxito:', result);
+  
+      Alert.alert(
+        "¡Formulario guardado con éxito!",
+        "",
+        [
+          {
+            text: "Ok",
+            onPress: () => navigation.navigate('Dashboard'),
+          },
+        ],
+        { cancelable: false }
+      );
+    } catch (error) {
+      console.error('Error al guardar los datos:', error);
+      Alert.alert('Error', 'Ocurrió un error al guardar los datos.');
+    }
   };
 
   useEffect(() => {
@@ -250,13 +295,62 @@ const FormularioFema5 = ({ navigation }) => {
         <Picker
           style={[styles.input, styles.pickerSmall]}
           selectedValue={inspeccionNivel}
-          onValueChange={(itemValue) => setInspeccionNivel(itemValue)}
+          onValueChange={(itemValue) => {
+            console.log('Seleccionado:', itemValue);
+            setInspeccionNivel(itemValue);
+          }}
         >
           <Picker.Item label="Si" value="si" />
           <Picker.Item label="No" value="no" />
         </Picker>
       </View>
 
+      {/* Mostrar otras variables del contexto */}
+      <View style={styles.contextDataContainer}>
+        {/* <Text style={styles.contextDataText}>Adjuntar Fotográfica: {adjuntarFotografica}</Text>
+        <Text style={styles.contextDataText}>Adjuntar Gráfico: {adjuntarGrafico}</Text>
+        <Text style={styles.contextDataText}>Dirección: {direccion}</Text>
+        <Text style={styles.contextDataText}>ZIP: {zip}</Text>
+        <Text style={styles.contextDataText}>Otras Identificaciones: {otrasIdentificaciones}</Text>
+        <Text style={styles.contextDataText}>Nombre del Edificio: {nombreEdificio}</Text>
+        <Text style={styles.contextDataText}>Uso: {uso}</Text>
+        <Text style={styles.contextDataText}>Latitud: {latitud}</Text>
+        <Text style={styles.contextDataText}>Longitud: {longitud}</Text>
+        <Text style={styles.contextDataText}>Fecha: {fecha.year}-{fecha.month}-{fecha.day}</Text>
+        <Text style={styles.contextDataText}>Hora: {hora}</Text>
+        <Text style={styles.contextDataText}>Número de Piso: {numeroPiso}</Text>
+        <Text style={styles.contextDataText}>Inf: {inf}</Text>
+        <Text style={styles.contextDataText}>Año de Construcción: {anoConstruccion}</Text>
+        <Text style={styles.contextDataText}>Área Total de Piso: {areaTotalDePiso}</Text>
+        <Text style={styles.contextDataText}>Año del Código: {anoCodigo}</Text>
+        <Text style={styles.contextDataText}>Ampliación: {ampliacion}</Text>
+        <Text style={styles.contextDataText}>Año de Construcción: {anoDeContruccion}</Text>
+        <Text style={styles.contextDataText}>Tipo de Suelo 1: {tiposuelo1}</Text>
+        <Text style={styles.contextDataText}>Tipo de Ocupación 1: {tipoocupacion1}</Text>
+        <Text style={styles.contextDataText}>CheckBox1: {checkBox1}</Text>
+        <Text style={styles.contextDataText}>CheckBox2: {checkBox2}</Text>
+        <Text style={styles.contextDataText}>CheckBox3: {checkBox3}</Text>
+        <Text style={styles.contextDataText}>CheckBox4: {checkBox4}</Text>
+        <Text style={styles.contextDataText}>CheckBox5: {checkBox5}</Text>
+        <Text style={styles.contextDataText}>CheckBox6: {checkBox6}</Text>
+        <Text style={styles.contextDataText}>CheckBox7: {checkBox7}</Text>
+        <Text style={styles.contextDataText}>CheckBox8: {checkBox8}</Text>
+        <Text style={styles.contextDataText}>CheckBox9: {checkBox9}</Text>
+        <Text style={styles.contextDataText}>Ocupación: {ocupacion}</Text>
+        <Text style={styles.contextDataText}>Tipo de Ocupación: {tipoocupacion}</Text>
+        <Text style={styles.contextDataText}>Tipo de Suelo: {tipoSuelo}</Text>
+        <Text style={styles.contextDataText}>Comentario: {comentario}</Text>
+        <Text style={styles.contextDataText}>Resultado: {resultado}</Text>
+        <Text style={styles.contextDataText}>Exterior: {exterior}</Text>
+        <Text style={styles.contextDataText}>Interior: {interior}</Text>
+        <Text style={styles.contextDataText}>Revisión de Planos: {revisionPlanos}</Text>
+        <Text style={styles.contextDataText}>Fuente del Tipo de Suelo: {fuenteDelTipoDeSuelo}</Text>
+        <Text style={styles.contextDataText}>Fuente de Peligros Geológicos: {fuenteDePeligrosGeologicos}</Text>
+        <Text style={styles.contextDataText}>Contacto de la Persona: {contactoDeLaPersona}</Text>
+        <Text style={styles.contextDataText}>Otros Peligros 1: {otrosPeligros1}</Text> */}
+      </View>
+
+      {/* Botones de Navegación */}
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={[styles.button, { backgroundColor: 'navy' }]} onPress={() => navigation.goBack()}>
           <MaterialCommunityIcons name="arrow-left" size={24} color="white" />
