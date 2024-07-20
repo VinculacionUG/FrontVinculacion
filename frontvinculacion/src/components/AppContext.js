@@ -42,11 +42,24 @@ export const AppProvider = ({ children }) => {
   const [tipoSuelo, setTipoSuelo] = useState('');
   const [comentario, setComentario] = useState('');
   //fema 3
-  const [resultado, setResultado] = useState([]);
-  const [codpuntuacionMatriz, setcodpuntuacionMatriz] = useState(false);
-  const [resultadoFinal, setresultadoFinal] = useState(false);
-  const [esEst, setesEst] = useState(false);
-  const [esDnk, setesDnk] = useState(false);
+   const [resultado, setResultado] = useState([]);
+  // const [codpuntuacionMatriz, setcodpuntuacionMatriz] = useState(false);
+  // const [resultadoFinal, setresultadoFinal] = useState(false);
+  // const [esEst, setesEst] = useState(false);
+  // const [esDnk, setesDnk] = useState(false);
+  const [tipoEdificacion, setTipoEdificacion] = useState([]);
+  const [subTipo, setSubTipo] = useState('');
+  const [resultadoBase, setResultadoBase] = useState('');
+  const [irregularidadVerticalSevera, setIrregularidadVerticalSevera] = useState('');
+  const [irregularidadVerticalModerada, setIrregularidadVerticalModerada] = useState('');
+  const [plantaIrregular, setPlantaIrregular] = useState('');
+  const [preCodigoSismico, setPreCodigoSismico] = useState('');
+  const [postCodigoSismico, setPostCodigoSismico] = useState('');
+  const [sueloTipoAB, setSueloTipoAB] = useState('');
+  const [sueloTipoE1a3, setSueloTipoE1a3] = useState('');
+  const [sueloTipoEMayor3, setSueloTipoEMayor3] = useState('');
+  const [resultadoSmin, setResultadoSmin] = useState('');
+  const [resultadoFinal, setResultadoFinal] = useState('');
   //fema 4
   const [exterior, setExterior] = useState('');
   const [interior, setInterior] = useState('');
@@ -98,7 +111,19 @@ export const AppProvider = ({ children }) => {
       tipoSuelo, setTipoSuelo,
       comentario, setComentario,
       //fema 3
-      
+      tipoEdificacion, setTipoEdificacion,
+      subTipo, setSubTipo,
+      resultadoBase, setResultadoBase,
+      irregularidadVerticalSevera, setIrregularidadVerticalSevera,
+      irregularidadVerticalModerada, setIrregularidadVerticalModerada,
+      plantaIrregular, setPlantaIrregular,
+      preCodigoSismico, setPreCodigoSismico,
+      postCodigoSismico, setPostCodigoSismico,
+      sueloTipoAB, setSueloTipoAB,
+      sueloTipoE1a3, setSueloTipoE1a3,
+      sueloTipoEMayor3, setSueloTipoEMayor3,
+      resultadoSmin, setResultadoSmin,
+      resultadoFinal, setResultadoFinal,
       resultado, setResultado,
       //fema 4
       exterior, setExterior,
