@@ -7,6 +7,20 @@ import { AppContext } from './AppContext';
 
 const FormularioFema3 = ({ route, navigation }) => {
 
+  const [tipoEdificacion, setTipoEdificacion] = useState([]);
+  const [subTipo, setSubTipo] = useState('');
+  const [resultadoBase, setResultadoBase] = useState('');
+  const [irregularidadVerticalSevera, setIrregularidadVerticalSevera] = useState('');
+  const [irregularidadVerticalModerada, setIrregularidadVerticalModerada] = useState('');
+  const [plantaIrregular, setPlantaIrregular] = useState('');
+  const [preCodigoSismico, setPreCodigoSismico] = useState('');
+  const [postCodigoSismico, setPostCodigoSismico] = useState('');
+  const [sueloTipoAB, setSueloTipoAB] = useState('');
+  const [sueloTipoE1a3, setSueloTipoE1a3] = useState('');
+  const [sueloTipoEMayor3, setSueloTipoEMayor3] = useState('');
+  const [resultadoSmin, setResultadoSmin] = useState('');
+  const [resultadoFinal, setResultadoFinal] = useState('');
+
   //const [selectedValueTipoEdificacion, setSelectedValueTipoEdificacion] = useState('');
   //const [subTipo, setSubTipo] = useState('');
   const [subTipos, setSubTipos] = useState([]);
@@ -37,38 +51,6 @@ const FormularioFema3 = ({ route, navigation }) => {
   const [isChecked, setIsChecked] = useState(false);
   const [codPuntuacionMatrizSec, setCodPuntuacionMatrizSec] = useState('');
 
-  const [guardado, setGuardado] = useState(false);
-
-  const {
-    tipoEdificacion,
-    setTipoEdificacion,
-    subTipo,
-    setSubTipo,
-    resultadoBase,
-    setResultadoBase,
-    irregularidadVerticalSevera,
-    setIrregularidadVerticalSevera,
-    irregularidadVerticalModerada,
-    setIrregularidadVerticalModerada,
-    plantaIrregular,
-    setPlantaIrregular,
-    preCodigoSismico,
-    setPreCodigoSismico,
-    postCodigoSismico,
-    setPostCodigoSismico,
-    sueloTipoAB,
-    setSueloTipoAB,
-    sueloTipoE1a3,
-    setSueloTipoE1a3,
-    sueloTipoEMayor3,
-    setSueloTipoEMayor3,
-    resultadoSmin,
-    setResultadoSmin,
-    resultadoFinal,
-    setResultadoFinal,
-    //setSelectedValueTipoEdificacion
-  } = useContext(AppContext);
-
   const handleNext = () => {
     //Validación de campos obligatorios
     if (
@@ -87,7 +69,6 @@ const FormularioFema3 = ({ route, navigation }) => {
       // !estChecked ||
       // !dnkChecked ||
       !(estChecked || dnkChecked) ||
-      !guardado ||
       !resultadoFinal
     ) {
       alert('Por favor complete todos los campos y presione guardar');
@@ -218,6 +199,9 @@ const FormularioFema3 = ({ route, navigation }) => {
 
     let suma = parseFloat(resultadoBase);
 
+    // if (includeResultadoBase) {
+    //   suma += parseFloat(resultadoBase);
+    // }
     if (includeIrregularidadSevera) {
       suma += parseFloat(irregularidadVerticalSevera);
     }
@@ -432,71 +416,46 @@ const FormularioFema3 = ({ route, navigation }) => {
 
   const handleSaveSelection = () => {
     // Aquí defines los elementos con su correspondiente valor en codPuntuacionMatrizSec
-    const selectedItems = [
+    const codPuntuacionMatrizSec = [
       { id: 0, value: 'Tipo de Edificación', data: selectedValueTipoEdificacion },
       { id: 1, value: 'Sub Tipo', data: subTipo },
       { id: 2, value: 'Resultado Base', data: resultadoBase },
-      { id: 3, value: 'Irregularidad Vertical Severa', isChecked: includeIrregularidadSevera, data: irregularidadVerticalSevera },
-      { id: 4, value: 'Irregularidad Vertical Moderada', isChecked: includeIrregularidadModerada, data: irregularidadVerticalModerada },
-      { id: 5, value: 'Planta Irregular', isChecked: includePlantaIrregular, data: plantaIrregular },
-      { id: 6, value: 'Pre Código Sismico', isChecked: includePreCodigoSismico, data: preCodigoSismico },
-      { id: 7, value: 'Post Código Sismico', isChecked: includePostCodigoSismico, data: postCodigoSismico },
-      { id: 8, value: 'Suelo Tipo AB', isChecked: includeSueloTipoAB, data: sueloTipoAB },
-      { id: 9, value: 'Suelo Tipo E1a3', isChecked: includeSueloTipoE1a3, data: sueloTipoE1a3 },
-      { id: 10, value: 'Suelo Tipo EMayor3', isChecked: includeSueloTipoEMayor3, data: sueloTipoEMayor3 },
-      { id: 11, value: 'Resultado Smin', isChecked: includeResultadoSmin, data: resultadoSmin },
+      { id: 3, value: 'Irregularidad Vertical Severa', isChecked: includeIrregularidadSevera, data: irregularidadVerticalSevera, codPuntuacionMatrizSec: codPuntuacionMap.irregularidadVerticalSevera },
+      { id: 4, value: 'Irregularidad Vertical Moderada', isChecked: includeIrregularidadModerada, data: irregularidadVerticalModerada, codPuntuacionMatrizSec: codPuntuacionMap.irregularidadVerticalModerada },
+      { id: 5, value: 'Planta Irregular', isChecked: includePlantaIrregular, data: plantaIrregular, codPuntuacionMatrizSec: codPuntuacionMap.plantaIrregular },
+      { id: 6, value: 'Pre Código Sismico', isChecked: includePreCodigoSismico, data: preCodigoSismico, codPuntuacionMatrizSec: codPuntuacionMap.preCodigoSismico },
+      { id: 7, value: 'Post Código Sismico', isChecked: includePostCodigoSismico, data: postCodigoSismico, codPuntuacionMatrizSec: codPuntuacionMap.postCodigoSismico },
+      { id: 8, value: 'Suelo Tipo AB', isChecked: includeSueloTipoAB, data: sueloTipoAB, codPuntuacionMatrizSec: codPuntuacionMap.sueloTipoAB },
+      { id: 9, value: 'Suelo Tipo E1a3', isChecked: includeSueloTipoE1a3, data: sueloTipoE1a3, codPuntuacionMatrizSec: codPuntuacionMap.sueloTipoE1a3 },
+      { id: 10, value: 'Suelo Tipo EMayor3', isChecked: includeSueloTipoEMayor3, data: sueloTipoEMayor3, codPuntuacionMatrizSec: codPuntuacionMap.sueloTipoEMayor3 },
+      { id: 11, value: 'Resultado Smin', isChecked: includeResultadoSmin, data: resultadoSmin, codPuntuacionMatrizSec: codPuntuacionMap.resultadoSmin },
       { id: 12, value: 'Resultado Final', data: resultadoFinal },
       { id: 13, value: 'Selección Final', data: estChecked ? 'EST' : dnkChecked ? 'DNK' : 'Ninguno' }
     ];
+  
+    // Filtrar los elementos que están marcados
+    const selectedItems = codPuntuacionMatrizSec
+      .filter(item => item.isChecked)
+      .map(item => ({
+        codPuntuacionMatrizSec: item.codPuntuacionMatrizSec, // Incluye el codPuntuacionMatrizSec
+        resultadoFinal,
+      estChecked,
+      dnkChecked,
+      }));
+  
+    const newSelection = {
+      // tipoEdificacion: selectedValueTipoEdificacion,
+      // subTipo,
+      selectedItems  // Guardar solo los elementos seleccionados con sus datos
+    };
+  
+    setSelectedValues([...selectedValues, newSelection]); // Agrega la nueva selección al array
+    setResultado(prevResultado => [...prevResultado, selectedItems]); // Añade la nueva selección al resultado
 
-    // Filtrar solo los elementos que están marcados como seleccionados
-    const filteredSelectedItems = selectedItems.filter(item => {
-      if (item.isChecked !== undefined) {
-        return item.isChecked;
-      }
-      return true; // Si no tiene la propiedad isChecked, se considera siempre seleccionado
-    });
-
-    // Mapear solo los datos que están seleccionados
-    const mappedSelectedItems = filteredSelectedItems.map(item => ({
-      id: item.id,
-      value: item.value,
-      data: item.data
-    }));
-
-    setResultado(prevResultado => [...prevResultado, selectedItems]);
-    setGuardado(true); // Setear guardado a true al guardar la selección
-    console.log('Selección guardada:', selectedItems);
+  // Aquí puedes hacer lo necesario para guardar la selección, como enviar a una API o almacenarlo en un estado global
+  console.log(newSelection);
+  console.log(resultado);
   };
-
-  useEffect(() => {
-    // Calculate resultadoFinal whenever any of the included values change
-    let suma = parseFloat(resultadoBase);
-    if (includeIrregularidadSevera) suma += parseFloat(irregularidadVerticalSevera);
-    if (includeIrregularidadModerada) suma += parseFloat(irregularidadVerticalModerada);
-    if (includePlantaIrregular) suma += parseFloat(plantaIrregular);
-    if (includePreCodigoSismico) suma += parseFloat(preCodigoSismico);
-    if (includePostCodigoSismico) suma += parseFloat(postCodigoSismico);
-    if (includeSueloTipoAB) suma += parseFloat(sueloTipoAB);
-    if (includeSueloTipoE1a3) suma += parseFloat(sueloTipoE1a3);
-    if (includeSueloTipoEMayor3) suma += parseFloat(sueloTipoEMayor3);
-    if (includeResultadoSmin) suma += parseFloat(resultadoSmin);
-
-    const resultadoFinal = suma.toFixed(2);
-    setResultadoFinal(resultadoFinal);
-  }, [
-    resultadoBase,
-    includeIrregularidadSevera, irregularidadVerticalSevera,
-    includeIrregularidadModerada, irregularidadVerticalModerada,
-    includePlantaIrregular, plantaIrregular,
-    includePreCodigoSismico, preCodigoSismico,
-    includePostCodigoSismico, postCodigoSismico,
-    includeSueloTipoAB, sueloTipoAB,
-    includeSueloTipoE1a3, sueloTipoE1a3,
-    includeSueloTipoEMayor3, sueloTipoEMayor3,
-    includeResultadoSmin, resultadoSmin,
-  ]);
-
 
   useEffect(() => {
     calcularResultadoFinal();
@@ -550,7 +509,6 @@ const FormularioFema3 = ({ route, navigation }) => {
           selectedValue={selectedValueTipoEdificacion}
           onValueChange={(itemValue) => {
             setSelectedValueTipoEdificacion(itemValue);
-            //setSubTipo(''); // Reiniciar el subtipo seleccionado cuando cambia el tipo de edificación
           }}
         >
           <Picker.Item label="Seleccione..." value="" enabled={false}/>
