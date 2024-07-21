@@ -163,7 +163,7 @@ const FormularioFema5 = ({ navigation }) => {
         chk4N,
         //fema 3
         femaPuntuacions,
-    
+
         //fema 4
         exterior,
         interior,
@@ -179,7 +179,7 @@ const FormularioFema5 = ({ navigation }) => {
         inspeccionNivel
       })
       // const response = await fetch('https://www.fema.somee.com/api/FemaCinco/guardarDatos', {
-      const response = fetch('http://localhost:7040/Users/FormularioFEMA', {
+      const response = await fetch('http://localhost:7040/Users/FormularioFEMA', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -234,6 +234,8 @@ const FormularioFema5 = ({ navigation }) => {
       });
 
       if (!response.ok) {
+        const errorData = await response.json();
+        console.error('Error al guardar los datos:', errorData);
         throw new Error('Error al guardar los datos');
       }
 

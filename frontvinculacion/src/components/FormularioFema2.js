@@ -199,7 +199,7 @@ const FormularioFema2 = ({ navigation }) => {
         <Text style={[styles.inputLabel, { marginLeft: 10, width: 150 }]}>Área total de piso (m2):</Text>
         <TextInput
   style={[styles.input, { width: 60 }]}
-  value={areaTotalPiso.toString()} // Convertir el número decimal a cadena para mostrar en el TextInput
+  value={areaTotalPiso} // Convertir el número decimal a cadena para mostrar en el TextInput
   keyboardType="decimal-pad" // Usar teclado numérico con punto decimal
   onChangeText={(text) => {
     // Permitir solo números y un solo punto decimal
@@ -220,12 +220,12 @@ const FormularioFema2 = ({ navigation }) => {
         <Text style={styles.inputLabel}>Año de código:</Text>
         <TextInput
         style={[styles.input, { width: 50 }]}
-        value={anioCodigo.toString()} // Convertir el número entero a cadena para mostrar en el TextInput
+        value={anioCodigo} // Convertir el número entero a cadena para mostrar en el TextInput
         onChangeText={(text) => {
           // Permitir solo números
           const numericValue = text.replace(/[^0-9]/g, '');
           // Convertir a número entero y actualizar el estado
-          setAnoCodigo(numericValue ? parseInt(numericValue, 10) : 0);
+          setAnoCodigo(numericValue);
         }}
         keyboardType="numeric"
       />

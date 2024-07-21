@@ -28,14 +28,14 @@ export const AppProvider = ({ children }) => {
   const [codTipoSuelo, setTiposuelo1] = useState('');
   const [femaOcupacions, setOcupacion] = useState([]);
   const [comentarios, setComentario] = useState('');
-  const [chk1, setCheckBox1] = useState(false);
-  const [chk2, setCheckBox2] = useState(false);
-  const [chk3, setCheckBox3] = useState(false);
-  const [chk4, setCheckBox4] = useState(false);
-  const [chk1N, setCheckBox5] = useState(false);
-  const [chk2N, setCheckBox6] = useState(false);
-  const [chk3N, setCheckBox7] = useState(false);
-  const [chk4N, setCheckBox8] = useState(false);
+  const [chk1, setCheckBox1] = useState(0);
+  const [chk2, setCheckBox2] = useState(0);
+  const [chk3, setCheckBox3] = useState(0);
+  const [chk4, setCheckBox4] = useState(0);
+  const [chk1N, setCheckBox5] = useState(0);
+  const [chk2N, setCheckBox6] = useState(0);
+  const [chk3N, setCheckBox7] = useState(0);
+  const [chk4N, setCheckBox8] = useState(0);
   // const [ocupacion, setOcupacion] = useState('');
   //fema 3
    const [femaPuntuacions, setResultado] = useState([]);
