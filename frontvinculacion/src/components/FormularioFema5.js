@@ -19,40 +19,47 @@ const FormularioFema5 = ({ navigation }) => {
 
   const {
     //Fema 1
-    adjuntarFotografica,
-    adjuntarGrafico,
+    mimeType,
+    data,
     direccion,
     zip,
-    otrasIdentificaciones,
-    nombreEdificio,
+    otrosIdentificaciones,
+    nomEdificacion,
     uso,
     latitud,
     longitud,
-    fecha,
-    hora,
+    fechaEncuesta,
+    horaEncuesta,
     //Fema 2
-    numeroPiso,
-    inf,
-    anoConstruccion,
-    areaTotalDePiso,
-    anoCodigo,
+    nroPisosSup,
+    nroPisosInf,
+    anioContruccion,
+    areaTotalPiso,
+    anioCodigo,
     ampliacion,
-    anoDeContruccion,
-    tiposuelo1,
-    comentario,
-    ocupacion,
-
+    amplAnioConstruccion,
+    codTipoSuelo,
+    comentarios,
+    femaOcupacions,
+    chk1,
+    chk2,
+    chk3,
+    chk4,
+    chk1N,
+    chk2N,
+    chk3N,
+    chk4N,
     //fema 3
-    resultado,
-  
+    femaPuntuacions,
+
     //fema 4
-      exterior,
-      interior,
-      revisionPlanos,
-      fuenteDelTipoDeSuelo,
-      fuenteDePeligrosGeologicos,
-      contactoDeLaPersona,
-      otrosPeligros1,
+    exterior,
+    interior,
+    revisionPlanos,
+    fuenteDelTipoDeSuelo,
+    fuenteDePeligrosGeologicos,
+    contactoDeLaPersona,
+    otrosPeligros1,
     //Fema 5
     pregunta1Fema5, setPregunta1Fema5,
     pregunta2Fema5, setPregunta2Fema5,
@@ -121,68 +128,118 @@ const FormularioFema5 = ({ navigation }) => {
       Alert.alert('Por favor complete todos los campos.');
       return;
     }
-  
+
     try {
       console.log('Datos guardados:', {
+        mimeType,
+        data,
+        direccion,
+        zip,
+        otrosIdentificaciones,
+        nomEdificacion,
+        uso,
+        latitud,
+        longitud,
+        fechaEncuesta,
+        horaEncuesta,
+        //Fema 2
+        nroPisosSup,
+        nroPisosInf,
+        anioContruccion,
+        areaTotalPiso,
+        anioCodigo,
+        ampliacion,
+        amplAnioConstruccion,
+        codTipoSuelo,
+        comentarios,
+        femaOcupacions,
+        chk1,
+        chk2,
+        chk3,
+        chk4,
+        chk1N,
+        chk2N,
+        chk3N,
+        chk4N,
+        //fema 3
+        femaPuntuacions,
+    
+        //fema 4
+        exterior,
+        interior,
+        revisionPlanos,
+        fuenteDelTipoDeSuelo,
+        fuenteDePeligrosGeologicos,
+        contactoDeLaPersona,
+        otrosPeligros1,
+
+        //fema 5
         pregunta1Fema5,
-        pregunta2Fema5 ,
+        pregunta2Fema5,
         inspeccionNivel
       })
       // const response = await fetch('https://www.fema.somee.com/api/FemaCinco/guardarDatos', {
-      const response = await fetch('https://localhost:7040/Users/FormularioFEMA', {
+      const response = fetch('http://localhost:7040/Users/FormularioFEMA', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-    adjuntarFotografica,
-    adjuntarGrafico,
-    direccion,
-    zip,
-    otrasIdentificaciones,
-    nombreEdificio,
-    uso,
-    latitud,
-    longitud,
-    fecha,
-    hora,
-    //Fema 2
-    numeroPiso,
-    inf,
-    anoConstruccion,
-    areaTotalDePiso,
-    anoCodigo,
-    ampliacion,
-    anoDeContruccion,
-    tiposuelo1,
-    comentario,
-    ocupacion,
-    
-    //fema 3
-    resultado,
-  
-    //fema 4
-      exterior,
-      interior,
-      revisionPlanos,
-      fuenteDelTipoDeSuelo,
-      fuenteDePeligrosGeologicos,
-      contactoDeLaPersona,
-      otrosPeligros1,
-    //Fema 5
-    pregunta1Fema5, 
-    pregunta2Fema5, 
-    inspeccionNivel, 
+          mimeType,
+          data,
+          direccion,
+          zip,
+          otrosIdentificaciones,
+          nomEdificacion,
+          uso,
+          latitud,
+          longitud,
+          fechaEncuesta,
+          horaEncuesta,
+          //Fema 2
+          nroPisosSup,
+          nroPisosInf,
+          anioContruccion,
+          areaTotalPiso,
+          anioCodigo,
+          ampliacion,
+          amplAnioConstruccion,
+          codTipoSuelo,
+          comentarios,
+          femaOcupacions,
+          chk1,
+          chk2,
+          chk3,
+          chk4,
+          chk1N,
+          chk2N,
+          chk3N,
+          chk4N,
+          //fema 3
+          femaPuntuacions,
+
+          //fema 4
+          exterior,
+          interior,
+          revisionPlanos,
+          fuenteDelTipoDeSuelo,
+          fuenteDePeligrosGeologicos,
+          contactoDeLaPersona,
+          otrosPeligros1,
+          //Fema 5
+          pregunta1Fema5,
+          pregunta2Fema5,
+          inspeccionNivel,
         }),
       });
-  
+
       if (!response.ok) {
         throw new Error('Error al guardar los datos');
       }
-  
+
       const result = await response.json();
       console.log('Datos guardados con éxito:', result);
-  
+
       Alert.alert(
         "¡Formulario guardado con éxito!",
         "",
@@ -303,15 +360,15 @@ const FormularioFema5 = ({ navigation }) => {
         <Text style={styles.contextDataText}>Longitud: {longitud}</Text>
         <Text style={styles.contextDataText}>Fecha: {fecha.year}-{fecha.month}-{fecha.day}</Text>
         <Text style={styles.contextDataText}>Hora: {hora}</Text>
-        <Text style={styles.contextDataText}>Número de Piso: {numeroPiso}</Text>
-        <Text style={styles.contextDataText}>Inf: {inf}</Text>
-        <Text style={styles.contextDataText}>Año de Construcción: {anoConstruccion}</Text>
-        <Text style={styles.contextDataText}>Área Total de Piso: {areaTotalDePiso}</Text>
-        <Text style={styles.contextDataText}>Año del Código: {anoCodigo}</Text>
+        <Text style={styles.contextDataText}>Número de Piso: {nroPisosSup}</Text>
+        <Text style={styles.contextDataText}>Inf: {nroPisosInf}</Text>
+        <Text style={styles.contextDataText}>Año de Construcción: {anioContruccion}</Text>
+        <Text style={styles.contextDataText}>Área Total de Piso: {areaTotalPiso}</Text>
+        <Text style={styles.contextDataText}>Año del Código: {anioCodigo}</Text>
         <Text style={styles.contextDataText}>Ampliación: {ampliacion}</Text>
-        <Text style={styles.contextDataText}>Año de Construcción: {anoDeContruccion}</Text>
-        <Text style={styles.contextDataText}>Tipo de Suelo 1: {tiposuelo1}</Text>
-        <Text style={styles.contextDataText}>Tipo de Ocupación 1: {tipoocupacion1}</Text>
+        <Text style={styles.contextDataText}>Año de Construcción: {amplAnioConstruccion}</Text>
+        <Text style={styles.contextDataText}>Tipo de Suelo 1: {codTipoSuelo}</Text>
+        <Text style={styles.contextDataText}>Tipo de Ocupación 1: {tipofemaOcupacions1}</Text>
         <Text style={styles.contextDataText}>CheckBox1: {checkBox1}</Text>
         <Text style={styles.contextDataText}>CheckBox2: {checkBox2}</Text>
         <Text style={styles.contextDataText}>CheckBox3: {checkBox3}</Text>
@@ -321,11 +378,11 @@ const FormularioFema5 = ({ navigation }) => {
         <Text style={styles.contextDataText}>CheckBox7: {checkBox7}</Text>
         <Text style={styles.contextDataText}>CheckBox8: {checkBox8}</Text>
         <Text style={styles.contextDataText}>CheckBox9: {checkBox9}</Text>
-        <Text style={styles.contextDataText}>Ocupación: {ocupacion}</Text>
-        <Text style={styles.contextDataText}>Tipo de Ocupación: {tipoocupacion}</Text>
+        <Text style={styles.contextDataText}>Ocupación: {femaOcupacions}</Text>
+        <Text style={styles.contextDataText}>Tipo de Ocupación: {tipofemaOcupacions}</Text>
         <Text style={styles.contextDataText}>Tipo de Suelo: {tipoSuelo}</Text>
-        <Text style={styles.contextDataText}>Comentario: {comentario}</Text>
-        <Text style={styles.contextDataText}>Resultado: {resultado}</Text>
+        <Text style={styles.contextDataText}>Comentario: {comentarios}</Text>
+        <Text style={styles.contextDataText}>Resultado: {femaPuntuacions}</Text>
         <Text style={styles.contextDataText}>Exterior: {exterior}</Text>
         <Text style={styles.contextDataText}>Interior: {interior}</Text>
         <Text style={styles.contextDataText}>Revisión de Planos: {revisionPlanos}</Text>

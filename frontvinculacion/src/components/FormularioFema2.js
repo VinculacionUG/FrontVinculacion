@@ -6,6 +6,7 @@ import { AppContext } from './AppContext';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const FormularioFema2 = ({ navigation }) => {
+  const [tipoocupacion1, setTipoocupacion1] = useState('');
   const [tipoocupacion, setTipoocupacion] = useState([]);
   const [tipoSuelo, setTipoSuelo] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
@@ -21,12 +22,6 @@ const FormularioFema2 = ({ navigation }) => {
     setInf,
     anioContruccion,
     setAnoConstruccion,
-    femaOcupacions,
-    setOcupacion,
-    codTipoSuelo,
-    setTiposuelo1,
-    tipoocupacion1,
-    setTipoocupacion1,
     areaTotalPiso,
     setAreaTotalDePiso,
     anioCodigo,
@@ -35,6 +30,10 @@ const FormularioFema2 = ({ navigation }) => {
     setAmpliacion,
     amplAnioConstruccion,
     setAnoDeContruccion,
+    codTipoSuelo,
+    setTiposuelo1,
+    femaOcupacions,
+    setOcupacion,
     comentarios,
     setComentario,
   } = useContext(AppContext);

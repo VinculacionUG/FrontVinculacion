@@ -26,40 +26,36 @@ export const AppProvider = ({ children }) => {
   const [ampliacion, setAmpliacion] = useState('');
   const [amplAnioConstruccion, setAnoDeContruccion] = useState('');
   const [codTipoSuelo, setTiposuelo1] = useState('');
-  const [tipoocupacion1, setTipoocupacion1] = useState('');
-  const [checkBox1, setCheckBox1] = useState(false);
-  const [checkBox2, setCheckBox2] = useState(false);
-  const [checkBox3, setCheckBox3] = useState(false);
-  const [checkBox4, setCheckBox4] = useState(false);
-  const [checkBox5, setCheckBox5] = useState(false);
-  const [checkBox6, setCheckBox6] = useState(false);
-  const [checkBox7, setCheckBox7] = useState(false);
-  const [checkBox8, setCheckBox8] = useState(false);
-  const [checkBox9, setCheckBox9] = useState(false);
-  // const [ocupacion, setOcupacion] = useState('');
   const [femaOcupacions, setOcupacion] = useState([]);
-  const [tipoocupacion, setTipoocupacion] = useState('');
-  const [tipoSuelo, setTipoSuelo] = useState('');
   const [comentarios, setComentario] = useState('');
+  const [chk1, setCheckBox1] = useState(false);
+  const [chk2, setCheckBox2] = useState(false);
+  const [chk3, setCheckBox3] = useState(false);
+  const [chk4, setCheckBox4] = useState(false);
+  const [chk1N, setCheckBox5] = useState(false);
+  const [chk2N, setCheckBox6] = useState(false);
+  const [chk3N, setCheckBox7] = useState(false);
+  const [chk4N, setCheckBox8] = useState(false);
+  // const [ocupacion, setOcupacion] = useState('');
   //fema 3
    const [femaPuntuacions, setResultado] = useState([]);
   // const [codpuntuacionMatriz, setcodpuntuacionMatriz] = useState(false);
   // const [resultadoFinal, setresultadoFinal] = useState(false);
   // const [esEst, setesEst] = useState(false);
   // const [esDnk, setesDnk] = useState(false);
-  const [tipoEdificacion, setTipoEdificacion] = useState([]);
-  const [subTipo, setSubTipo] = useState('');
-  const [resultadoBase, setResultadoBase] = useState('');
-  const [irregularidadVerticalSevera, setIrregularidadVerticalSevera] = useState('');
-  const [irregularidadVerticalModerada, setIrregularidadVerticalModerada] = useState('');
-  const [plantaIrregular, setPlantaIrregular] = useState('');
-  const [preCodigoSismico, setPreCodigoSismico] = useState('');
-  const [postCodigoSismico, setPostCodigoSismico] = useState('');
-  const [sueloTipoAB, setSueloTipoAB] = useState('');
-  const [sueloTipoE1a3, setSueloTipoE1a3] = useState('');
-  const [sueloTipoEMayor3, setSueloTipoEMayor3] = useState('');
-  const [resultadoSmin, setResultadoSmin] = useState('');
-  const [resultadoFinal, setResultadoFinal] = useState('');
+  // const [tipoEdificacion, setTipoEdificacion] = useState([]);
+  // const [subTipo, setSubTipo] = useState('');
+  // const [resultadoBase, setResultadoBase] = useState('');
+  // const [irregularidadVerticalSevera, setIrregularidadVerticalSevera] = useState('');
+  // const [irregularidadVerticalModerada, setIrregularidadVerticalModerada] = useState('');
+  // const [plantaIrregular, setPlantaIrregular] = useState('');
+  // const [preCodigoSismico, setPreCodigoSismico] = useState('');
+  // const [postCodigoSismico, setPostCodigoSismico] = useState('');
+  // const [sueloTipoAB, setSueloTipoAB] = useState('');
+  // const [sueloTipoE1a3, setSueloTipoE1a3] = useState('');
+  // const [sueloTipoEMayor3, setSueloTipoEMayor3] = useState('');
+  // const [resultadoSmin, setResultadoSmin] = useState('');
+  // const [resultadoFinal, setResultadoFinal] = useState('');
   //fema 4
   const [exterior, setExterior] = useState('');
   const [interior, setInterior] = useState('');
@@ -96,34 +92,31 @@ export const AppProvider = ({ children }) => {
       ampliacion, setAmpliacion,
       amplAnioConstruccion, setAnoDeContruccion,
       codTipoSuelo, setTiposuelo1,
-      tipoocupacion1, setTipoocupacion1,
-      checkBox1, setCheckBox1,
-      checkBox2, setCheckBox2,
-      checkBox3, setCheckBox3,
-      checkBox4, setCheckBox4,
-      checkBox5, setCheckBox5,
-      checkBox6, setCheckBox6,
-      checkBox7, setCheckBox7,
-      checkBox8, setCheckBox8,
-      checkBox9, setCheckBox9,
-      femaOcupacions, setOcupacion,
-      tipoocupacion, setTipoocupacion,
-      tipoSuelo, setTipoSuelo,
+      // tipoocupacion1, setTipoocupacion1,
       comentarios, setComentario,
+      femaOcupacions, setOcupacion,
+      chk1, setCheckBox1,
+      chk2, setCheckBox2,
+      chk3, setCheckBox3,
+      chk4, setCheckBox4,
+      chk1N, setCheckBox5,
+      chk2N, setCheckBox6,
+      chk3N, setCheckBox7,
+      chk4N, setCheckBox8,
       //fema 3
-      tipoEdificacion, setTipoEdificacion,
-      subTipo, setSubTipo,
-      resultadoBase, setResultadoBase,
-      irregularidadVerticalSevera, setIrregularidadVerticalSevera,
-      irregularidadVerticalModerada, setIrregularidadVerticalModerada,
-      plantaIrregular, setPlantaIrregular,
-      preCodigoSismico, setPreCodigoSismico,
-      postCodigoSismico, setPostCodigoSismico,
-      sueloTipoAB, setSueloTipoAB,
-      sueloTipoE1a3, setSueloTipoE1a3,
-      sueloTipoEMayor3, setSueloTipoEMayor3,
-      resultadoSmin, setResultadoSmin,
-      resultadoFinal, setResultadoFinal,
+      // tipoEdificacion, setTipoEdificacion,
+      // subTipo, setSubTipo,
+      // resultadoBase, setResultadoBase,
+      // irregularidadVerticalSevera, setIrregularidadVerticalSevera,
+      // irregularidadVerticalModerada, setIrregularidadVerticalModerada,
+      // plantaIrregular, setPlantaIrregular,
+      // preCodigoSismico, setPreCodigoSismico,
+      // postCodigoSismico, setPostCodigoSismico,
+      // sueloTipoAB, setSueloTipoAB,
+      // sueloTipoE1a3, setSueloTipoE1a3,
+      // sueloTipoEMayor3, setSueloTipoEMayor3,
+      // resultadoSmin, setResultadoSmin,
+      // resultadoFinal, setResultadoFinal,
       femaPuntuacions, setResultado,
       //fema 4
       exterior, setExterior,
