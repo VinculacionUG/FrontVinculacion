@@ -31,8 +31,8 @@ const FormularioFema3 = ({ route, navigation }) => {
   const [selectedValue, setSelectedValue] = useState('');
   const [selectedValueTipoEdificacion, setSelectedValueTipoEdificacion] = useState('');
 
-  const [estChecked, setEstChecked] = useState(false);
-  const [dnkChecked, setDnkChecked] = useState(false);
+  const [esEst, setEstChecked] = useState(false);
+  const [esDnk, setDnkChecked] = useState(false);
 
   const [selectedValues, setSelectedValues] = useState([]);
 
@@ -49,7 +49,7 @@ const FormularioFema3 = ({ route, navigation }) => {
   const [includeResultadoSmin, setIncludeResultadoSmin] = useState(false);
 
   const [isChecked, setIsChecked] = useState(false);
-  const [codPuntuacionMatrizSec, setCodPuntuacionMatrizSec] = useState('');
+  const [codPuntuacionMatriz, setCodPuntuacionMatrizSec] = useState('');
 
   const handleNext = () => {
     //Validación de campos obligatorios
@@ -66,9 +66,9 @@ const FormularioFema3 = ({ route, navigation }) => {
       // !sueloTipoE1a3 ||
       // !sueloTipoEMayor3 ||
       // !resultadoSmin ||
-      // !estChecked ||
-      // !dnkChecked ||
-      !(estChecked || dnkChecked) ||
+      // !esEst ||
+      // !esDnk ||
+      !(esEst || esDnk) ||
       !resultadoFinal
     ) {
       alert('Por favor complete todos los campos y presione guardar');
@@ -155,7 +155,7 @@ const FormularioFema3 = ({ route, navigation }) => {
   };
 
   const {
-    resultado,
+    femaPuntuacions,
     setResultado
   } = useContext(AppContext);
 
@@ -349,48 +349,48 @@ const FormularioFema3 = ({ route, navigation }) => {
           const updatedCodPuntuacionMap = { ...codPuntuacionMap };
           result.forEach((item) => {
             const valor = item.valor ?? '0';
-            const codPuntuacionMatrizSec = item.codPuntuacionMatrizSec;
+            const codPuntuacionMatriz = item.codPuntuacionMatriz;
     
             switch (item.codTipoPuntuacion) {
               case 9:
                 setResultadoBase(valor);
-                updatedCodPuntuacionMap.resultadoBase = codPuntuacionMatrizSec;
+                updatedCodPuntuacionMap.resultadoBase = codPuntuacionMatriz;
                 break;
               case 1:
                 setIrregularidadVerticalSevera(valor);
-                updatedCodPuntuacionMap.irregularidadVerticalSevera = codPuntuacionMatrizSec;
+                updatedCodPuntuacionMap.irregularidadVerticalSevera = codPuntuacionMatriz;
                 break;
               case 2:
                 setIrregularidadVerticalModerada(valor);
-                updatedCodPuntuacionMap.irregularidadVerticalModerada = codPuntuacionMatrizSec;
+                updatedCodPuntuacionMap.irregularidadVerticalModerada = codPuntuacionMatriz;
                 break;
               case 3:
                 setPlantaIrregular(valor);
-                updatedCodPuntuacionMap.plantaIrregular = codPuntuacionMatrizSec;
+                updatedCodPuntuacionMap.plantaIrregular = codPuntuacionMatriz;
                 break;
               case 4:
                 setPreCodigoSismico(valor);
-                updatedCodPuntuacionMap.preCodigoSismico = codPuntuacionMatrizSec;
+                updatedCodPuntuacionMap.preCodigoSismico = codPuntuacionMatriz;
                 break;
               case 5:
                 setPostCodigoSismico(valor);
-                updatedCodPuntuacionMap.postCodigoSismico = codPuntuacionMatrizSec;
+                updatedCodPuntuacionMap.postCodigoSismico = codPuntuacionMatriz;
                 break;
               case 6:
                 setSueloTipoAB(valor);
-                updatedCodPuntuacionMap.sueloTipoAB = codPuntuacionMatrizSec;
+                updatedCodPuntuacionMap.sueloTipoAB = codPuntuacionMatriz;
                 break;
               case 7:
                 setSueloTipoE1a3(valor);
-                updatedCodPuntuacionMap.sueloTipoE1a3 = codPuntuacionMatrizSec;
+                updatedCodPuntuacionMap.sueloTipoE1a3 = codPuntuacionMatriz;
                 break;
               case 8:
                 setSueloTipoEMayor3(valor);
-                updatedCodPuntuacionMap.sueloTipoEMayor3 = codPuntuacionMatrizSec;
+                updatedCodPuntuacionMap.sueloTipoEMayor3 = codPuntuacionMatriz;
                 break;
               case 10:
                 setResultadoSmin(valor);
-                updatedCodPuntuacionMap.resultadoSmin = codPuntuacionMatrizSec;
+                updatedCodPuntuacionMap.resultadoSmin = codPuntuacionMatriz;
                 break;
               default:
                 console.warn(`Código de puntuación desconocido: ${item.codTipoPuntuacion}`);
@@ -415,32 +415,32 @@ const FormularioFema3 = ({ route, navigation }) => {
   }, [selectedValueTipoEdificacion, subTipo]);
 
   const handleSaveSelection = () => {
-    // Aquí defines los elementos con su correspondiente valor en codPuntuacionMatrizSec
-    const codPuntuacionMatrizSec = [
+    // Aquí defines los elementos con su correspondiente valor en codPuntuacionMatriz
+    const codPuntuacionMatriz = [
       { id: 0, value: 'Tipo de Edificación', data: selectedValueTipoEdificacion },
       { id: 1, value: 'Sub Tipo', data: subTipo },
       { id: 2, value: 'Resultado Base', data: resultadoBase },
-      { id: 3, value: 'Irregularidad Vertical Severa', isChecked: includeIrregularidadSevera, data: irregularidadVerticalSevera, codPuntuacionMatrizSec: codPuntuacionMap.irregularidadVerticalSevera },
-      { id: 4, value: 'Irregularidad Vertical Moderada', isChecked: includeIrregularidadModerada, data: irregularidadVerticalModerada, codPuntuacionMatrizSec: codPuntuacionMap.irregularidadVerticalModerada },
-      { id: 5, value: 'Planta Irregular', isChecked: includePlantaIrregular, data: plantaIrregular, codPuntuacionMatrizSec: codPuntuacionMap.plantaIrregular },
-      { id: 6, value: 'Pre Código Sismico', isChecked: includePreCodigoSismico, data: preCodigoSismico, codPuntuacionMatrizSec: codPuntuacionMap.preCodigoSismico },
-      { id: 7, value: 'Post Código Sismico', isChecked: includePostCodigoSismico, data: postCodigoSismico, codPuntuacionMatrizSec: codPuntuacionMap.postCodigoSismico },
-      { id: 8, value: 'Suelo Tipo AB', isChecked: includeSueloTipoAB, data: sueloTipoAB, codPuntuacionMatrizSec: codPuntuacionMap.sueloTipoAB },
-      { id: 9, value: 'Suelo Tipo E1a3', isChecked: includeSueloTipoE1a3, data: sueloTipoE1a3, codPuntuacionMatrizSec: codPuntuacionMap.sueloTipoE1a3 },
-      { id: 10, value: 'Suelo Tipo EMayor3', isChecked: includeSueloTipoEMayor3, data: sueloTipoEMayor3, codPuntuacionMatrizSec: codPuntuacionMap.sueloTipoEMayor3 },
-      { id: 11, value: 'Resultado Smin', isChecked: includeResultadoSmin, data: resultadoSmin, codPuntuacionMatrizSec: codPuntuacionMap.resultadoSmin },
+      { id: 3, value: 'Irregularidad Vertical Severa', isChecked: includeIrregularidadSevera, data: irregularidadVerticalSevera, codPuntuacionMatriz: codPuntuacionMap.irregularidadVerticalSevera },
+      { id: 4, value: 'Irregularidad Vertical Moderada', isChecked: includeIrregularidadModerada, data: irregularidadVerticalModerada, codPuntuacionMatriz: codPuntuacionMap.irregularidadVerticalModerada },
+      { id: 5, value: 'Planta Irregular', isChecked: includePlantaIrregular, data: plantaIrregular, codPuntuacionMatriz: codPuntuacionMap.plantaIrregular },
+      { id: 6, value: 'Pre Código Sismico', isChecked: includePreCodigoSismico, data: preCodigoSismico, codPuntuacionMatriz: codPuntuacionMap.preCodigoSismico },
+      { id: 7, value: 'Post Código Sismico', isChecked: includePostCodigoSismico, data: postCodigoSismico, codPuntuacionMatriz: codPuntuacionMap.postCodigoSismico },
+      { id: 8, value: 'Suelo Tipo AB', isChecked: includeSueloTipoAB, data: sueloTipoAB, codPuntuacionMatriz: codPuntuacionMap.sueloTipoAB },
+      { id: 9, value: 'Suelo Tipo E1a3', isChecked: includeSueloTipoE1a3, data: sueloTipoE1a3, codPuntuacionMatriz: codPuntuacionMap.sueloTipoE1a3 },
+      { id: 10, value: 'Suelo Tipo EMayor3', isChecked: includeSueloTipoEMayor3, data: sueloTipoEMayor3, codPuntuacionMatriz: codPuntuacionMap.sueloTipoEMayor3 },
+      { id: 11, value: 'Resultado Smin', isChecked: includeResultadoSmin, data: resultadoSmin, codPuntuacionMatriz: codPuntuacionMap.resultadoSmin },
       { id: 12, value: 'Resultado Final', data: resultadoFinal },
-      { id: 13, value: 'Selección Final', data: estChecked ? 'EST' : dnkChecked ? 'DNK' : 'Ninguno' }
+      { id: 13, value: 'Selección Final', data: esEst ? 'EST' : esDnk ? 'DNK' : 'Ninguno' }
     ];
   
     // Filtrar los elementos que están marcados
-    const selectedItems = codPuntuacionMatrizSec
+    const selectedItems = codPuntuacionMatriz
       .filter(item => item.isChecked)
       .map(item => ({
-        codPuntuacionMatrizSec: item.codPuntuacionMatrizSec, // Incluye el codPuntuacionMatrizSec
+        codPuntuacionMatriz: item.codPuntuacionMatriz, // Incluye el codPuntuacionMatriz
         resultadoFinal,
-      estChecked,
-      dnkChecked,
+      esEst,
+      esDnk,
       }));
   
     const newSelection = {
@@ -454,7 +454,7 @@ const FormularioFema3 = ({ route, navigation }) => {
 
   // Aquí puedes hacer lo necesario para guardar la selección, como enviar a una API o almacenarlo en un estado global
   console.log(newSelection);
-  console.log(resultado);
+  console.log(femaPuntuacions);
   };
 
   useEffect(() => {
@@ -742,7 +742,7 @@ const FormularioFema3 = ({ route, navigation }) => {
 
       <View style={styles.checkboxContainer}>
         <CheckBox
-          value={estChecked}
+          value={esEst}
           onValueChange={(newValue) => {
             if (newValue) setDnkChecked(false);
             setEstChecked(newValue);
@@ -750,7 +750,7 @@ const FormularioFema3 = ({ route, navigation }) => {
         />
         <Text style={styles.checkboxLabel}>EST</Text>
         <CheckBox
-          value={dnkChecked}
+          value={esDnk}
           onValueChange={(newValue) => {
             if (newValue) setEstChecked(false);
             setDnkChecked(newValue);

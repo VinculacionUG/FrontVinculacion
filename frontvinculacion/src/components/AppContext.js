@@ -42,7 +42,7 @@ export const AppProvider = ({ children }) => {
   const [tipoSuelo, setTipoSuelo] = useState('');
   const [comentarios, setComentario] = useState('');
   //fema 3
-   const [resultado, setResultado] = useState([]);
+   const [femaPuntuacions, setResultado] = useState([]);
   // const [codpuntuacionMatriz, setcodpuntuacionMatriz] = useState(false);
   // const [resultadoFinal, setresultadoFinal] = useState(false);
   // const [esEst, setesEst] = useState(false);
@@ -124,7 +124,7 @@ export const AppProvider = ({ children }) => {
       sueloTipoEMayor3, setSueloTipoEMayor3,
       resultadoSmin, setResultadoSmin,
       resultadoFinal, setResultadoFinal,
-      resultado, setResultado,
+      femaPuntuacions, setResultado,
       //fema 4
       exterior, setExterior,
       interior, setInterior,
