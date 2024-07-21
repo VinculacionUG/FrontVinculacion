@@ -21,7 +21,7 @@ const FormularioFema2 = ({ navigation }) => {
     setInf,
     anoConstruccion,
     setAnoConstruccion,
-    ocupacion,
+    femaOcupacions,
     setOcupacion,
     tiposuelo1,
     setTiposuelo1,
@@ -51,8 +51,8 @@ const FormularioFema2 = ({ navigation }) => {
 
     // Combinar selectedCheckboxes y replicatedTiposuelo en un solo array
     const ocupacionArray = selectedCheckboxes.map((checkbox, index) => ({
-      ocupacion: checkbox,
-      tiposuelo: replicatedTiposuelo[index]
+      codOcupacion: checkbox,
+      codTipoOcupacion: replicatedTiposuelo[index]
     }));
 
     setOcupacion(ocupacionArray);
@@ -67,7 +67,7 @@ const FormularioFema2 = ({ navigation }) => {
       anoDeContruccion,
       tiposuelo1,
       comentario,
-      ocupacion: ocupacionArray
+      femaOcupacions: ocupacionArray
     });
 
     navigation.navigate('FormularioFema3');
@@ -152,7 +152,7 @@ const FormularioFema2 = ({ navigation }) => {
     );
   }
 
-  const selectedDescriptions = ocupacion
+  const selectedDescriptions = femaOcupacions
     .filter(checkbox => selectedCheckboxes.includes(checkbox.codOcupacion))
     .map(checkbox => checkbox.descripcion);
 
@@ -263,7 +263,7 @@ const FormularioFema2 = ({ navigation }) => {
       <Text style={[styles.subtitle, styles.centerText]}>Ocupación:</Text>
 
       <View style={styles.checkboxGrid}>
-        {ocupacion.map((checkbox) => (
+        {femaOcupacions.map((checkbox) => (
           <View key={checkbox.codOcupacion} style={styles.checkboxContainer}>
             <CheckBox
               title={checkbox.descripcion}

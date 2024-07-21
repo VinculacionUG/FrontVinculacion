@@ -6,17 +6,17 @@ export const AppContext = createContext();
 export const AppProvider = ({ children }) => {
   // Definir múltiples variables de estado
   //fema 1
-  const [adjuntarFotografica, setAdjuntarFotografica] = useState('');
-  const [adjuntarGrafico, setAdjuntarGrafico] = useState('');
+  const [mimeType, setAdjuntarFotografica] = useState('');
+  const [data, setAdjuntarGrafico] = useState('');
   const [direccion, setDireccion] = useState('');
   const [zip, setZip] = useState('');
-  const [otrasIdentificaciones, setOtrasIdentificaciones] = useState('');
-  const [nombreEdificio, setNombreEdificio] = useState('');
+  const [otrosIdentificaciones, setOtrasIdentificaciones] = useState('');
+  const [nomEdificacion, setNombreEdificio] = useState('');
   const [uso, setUso] = useState('');
   const [latitud, setLatitud] = useState('');
   const [longitud, setLongitud] = useState('');
-  const [fecha, setFecha] = useState({ year: '', month: '', day: '' });
-  const [hora, setHora] = useState('');
+  const [fechaEncuesta, setFecha] = useState({ year: '', month: '', day: '' });
+  const [horaEncuesta, setHora] = useState('');
   //fema2
   const [numeroPiso, setNumeroPiso] = useState('');
   const [inf, setInf] = useState('');
@@ -37,7 +37,7 @@ export const AppProvider = ({ children }) => {
   const [checkBox8, setCheckBox8] = useState(false);
   const [checkBox9, setCheckBox9] = useState(false);
   // const [ocupacion, setOcupacion] = useState('');
-  const [ocupacion, setOcupacion] = useState([]);
+  const [femaOcupacions, setOcupacion] = useState([]);
   const [tipoocupacion, setTipoocupacion] = useState('');
   const [tipoSuelo, setTipoSuelo] = useState('');
   const [comentario, setComentario] = useState('');
@@ -76,17 +76,17 @@ export const AppProvider = ({ children }) => {
   return (
     <AppContext.Provider value={{
       //fema1
-      adjuntarFotografica, setAdjuntarFotografica,
-      adjuntarGrafico, setAdjuntarGrafico,
+      mimeType, setAdjuntarFotografica,
+      data, setAdjuntarGrafico,
       direccion, setDireccion,
       zip, setZip,
-      otrasIdentificaciones, setOtrasIdentificaciones,
-      nombreEdificio, setNombreEdificio,
+      otrosIdentificaciones, setOtrasIdentificaciones,
+      nomEdificacion, setNombreEdificio,
       uso, setUso,
       latitud, setLatitud,
       longitud, setLongitud,
-      fecha, setFecha,
-      hora, setHora,
+      fechaEncuesta, setFecha,
+      horaEncuesta, setHora,
       //fema 2
       numeroPiso, setNumeroPiso,
       inf, setInf,
@@ -106,7 +106,7 @@ export const AppProvider = ({ children }) => {
       checkBox7, setCheckBox7,
       checkBox8, setCheckBox8,
       checkBox9, setCheckBox9,
-      ocupacion, setOcupacion,
+      femaOcupacions, setOcupacion,
       tipoocupacion, setTipoocupacion,
       tipoSuelo, setTipoSuelo,
       comentario, setComentario,

@@ -6,17 +6,17 @@ import { AppContext } from './AppContext';
 
 const FormularioFema = ({ navigation }) => {
   const {
-    adjuntarFotografica,
+    mimeType,
     setAdjuntarFotografica,
-    adjuntarGrafico,
+    data,
     setAdjuntarGrafico,
     direccion,
     setDireccion,
     zip,
     setZip,
-    otrasIdentificaciones,
+    otrosIdentificaciones,
     setOtrasIdentificaciones,
-    nombreEdificio,
+    nomEdificacion,
     setNombreEdificio,
     uso,
     setUso,
@@ -24,42 +24,55 @@ const FormularioFema = ({ navigation }) => {
     setLatitud,
     longitud,
     setLongitud,
-    fecha,
+    fechaEncuesta,
     setFecha,
-    hora,
+    horaEncuesta,
     setHora,
   } = useContext(AppContext);
 
   const handleNext = () => {
     if (
-      !adjuntarFotografica ||
-      !adjuntarGrafico ||
+      !mimeType ||
+      !data ||
       !direccion ||
       !zip ||
-      !otrasIdentificaciones ||
-      !nombreEdificio ||
+      !otrosIdentificaciones ||
+      !nomEdificacion ||
       !uso ||
       !latitud ||
       !longitud ||
-      !fecha ||
-      !hora
+      !fechaEncuesta ||
+      !horaEncuesta
     ) {
+      console.log('Datos guardados:', {
+        mimeType,
+        data,
+        direccion,
+        zip,
+        otrosIdentificaciones,
+        nomEdificacion,
+        uso,
+        latitud,
+        longitud,
+        fechaEncuesta,
+        horaEncuesta,
+      });
       alert('Por favor complete todos los campos.');
       return;
     }
     // Aquí puedes guardar los datos o hacer lo necesario antes de navegar
     console.log('Datos guardados:', {
-      adjuntarFotografica,
-      adjuntarGrafico,
+      mimeType,
+      data,
       direccion,
       zip,
-      otrasIdentificaciones,
-      nombreEdificio,
+      otrosIdentificaciones,
+      nomEdificacion,
       uso,
       latitud,
       longitud,
-      fecha,
-      hora,
+      fechaEncuesta,
+      horaEncuesta,
     });
     navigation.navigate('FormularioFema2');
   };
@@ -113,11 +126,11 @@ const FormularioFema = ({ navigation }) => {
             <Text style={styles.uploadButtonText}>Subir</Text>
           </TouchableOpacity>
           <View style={styles.fileNameContainer}>
-            {adjuntarFotografica ? (
+            {mimeType ? (
               <>
-                {/* <Text style={styles.fileNameText}>{adjuntarFotografica}</Text>, */}
+                {/* <Text style={styles.fileNameText}>{mimeType}</Text>, */}
                 <Text style={styles.fileNameText}>Imagen Seleccionada: </Text>
-                <Image source={{ uri: adjuntarFotografica }} style={styles.image} />
+                <Image source={{ uri: mimeType }} style={styles.image} />
               </>
             )  : (
               <Text>No se eligió ningún archivo</Text>
@@ -133,11 +146,11 @@ const FormularioFema = ({ navigation }) => {
             <Text style={styles.uploadButtonText}>Subir</Text>
           </TouchableOpacity>
           <View style={styles.fileNameContainer}>
-            {adjuntarGrafico ? (
+            {data ? (
               <>
-                {/* <Text style={styles.fileNameText}>{adjuntarGrafico}</Text> */}
+                {/* <Text style={styles.fileNameText}>{data}</Text> */}
                 <Text style={styles.fileNameText}>Gráfico Seleccionado: </Text>
-                <Image source={{ uri: adjuntarGrafico }} style={styles.image} />
+                <Image source={{ uri: data }} style={styles.image} />
               </>
             ) : (
               <Text>No se eligió ningún archivo</Text>
@@ -172,7 +185,7 @@ const FormularioFema = ({ navigation }) => {
         <Text style={styles.inputLabel}>Otras Identificaciones:</Text>
         <TextInput
           style={styles.input}
-          value={otrasIdentificaciones}
+          value={otrosIdentificaciones}
           onChangeText={(text) => setOtrasIdentificaciones(text)}
         />
       </View>
@@ -181,7 +194,7 @@ const FormularioFema = ({ navigation }) => {
         <Text style={styles.inputLabel}>Nombre del Edificio:</Text>
         <TextInput
           style={styles.input}
-          value={nombreEdificio}
+          value={nomEdificacion}
           onChangeText={(text) => setNombreEdificio(text)}
         />
       </View>
@@ -222,7 +235,7 @@ const FormularioFema = ({ navigation }) => {
             placeholder="MM"
             //maxLength={2}
             keyboardType="numeric"
-            value={fecha.month}
+            value={fechaEncuesta.month}
             //onChangeText={(text) => setFecha(prevState => ({ ...prevState, month: text }))}
             onChangeText={(text) => {
               const numericValue = text.replace(/[^a-zA-Z0-9]/g, ''); // Filtrar los caracteres no numéricos
@@ -241,7 +254,7 @@ const FormularioFema = ({ navigation }) => {
             placeholder="DD"
             maxLength={2}
             keyboardType="numeric"
-            value={fecha.day}
+            value={fechaEncuesta.day}
             // onChangeText={(text) => setFecha(prevState => ({ ...prevState, day: text }))}
             onChangeText={(text) => {
               const numericValue = text.replace(/[^a-zA-Z0-9]/g, ''); // Filtrar los caracteres no numéricos
@@ -260,7 +273,7 @@ const FormularioFema = ({ navigation }) => {
             placeholder="AAAA"
             maxLength={4}
             keyboardType="numeric"
-            value={fecha.year}
+            value={fechaEncuesta.year}
             //onChangeText={(text) => setFecha(prevState => ({ ...prevState, year: text }))}
             onChangeText={(text) => {
               const numericValue = text.replace(/[^a-zA-Z0-9]/g, ''); // Filtrar los caracteres no numéricos
@@ -281,7 +294,7 @@ const FormularioFema = ({ navigation }) => {
         <Text style={styles.inputLabel}>Hora:</Text>
         <TextInput
           style={styles.inputText}
-          value={hora}
+          value={horaEncuesta}
           onChangeText={(text) => setHora(text)}
         />
       </View>

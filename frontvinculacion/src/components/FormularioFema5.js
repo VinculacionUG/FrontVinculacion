@@ -128,8 +128,8 @@ const FormularioFema5 = ({ navigation }) => {
         pregunta2Fema5 ,
         inspeccionNivel
       })
-      const response = await fetch('https://www.fema.somee.com/api/FemaCinco/guardarDatos', {
-      //const response = await fetch('https://localhost:7040/Users/FormularioFEMA', {
+      // const response = await fetch('https://www.fema.somee.com/api/FemaCinco/guardarDatos', {
+      const response = await fetch('https://localhost:7040/Users/FormularioFEMA', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
