@@ -1,10 +1,16 @@
-import React, { useContext, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Image, Alert } from 'react-native';
+import React, { useEffect, useState, useContext } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Image, Alert, ActivityIndicator } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
+import { Picker } from '@react-native-picker/picker';
 import { AppContext } from './AppContext';
 
 const FormularioFema = ({ navigation }) => {
+  const [tipoUso, setTipoUso] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [selectedValuetipoUso, setSelectedValueTipoUso] = useState('');
+  
   const {
     adjuntarFotografica,
     setAdjuntarFotografica,
@@ -38,7 +44,7 @@ const FormularioFema = ({ navigation }) => {
       !zip ||
       !otrasIdentificaciones ||
       !nombreEdificio ||
-      !uso ||
+      !tipoUso ||    
       !latitud ||
       !longitud ||
       !fecha ||
@@ -55,7 +61,9 @@ const FormularioFema = ({ navigation }) => {
       zip,
       otrasIdentificaciones,
       nombreEdificio,
+      tipoUso,
       uso,
+      setUso,
       latitud,
       longitud,
       fecha,
@@ -96,6 +104,51 @@ const FormularioFema = ({ navigation }) => {
     const uriParts = uri.split('/');
     return uriParts[uriParts.length - 1];
   };
+
+
+
+
+useEffect(() => {
+  const url = 'https://www.fema.somee.com/Users/TipoUso';
+
+  const fetchTipoUso = async () => {
+    try {
+      const response = await fetch(url, { method: 'GET' });
+      if (!response.ok) {
+        throw new Error('Error en la red');
+      }
+      const result = await response.json();
+      setTipoUso(result);
+    } catch (error) {
+      setError(error);
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  fetchTipoUso();
+
+
+}, []);
+
+
+const handleUsoValueChange = (itemValue) => {
+  setSelectedValueTipoUso(itemValue);
+  setUso(itemValue); // Actualiza la variable uso
+};
+
+if (loading) {
+  return <ActivityIndicator size="large" color="#0000ff" />;
+}
+if (error) {
+  return (
+    <View>
+      <Text>Error: {error.message}</Text>
+    </View>
+  );
+}
+
+
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -186,6 +239,9 @@ const FormularioFema = ({ navigation }) => {
         />
       </View>
 
+
+{/*
+
       <View style={styles.inputContainer}>
         <Text style={styles.inputLabel}>Uso:</Text>
         <TextInput
@@ -194,6 +250,23 @@ const FormularioFema = ({ navigation }) => {
           onChangeText={(text) => setUso(text)}
         />
       </View>
+*/}
+
+
+      <View style={styles.inputContainer}>
+        <Text style={styles.inputLabel}>Uso:</Text>
+        <Picker
+          style={[styles.input]}
+          selectedValue={selectedValuetipoUso}
+          onValueChange={handleUsoValueChange} // Utiliza el nuevo método
+        >
+          <Picker.Item label="Seleccione" value="" />
+          {tipoUso.map((item, index) => (
+            <Picker.Item label={item.descripcion} value={item.codTipoUso} key={index} />
+          ))}
+        </Picker>
+      </View>
+
 
       <View style={styles.inputContainerRow}>
         <View style={styles.dateInputContainer}>
@@ -434,4 +507,3 @@ const styles = StyleSheet.create({
 });
 
 export default FormularioFema;
-
