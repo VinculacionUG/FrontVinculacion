@@ -18,14 +18,14 @@ export const AppProvider = ({ children }) => {
   const [fechaEncuesta, setFecha] = useState({ year: '', month: '', day: '' });
   const [horaEncuesta, setHora] = useState('');
   //fema2
-  const [numeroPiso, setNumeroPiso] = useState('');
-  const [inf, setInf] = useState('');
-  const [anoConstruccion, setAnoConstruccion] = useState('');
-  const [areaTotalDePiso, setAreaTotalDePiso] = useState('');
-  const [anoCodigo, setAnoCodigo] = useState('');
+  const [nroPisosSup, setNumeroPiso] = useState('');
+  const [nroPisosInf, setInf] = useState('');
+  const [anioContruccion, setAnoConstruccion] = useState('');
+  const [areaTotalPiso, setAreaTotalDePiso] = useState('');
+  const [anioCodigo, setAnoCodigo] = useState('');
   const [ampliacion, setAmpliacion] = useState('');
-  const [anoDeContruccion, setAnoDeContruccion] = useState('');
-  const [tiposuelo1, setTiposuelo1] = useState('');
+  const [amplAnioConstruccion, setAnoDeContruccion] = useState('');
+  const [codTipoSuelo, setTiposuelo1] = useState('');
   const [tipoocupacion1, setTipoocupacion1] = useState('');
   const [checkBox1, setCheckBox1] = useState(false);
   const [checkBox2, setCheckBox2] = useState(false);
@@ -40,7 +40,7 @@ export const AppProvider = ({ children }) => {
   const [femaOcupacions, setOcupacion] = useState([]);
   const [tipoocupacion, setTipoocupacion] = useState('');
   const [tipoSuelo, setTipoSuelo] = useState('');
-  const [comentario, setComentario] = useState('');
+  const [comentarios, setComentario] = useState('');
   //fema 3
    const [resultado, setResultado] = useState([]);
   // const [codpuntuacionMatriz, setcodpuntuacionMatriz] = useState(false);
@@ -88,14 +88,14 @@ export const AppProvider = ({ children }) => {
       fechaEncuesta, setFecha,
       horaEncuesta, setHora,
       //fema 2
-      numeroPiso, setNumeroPiso,
-      inf, setInf,
-      anoConstruccion, setAnoConstruccion,
-      areaTotalDePiso, setAreaTotalDePiso,
-      anoCodigo, setAnoCodigo,
+      nroPisosSup, setNumeroPiso,
+      nroPisosInf, setInf,
+      anioContruccion, setAnoConstruccion,
+      areaTotalPiso, setAreaTotalDePiso,
+      anioCodigo, setAnoCodigo,
       ampliacion, setAmpliacion,
-      anoDeContruccion, setAnoDeContruccion,
-      tiposuelo1, setTiposuelo1,
+      amplAnioConstruccion, setAnoDeContruccion,
+      codTipoSuelo, setTiposuelo1,
       tipoocupacion1, setTipoocupacion1,
       checkBox1, setCheckBox1,
       checkBox2, setCheckBox2,
@@ -109,7 +109,7 @@ export const AppProvider = ({ children }) => {
       femaOcupacions, setOcupacion,
       tipoocupacion, setTipoocupacion,
       tipoSuelo, setTipoSuelo,
-      comentario, setComentario,
+      comentarios, setComentario,
       //fema 3
       tipoEdificacion, setTipoEdificacion,
       subTipo, setSubTipo,
