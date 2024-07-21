@@ -18,6 +18,7 @@ const FormularioFema5 = ({ navigation }) => {
   const pregunta2 = accionPreguntas2.find(item => item.codAccionPregunta === 5);
 
   const {
+    //Fema 1
     adjuntarFotografica,
     adjuntarGrafico,
     direccion,
@@ -29,6 +30,7 @@ const FormularioFema5 = ({ navigation }) => {
     longitud,
     fecha,
     hora,
+    //Fema 2
     numeroPiso,
     inf,
     anoConstruccion,
@@ -37,27 +39,21 @@ const FormularioFema5 = ({ navigation }) => {
     ampliacion,
     anoDeContruccion,
     tiposuelo1,
-    tipoocupacion1,
-    checkBox1,
-    checkBox2,
-    checkBox3,
-    checkBox4,
-    checkBox5,
-    checkBox6,
-    checkBox7,
-    checkBox8,
-    ocupacion,
-    tipoocupacion,
-    tipoSuelo,
     comentario,
+    ocupacion,
+
+    //fema 3
     resultado,
-    exterior,
-    interior,
-    revisionPlanos,
-    fuenteDelTipoDeSuelo,
-    fuenteDePeligrosGeologicos,
-    contactoDeLaPersona,
-    otrosPeligros1,
+  
+    //fema 4
+      exterior,
+      interior,
+      revisionPlanos,
+      fuenteDelTipoDeSuelo,
+      fuenteDePeligrosGeologicos,
+      contactoDeLaPersona,
+      otrosPeligros1,
+    //Fema 5
     pregunta1Fema5, setPregunta1Fema5,
     pregunta2Fema5, setPregunta2Fema5,
     inspeccionNivel, setInspeccionNivel
@@ -127,61 +123,56 @@ const FormularioFema5 = ({ navigation }) => {
     }
   
     try {
-      // const response = await fetch('https://www.fema.somee.com/api/FemaCinco/guardarDatos', {
-      const response = await fetch('http://localhost:7040/Users/FormularioFEMA', {
+      console.log('Datos guardados:', {
+        pregunta1Fema5,
+        pregunta2Fema5 ,
+        inspeccionNivel
+      })
+      const response = await fetch('https://www.fema.somee.com/api/FemaCinco/guardarDatos', {
+      //const response = await fetch('https://localhost:7040/Users/FormularioFEMA', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          direccion,
-          zip,
-          otrasIdentificaciones,
-          nombreEdificio,
-          uso,
-          latitud,
-          longitud,
-          fecha,
-          hora,
-          comentario,
-          ocupacion,
-          resultado,
-          adjuntarFotografica,
-          adjuntarGrafico,
-          anoCodigo,
-          numeroPiso,
-          inf,
-          anoDeContruccion,
-          anoConstruccion,
-          areaTotalDePiso,          
-          ampliacion,
-
-          tiposuelo1,
-          tipoocupacion1,
-          
-          
-          tipoocupacion,
-          tipoSuelo,
-          
-          exterior,
-          interior,
-          revisionPlanos,
-          fuenteDelTipoDeSuelo,
-          fuenteDePeligrosGeologicos,
-          contactoDeLaPersona,
-          otrosPeligros1,
-          pregunta1Fema5,
-          pregunta2Fema5,
-          inspeccionNivel,
-
-          checkBox1,
-          checkBox2,
-          checkBox3,
-          checkBox4,
-          checkBox5,
-          checkBox6,
-          checkBox7,
-          checkBox8,
+    adjuntarFotografica,
+    adjuntarGrafico,
+    direccion,
+    zip,
+    otrasIdentificaciones,
+    nombreEdificio,
+    uso,
+    latitud,
+    longitud,
+    fecha,
+    hora,
+    //Fema 2
+    numeroPiso,
+    inf,
+    anoConstruccion,
+    areaTotalDePiso,
+    anoCodigo,
+    ampliacion,
+    anoDeContruccion,
+    tiposuelo1,
+    comentario,
+    ocupacion,
+    
+    //fema 3
+    resultado,
+  
+    //fema 4
+      exterior,
+      interior,
+      revisionPlanos,
+      fuenteDelTipoDeSuelo,
+      fuenteDePeligrosGeologicos,
+      contactoDeLaPersona,
+      otrosPeligros1,
+    //Fema 5
+    pregunta1Fema5, 
+    pregunta2Fema5, 
+    inspeccionNivel, 
         }),
       });
   

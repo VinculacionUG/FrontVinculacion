@@ -148,12 +148,12 @@ const FormularioFema4 = ({ navigation }) => {
 
   const handleExteriorValueChange = (itemValue) => {
     setSelectedValueRevisionExterior(itemValue);
-    setExterior(itemValue); // Actualiza la variable exterior
+    setExterior(itemValue !== '' ? parseInt(itemValue) : ''); // Actualiza la variable exterior
   };
 
   const handleInteriorValueChange = (itemValue) => {
     setSelectedValueRevisionInterior(itemValue);
-    setInterior(itemValue); // Actualiza la variable interior
+    setInterior(itemValue !== '' ? parseInt(itemValue) : ''); // Actualiza la variable interior
   };
 
   if (loading) {
@@ -177,6 +177,7 @@ const FormularioFema4 = ({ navigation }) => {
         <View style={{ width: 65 }} />
         <Picker
           style={[styles.input, styles.picker]}
+
           selectedValue={selectedValuerevisionExterior}
           onValueChange={handleExteriorValueChange} // Utiliza el nuevo método
         >
