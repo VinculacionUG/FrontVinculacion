@@ -23,9 +23,9 @@ const FormularioFema4 = ({ navigation }) => {
     setRevisionPlanos,
     fuenteDelTipoDeSuelo,
     setFuenteDelTipoDeSuelo,
-    fuenteDePeligrosGeologicos,
+    fuentePeligroGeologicos,
     setFuenteDePeligrosGeologicos,
-    contactoDeLaPersona,
+    contactoRegistrado,
     setContactoDeLaPersona,
     otrosPeligros1,
     setOtrosPeligros1,
@@ -38,8 +38,8 @@ const FormularioFema4 = ({ navigation }) => {
       !interior ||
       !revisionPlanos ||
       !fuenteDelTipoDeSuelo ||
-      !fuenteDePeligrosGeologicos ||
-      !contactoDeLaPersona ||
+      !fuentePeligroGeologicos ||
+      !contactoRegistrado ||
       !otrosPeligros1
     ) {
       alert('Por favor complete todos los campos.');
@@ -52,8 +52,8 @@ const FormularioFema4 = ({ navigation }) => {
       interior,
       revisionPlanos,
       fuenteDelTipoDeSuelo,
-      fuenteDePeligrosGeologicos,
-      contactoDeLaPersona,
+      fuentePeligroGeologicos,
+      contactoRegistrado,
       otrosPeligros1,
     });
     navigation.navigate('FormularioFema5');
@@ -148,12 +148,12 @@ const FormularioFema4 = ({ navigation }) => {
 
   const handleExteriorValueChange = (itemValue) => {
     setSelectedValueRevisionExterior(itemValue);
-    setExterior(itemValue); // Actualiza la variable exterior
+    setExterior(itemValue !== '' ? parseInt(itemValue) : ''); // Actualiza la variable exterior
   };
 
   const handleInteriorValueChange = (itemValue) => {
     setSelectedValueRevisionInterior(itemValue);
-    setInterior(itemValue); // Actualiza la variable interior
+    setInterior(itemValue !== '' ? parseInt(itemValue) : ''); // Actualiza la variable interior
   };
 
   if (loading) {
@@ -177,6 +177,7 @@ const FormularioFema4 = ({ navigation }) => {
         <View style={{ width: 65 }} />
         <Picker
           style={[styles.input, styles.picker]}
+
           selectedValue={selectedValuerevisionExterior}
           onValueChange={handleExteriorValueChange} // Utiliza el nuevo método
         >
@@ -229,7 +230,7 @@ const FormularioFema4 = ({ navigation }) => {
         <Text style={styles.inputLabel}>Fuente de Peligros Geológicos</Text>
         <TextInput
           style={styles.input}
-          value={fuenteDePeligrosGeologicos}
+          value={fuentePeligroGeologicos}
           onChangeText={(text) => setFuenteDePeligrosGeologicos(text)}
         />
       </View>
@@ -238,7 +239,7 @@ const FormularioFema4 = ({ navigation }) => {
         <Text style={styles.inputLabel}>Contacto de la Persona</Text>
         <TextInput
           style={styles.input}
-          value={contactoDeLaPersona}
+          value={contactoRegistrado}
           onChangeText={(text) => setContactoDeLaPersona(text)}
         />
       </View>
