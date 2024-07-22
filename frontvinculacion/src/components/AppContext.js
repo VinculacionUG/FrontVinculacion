@@ -12,7 +12,7 @@ export const AppProvider = ({ children }) => {
   const [CodigoPostal, setZip] = useState('');
   const [otrosIdentificaciones, setOtrasIdentificaciones] = useState('');
   const [nomEdificacion, setNombreEdificio] = useState('');
-  const [uso, setUso] = useState('');
+  const [CodTipoUsoEdificacion, setUso] = useState('');
   const [latitud, setLatitud] = useState('');
   const [longitud, setLongitud] = useState('');
   const [fechaEncuesta, setFecha] = useState({ year: '', month: '', day: '' });
@@ -57,8 +57,8 @@ export const AppProvider = ({ children }) => {
   // const [resultadoSmin, setResultadoSmin] = useState('');
   // const [resultadoFinal, setResultadoFinal] = useState('');
   //fema 4
-  const [exterior, setExterior] = useState('');
-  const [interior, setInterior] = useState('');
+  const [codEvalExterior, setExterior] = useState('');
+  const [codEvalInterior, setInterior] = useState('');
   const [revisionPlanos, setRevisionPlanos] = useState('');
   const [fuenteTipoSuelo, setFuenteDelTipoDeSuelo] = useState('');
   const [fuentePeligroGeologicos, setFuenteDePeligrosGeologicos] = useState('');
@@ -78,7 +78,7 @@ export const AppProvider = ({ children }) => {
       CodigoPostal, setZip,
       otrosIdentificaciones, setOtrasIdentificaciones,
       nomEdificacion, setNombreEdificio,
-      uso, setUso,
+      CodTipoUsoEdificacion, setUso,
       latitud, setLatitud,
       longitud, setLongitud,
       fechaEncuesta, setFecha,
@@ -119,8 +119,8 @@ export const AppProvider = ({ children }) => {
       // resultadoFinal, setResultadoFinal,
       femaPuntuacions, setResultado,
       //fema 4
-      exterior, setExterior,
-      interior, setInterior,
+      codEvalExterior, setExterior,
+      codEvalInterior, setInterior,
       revisionPlanos, setRevisionPlanos,
       fuenteTipoSuelo, setFuenteDelTipoDeSuelo,
       fuentePeligroGeologicos, setFuenteDePeligrosGeologicos,

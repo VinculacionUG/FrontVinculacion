@@ -10,7 +10,7 @@ const FormularioFema = ({ navigation }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedValuetipoUso, setSelectedValueTipoUso] = useState('');
-  
+
   const {
     mimeType,
     setAdjuntarFotografica,
@@ -24,7 +24,7 @@ const FormularioFema = ({ navigation }) => {
     setOtrasIdentificaciones,
     nomEdificacion,
     setNombreEdificio,
-    uso,
+    CodTipoUsoEdificacion,
     setUso,
     latitud,
     setLatitud,
@@ -44,7 +44,7 @@ const FormularioFema = ({ navigation }) => {
       !CodigoPostal ||
       !otrosIdentificaciones ||
       !nomEdificacion ||
-      !tipoUso ||    
+      !tipoUso ||
       !latitud ||
       !longitud ||
       !fechaEncuesta ||
@@ -57,7 +57,7 @@ const FormularioFema = ({ navigation }) => {
         CodigoPostal,
         otrosIdentificaciones,
         nomEdificacion,
-        uso,
+        CodTipoUsoEdificacion,
         latitud,
         longitud,
         fechaEncuesta,
@@ -75,8 +75,7 @@ const FormularioFema = ({ navigation }) => {
       otrosIdentificaciones,
       nomEdificacion,
       tipoUso,
-      uso,
-      setUso,
+      CodTipoUsoEdificacion,
       latitud,
       longitud,
       fechaEncuesta,
@@ -121,52 +120,52 @@ const FormularioFema = ({ navigation }) => {
 
 
 
-useEffect(() => {
-  
-  const url = 'https://www.fema.somee.com/Users/TipoUso';
+  useEffect(() => {
 
-  const fetchTipoUso = async () => {
-    try {
-      const response = await fetch(url, { method: 'GET' });
-      if (!response.ok) {
-        throw new Error('Error en la red');
+    const url = 'https://www.fema.somee.com/Users/TipoUso';
+
+    const fetchTipoUso = async () => {
+      try {
+        const response = await fetch(url, { method: 'GET' });
+        if (!response.ok) {
+          throw new Error('Error en la red');
+        }
+        const result = await response.json();
+        setTipoUso(result);
+      } catch (error) {
+        setError(error);
+        console.log(error);
+      } finally {
+        setLoading(false);
       }
-      const result = await response.json();
-      setTipoUso(result);
-    } catch (error) {
-      setError(error);
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
+    };
+    fetchTipoUso();
+
+
+  }, []);
+
+
+  const handleUsoValueChange = (itemValue) => {
+    setSelectedValueTipoUso(itemValue);
+    setUso(itemValue); // Actualiza la variable CodTipoUsoEdificacion
   };
-  fetchTipoUso();
 
-
-}, []);
-
-
-const handleUsoValueChange = (itemValue) => {
-  setSelectedValueTipoUso(itemValue);
-  setUso(itemValue); // Actualiza la variable uso
-};
-
-if (loading) {
-  return <ActivityIndicator size="large" color="#0000ff" />;
-}
-if (error) {
-  return (
-    <View>
-      <Text>Error: {error.message}</Text>
-    </View>
-  );
-}
+  if (loading) {
+    return <ActivityIndicator size="large" color="#0000ff" />;
+  }
+  if (error) {
+    return (
+      <View>
+        <Text>Error: {error.message}</Text>
+      </View>
+    );
+  }
 
 
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      
+
       <TouchableOpacity style={styles.goBackButton} onPress={() => navigation.goBack()}>
         <MaterialCommunityIcons name="arrow-left" size={24} color="#001f3f" />
       </TouchableOpacity>
@@ -186,7 +185,7 @@ if (error) {
                 <Text style={styles.fileNameText}>Imagen Seleccionada: </Text>
                 <Image source={{ uri: mimeType }} style={styles.image} />
               </>
-            )  : (
+            ) : (
               <Text>No se eligió ningún archivo</Text>
             )}
           </View>
@@ -254,13 +253,13 @@ if (error) {
       </View>
 
 
-{/*
+      {/*
 
       <View style={styles.inputContainer}>
         <Text style={styles.inputLabel}>Uso:</Text>
         <TextInput
           style={styles.input}
-          value={uso}
+          value={CodTipoUsoEdificacion}
           onChangeText={(text) => setUso(text)}
         />
       </View>
@@ -276,7 +275,7 @@ if (error) {
         >
           <Picker.Item label="Seleccione" value="" />
           {tipoUso.map((item, index) => (
-            <Picker.Item label={item.descripcion} value={item.codTipoUso} key={index} />
+            <Picker.Item label={item.descripcion} value={item.codTipoUsoEdificacion} key={index} />
           ))}
         </Picker>
       </View>
@@ -314,13 +313,13 @@ if (error) {
             onChangeText={(text) => {
               const numericValue = text.replace(/[^a-zA-Z0-9]/g, ''); // Filtrar los caracteres no numéricos
               const intValue = parseInt(numericValue, 10); // Convertir el valor a un número entero
-                if (
-                  (numericValue === '' || (intValue >= 1 && intValue <= 12)) &&  // Verificar si el valor está dentro del rango permitido (1 - 31)
-                  numericValue.length <= 2                                       // Filtrar la cantidad de números
-                ) {
+              if (
+                (numericValue === '' || (intValue >= 1 && intValue <= 12)) &&  // Verificar si el valor está dentro del rango permitido (1 - 31)
+                numericValue.length <= 2                                       // Filtrar la cantidad de números
+              ) {
                 //setDay(numericValue);
                 setFecha(prevState => ({ ...prevState, month: text }))                                       // Actualizar el estado con el valor filtrado
-               }
+              }
             }}
           />
           <TextInput
@@ -333,13 +332,13 @@ if (error) {
             onChangeText={(text) => {
               const numericValue = text.replace(/[^a-zA-Z0-9]/g, ''); // Filtrar los caracteres no numéricos
               const intValue = parseInt(numericValue, 10); // Convertir el valor a un número entero
-                if (
-                  (numericValue === '' || (intValue >= 1 && intValue <= 31)) &&  // Verificar si el valor está dentro del rango permitido (1 - 31)
-                  numericValue.length <= 2                                       // Filtrar la cantidad de números
-                ) {
+              if (
+                (numericValue === '' || (intValue >= 1 && intValue <= 31)) &&  // Verificar si el valor está dentro del rango permitido (1 - 31)
+                numericValue.length <= 2                                       // Filtrar la cantidad de números
+              ) {
                 //setDay(numericValue);
                 setFecha(prevState => ({ ...prevState, day: text }))                                            // Actualizar el estado con el valor filtrado
-               }
+              }
             }}
           />
           <TextInput
@@ -352,13 +351,13 @@ if (error) {
             onChangeText={(text) => {
               const numericValue = text.replace(/[^a-zA-Z0-9]/g, ''); // Filtrar los caracteres no numéricos
               const intValue = parseInt(numericValue, 10); // Convertir el valor a un número entero
-                if (
-                  (numericValue === '' || (intValue >= 1 && intValue <= 3000)) &&  // Verificar si el valor está dentro del rango permitido (1 - 31)
-                  numericValue.length <= 4                                       // Filtrar la cantidad de números
-                ) {
+              if (
+                (numericValue === '' || (intValue >= 1 && intValue <= 3000)) &&  // Verificar si el valor está dentro del rango permitido (1 - 31)
+                numericValue.length <= 4                                       // Filtrar la cantidad de números
+              ) {
                 //setDay(numericValue);
                 setFecha(prevState => ({ ...prevState, year: text }))                                          // Actualizar el estado con el valor filtrado
-               }
+              }
             }}
           />
         </View>

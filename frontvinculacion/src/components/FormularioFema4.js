@@ -15,9 +15,9 @@ const FormularioFema4 = ({ navigation }) => {
   const [selectedValuerevisionInterior, setSelectedValueRevisionInterior] = useState('');
 
   const {
-    exterior,
+    codEvalExterior,
     setExterior,
-    interior,
+    codEvalInterior,
     setInterior,
     revisionPlanos,
     setRevisionPlanos,
@@ -34,8 +34,8 @@ const FormularioFema4 = ({ navigation }) => {
   const handleNext = () => {
     // Validación de campos obligatorios
     if (
-      !exterior ||
-      !interior ||
+      !codEvalExterior ||
+      !codEvalInterior ||
       !revisionPlanos ||
       !fuenteTipoSuelo ||
       !fuentePeligroGeologicos ||
@@ -48,8 +48,8 @@ const FormularioFema4 = ({ navigation }) => {
 
     // Continuar con la navegación o el procesamiento de datos
     console.log('Datos guardados:', {
-      exterior,
-      interior,
+      codEvalExterior,
+      codEvalInterior,
       revisionPlanos,
       fuenteTipoSuelo,
       fuentePeligroGeologicos,
@@ -148,12 +148,12 @@ const FormularioFema4 = ({ navigation }) => {
 
   const handleExteriorValueChange = (itemValue) => {
     setSelectedValueRevisionExterior(itemValue);
-    setExterior(itemValue !== '' ? parseInt(itemValue) : ''); // Actualiza la variable exterior
+    setExterior(itemValue !== '' ? parseInt(itemValue) : ''); // Actualiza la variable codEvalExterior
   };
 
   const handleInteriorValueChange = (itemValue) => {
     setSelectedValueRevisionInterior(itemValue);
-    setInterior(itemValue !== '' ? parseInt(itemValue) : ''); // Actualiza la variable interior
+    setInterior(itemValue !== '' ? parseInt(itemValue) : ''); // Actualiza la variable codEvalInterior
   };
 
   if (loading) {

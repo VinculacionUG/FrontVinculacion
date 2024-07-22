@@ -27,7 +27,7 @@ const FormularioFema5 = ({ navigation }) => {
     CodigoPostal,
     otrosIdentificaciones,
     nomEdificacion,
-    uso,
+    CodTipoUsoEdificacion,
     latitud,
     longitud,
     fechaEncuesta,
@@ -55,8 +55,8 @@ const FormularioFema5 = ({ navigation }) => {
     femaPuntuacions,
 
     //fema 4
-    exterior,
-    interior,
+    codEvalExterior,
+    codEvalInterior,
     revisionPlanos,
     fuenteTipoSuelo,
     fuentePeligroGeologicos,
@@ -139,7 +139,7 @@ const FormularioFema5 = ({ navigation }) => {
         CodigoPostal,
         otrosIdentificaciones,
         nomEdificacion,
-        uso,
+        CodTipoUsoEdificacion,
         latitud,
         longitud,
         fechaEncuesta,
@@ -167,8 +167,8 @@ const FormularioFema5 = ({ navigation }) => {
         femaPuntuacions,
 
         //fema 4
-        exterior,
-        interior,
+        codEvalExterior,
+        codEvalInterior,
         revisionPlanos,
         fuenteTipoSuelo,
         fuentePeligroGeologicos,
@@ -196,7 +196,7 @@ const FormularioFema5 = ({ navigation }) => {
           CodigoPostal,
           otrosIdentificaciones,
           nomEdificacion,
-          uso,
+          CodTipoUsoEdificacion,
           latitud,
           longitud,
           fechaEncuesta,
@@ -224,8 +224,8 @@ const FormularioFema5 = ({ navigation }) => {
           femaPuntuacions,
 
           //fema 4
-          exterior,
-          interior,
+          codEvalExterior,
+          codEvalInterior,
           revisionPlanos,
           fuenteTipoSuelo,
           fuentePeligroGeologicos,
@@ -383,7 +383,7 @@ const FormularioFema5 = ({ navigation }) => {
         <Text style={styles.contextDataText}>ZIP: {CodigoPostal}</Text>
         <Text style={styles.contextDataText}>Otras Identificaciones: {otrasIdentificaciones}</Text>
         <Text style={styles.contextDataText}>Nombre del Edificio: {nombreEdificio}</Text>
-        <Text style={styles.contextDataText}>Uso: {uso}</Text>
+        <Text style={styles.contextDataText}>Uso: {CodTipoUsoEdificacion}</Text>
         <Text style={styles.contextDataText}>Latitud: {latitud}</Text>
         <Text style={styles.contextDataText}>Longitud: {longitud}</Text>
         <Text style={styles.contextDataText}>Fecha: {fecha.year}-{fecha.month}-{fecha.day}</Text>
@@ -411,8 +411,8 @@ const FormularioFema5 = ({ navigation }) => {
         <Text style={styles.contextDataText}>Tipo de Suelo: {tipoSuelo}</Text>
         <Text style={styles.contextDataText}>Comentario: {comentarios}</Text>
         <Text style={styles.contextDataText}>Resultado: {femaPuntuacions}</Text>
-        <Text style={styles.contextDataText}>Exterior: {exterior}</Text>
-        <Text style={styles.contextDataText}>Interior: {interior}</Text>
+        <Text style={styles.contextDataText}>Exterior: {codEvalExterior}</Text>
+        <Text style={styles.contextDataText}>Interior: {codEvalInterior}</Text>
         <Text style={styles.contextDataText}>Revisión de Planos: {revisionPlanos}</Text>
         <Text style={styles.contextDataText}>Fuente del Tipo de Suelo: {fuenteTipoSuelo}</Text>
         <Text style={styles.contextDataText}>Fuente de Peligros Geológicos: {fuentePeligroGeologicos}</Text>
