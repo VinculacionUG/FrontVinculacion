@@ -21,13 +21,13 @@ const FormularioFema4 = ({ navigation }) => {
     setInterior,
     revisionPlanos,
     setRevisionPlanos,
-    fuenteDelTipoDeSuelo,
+    fuenteTipoSuelo,
     setFuenteDelTipoDeSuelo,
     fuentePeligroGeologicos,
     setFuenteDePeligrosGeologicos,
     contactoRegistrado,
     setContactoDeLaPersona,
-    otrosPeligros1,
+    PeligorsGeologicos,
     setOtrosPeligros1,
   } = useContext(AppContext);
 
@@ -37,10 +37,10 @@ const FormularioFema4 = ({ navigation }) => {
       !exterior ||
       !interior ||
       !revisionPlanos ||
-      !fuenteDelTipoDeSuelo ||
+      !fuenteTipoSuelo ||
       !fuentePeligroGeologicos ||
       !contactoRegistrado ||
-      !otrosPeligros1
+      !PeligorsGeologicos
     ) {
       alert('Por favor complete todos los campos.');
       return;
@@ -51,10 +51,10 @@ const FormularioFema4 = ({ navigation }) => {
       exterior,
       interior,
       revisionPlanos,
-      fuenteDelTipoDeSuelo,
+      fuenteTipoSuelo,
       fuentePeligroGeologicos,
       contactoRegistrado,
-      otrosPeligros1,
+      PeligorsGeologicos,
     });
     navigation.navigate('FormularioFema5');
   };
@@ -63,30 +63,30 @@ const FormularioFema4 = ({ navigation }) => {
   const handleCheckboxChange = (codOtrosPeligorsSec) => {
     const peligroAsignado = asignarPeligro(codOtrosPeligorsSec);
     setSelectedCheckbox(codOtrosPeligorsSec);
-    setOtrosPeligros1(peligroAsignado); // Actualiza la variable otrosPeligros1
+    setOtrosPeligros1(peligroAsignado); // Actualiza la variable PeligorsGeologicos
   };
 
   function asignarPeligro(codigoPeligro) {
-    let otrosPeligros1;
+    let PeligorsGeologicos;
 
     switch (codigoPeligro) {
       case 1:
-        otrosPeligros1 = 1;
+        PeligorsGeologicos = 1;
         break;
       case 2:
-        otrosPeligros1 = 2;
+        PeligorsGeologicos = 2;
         break;
       case 3:
-        otrosPeligros1 = 3;
+        PeligorsGeologicos = 3;
         break;
       case 4:
-        otrosPeligros1 = 4;
+        PeligorsGeologicos = 4;
         break;
       default:
-        otrosPeligros1 = 'Código de peligro no válido';
+        PeligorsGeologicos = 'Código de peligro no válido';
     }
 
-    return otrosPeligros1;
+    return PeligorsGeologicos;
   }
 
   useEffect(() => {
@@ -221,7 +221,7 @@ const FormularioFema4 = ({ navigation }) => {
         <Text style={styles.inputLabel}>Fuente del tipo de suelo:</Text>
         <TextInput
           style={styles.input}
-          value={fuenteDelTipoDeSuelo}
+          value={fuenteTipoSuelo}
           onChangeText={(text) => setFuenteDelTipoDeSuelo(text)}
         />
       </View>

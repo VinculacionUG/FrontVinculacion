@@ -60,10 +60,10 @@ export const AppProvider = ({ children }) => {
   const [exterior, setExterior] = useState('');
   const [interior, setInterior] = useState('');
   const [revisionPlanos, setRevisionPlanos] = useState('');
-  const [fuenteDelTipoDeSuelo, setFuenteDelTipoDeSuelo] = useState('');
+  const [fuenteTipoSuelo, setFuenteDelTipoDeSuelo] = useState('');
   const [fuentePeligroGeologicos, setFuenteDePeligrosGeologicos] = useState('');
   const [contactoRegistrado, setContactoDeLaPersona] = useState('');
-  const [otrosPeligros1, setOtrosPeligros1] = useState('');
+  const [PeligorsGeologicos, setOtrosPeligros1] = useState('');
   //fema 5
   const [pregunta1Fema5, setPregunta1Fema5] = useState('');
   const [pregunta2Fema5, setPregunta2Fema5] = useState('');
@@ -122,10 +122,10 @@ export const AppProvider = ({ children }) => {
       exterior, setExterior,
       interior, setInterior,
       revisionPlanos, setRevisionPlanos,
-      fuenteDelTipoDeSuelo, setFuenteDelTipoDeSuelo,
+      fuenteTipoSuelo, setFuenteDelTipoDeSuelo,
       fuentePeligroGeologicos, setFuenteDePeligrosGeologicos,
       contactoRegistrado, setContactoDeLaPersona,
-      otrosPeligros1, setOtrosPeligros1,
+      PeligorsGeologicos, setOtrosPeligros1,
       //fema 5
       pregunta1Fema5, setPregunta1Fema5,
       pregunta2Fema5, setPregunta2Fema5,
