@@ -16,13 +16,14 @@ const FormularioFema5 = ({ navigation }) => {
   const accionPreguntas2 = accionPreguntas.filter(item => item.codAccionPregunta >= 5 && item.codAccionPregunta <= 8);
   const pregunta1 = accionPreguntas1.find(item => item.codAccionPregunta === 1);
   const pregunta2 = accionPreguntas2.find(item => item.codAccionPregunta === 5);
+  const [nombreContacto, setUserName] = useState('');
 
   const {
     //Fema 1
     mimeType,
     data,
     direccion,
-    zip,
+    CodigoPostal,
     otrosIdentificaciones,
     nomEdificacion,
     uso,
@@ -57,8 +58,8 @@ const FormularioFema5 = ({ navigation }) => {
     interior,
     revisionPlanos,
     fuenteDelTipoDeSuelo,
-    fuenteDePeligrosGeologicos,
-    contactoDeLaPersona,
+    fuentePeligroGeologicos,
+    contactoRegistrado,
     otrosPeligros1,
     //Fema 5
     pregunta1Fema5, setPregunta1Fema5,
@@ -134,7 +135,7 @@ const FormularioFema5 = ({ navigation }) => {
         mimeType,
         data,
         direccion,
-        zip,
+        CodigoPostal,
         otrosIdentificaciones,
         nomEdificacion,
         uso,
@@ -169,14 +170,16 @@ const FormularioFema5 = ({ navigation }) => {
         interior,
         revisionPlanos,
         fuenteDelTipoDeSuelo,
-        fuenteDePeligrosGeologicos,
-        contactoDeLaPersona,
+        fuentePeligroGeologicos,
+        contactoRegistrado,
         otrosPeligros1,
 
         //fema 5
         pregunta1Fema5,
         pregunta2Fema5,
-        inspeccionNivel
+        inspeccionNivel,
+        nombreContacto
+
       })
       // const response = await fetch('https://www.fema.somee.com/api/FemaCinco/guardarDatos', {
       const response = await fetch('http://localhost:7040/Users/FormularioFEMA', {
@@ -188,7 +191,7 @@ const FormularioFema5 = ({ navigation }) => {
           mimeType,
           data,
           direccion,
-          zip,
+          CodigoPostal,
           otrosIdentificaciones,
           nomEdificacion,
           uso,
@@ -223,13 +226,14 @@ const FormularioFema5 = ({ navigation }) => {
           interior,
           revisionPlanos,
           fuenteDelTipoDeSuelo,
-          fuenteDePeligrosGeologicos,
-          contactoDeLaPersona,
+          fuentePeligroGeologicos,
+          contactoRegistrado,
           otrosPeligros1,
           //Fema 5
           pregunta1Fema5,
           pregunta2Fema5,
           inspeccionNivel,
+          nombreContacto
         }),
       });
 
@@ -260,6 +264,25 @@ const FormularioFema5 = ({ navigation }) => {
   };
 
   useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const userData = await AsyncStorage.getItem('userData');
+        if (userData) {
+          const { nombre, apellido } = JSON.parse(userData);
+          setUserName(`${nombre} ${apellido}`);
+        } else {
+          // Manejo de situación donde no se encuentra información de usuario
+          console.log('No se encuentra información de usuario PRUEBA'); //Mensaje de prueba
+        }
+      } catch (error) {
+        console.error('Error al obtener datos del usuario:', error.message);
+        Alert.alert('Error', 'Ha ocurrido un error al obtener los datos del usuario.');
+      }
+    };
+
+    fetchUserData();
+
+
     const url = 'https://www.fema.somee.com/api/FemaCinco/accionPreguntas';
     const fetchAccionPreguntas = async () => {
       try {
@@ -354,7 +377,7 @@ const FormularioFema5 = ({ navigation }) => {
         {/* <Text style={styles.contextDataText}>Adjuntar Fotográfica: {adjuntarFotografica}</Text>
         <Text style={styles.contextDataText}>Adjuntar Gráfico: {adjuntarGrafico}</Text>
         <Text style={styles.contextDataText}>Dirección: {direccion}</Text>
-        <Text style={styles.contextDataText}>ZIP: {zip}</Text>
+        <Text style={styles.contextDataText}>ZIP: {CodigoPostal}</Text>
         <Text style={styles.contextDataText}>Otras Identificaciones: {otrasIdentificaciones}</Text>
         <Text style={styles.contextDataText}>Nombre del Edificio: {nombreEdificio}</Text>
         <Text style={styles.contextDataText}>Uso: {uso}</Text>
@@ -389,8 +412,8 @@ const FormularioFema5 = ({ navigation }) => {
         <Text style={styles.contextDataText}>Interior: {interior}</Text>
         <Text style={styles.contextDataText}>Revisión de Planos: {revisionPlanos}</Text>
         <Text style={styles.contextDataText}>Fuente del Tipo de Suelo: {fuenteDelTipoDeSuelo}</Text>
-        <Text style={styles.contextDataText}>Fuente de Peligros Geológicos: {fuenteDePeligrosGeologicos}</Text>
-        <Text style={styles.contextDataText}>Contacto de la Persona: {contactoDeLaPersona}</Text>
+        <Text style={styles.contextDataText}>Fuente de Peligros Geológicos: {fuentePeligroGeologicos}</Text>
+        <Text style={styles.contextDataText}>Contacto de la Persona: {contactoRegistrado}</Text>
         <Text style={styles.contextDataText}>Otros Peligros 1: {otrosPeligros1}</Text> */}
       </View>
 

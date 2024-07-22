@@ -9,7 +9,7 @@ export const AppProvider = ({ children }) => {
   const [mimeType, setAdjuntarFotografica] = useState('');
   const [data, setAdjuntarGrafico] = useState('');
   const [direccion, setDireccion] = useState('');
-  const [zip, setZip] = useState('');
+  const [CodigoPostal, setZip] = useState('');
   const [otrosIdentificaciones, setOtrasIdentificaciones] = useState('');
   const [nomEdificacion, setNombreEdificio] = useState('');
   const [uso, setUso] = useState('');
@@ -61,8 +61,8 @@ export const AppProvider = ({ children }) => {
   const [interior, setInterior] = useState('');
   const [revisionPlanos, setRevisionPlanos] = useState('');
   const [fuenteDelTipoDeSuelo, setFuenteDelTipoDeSuelo] = useState('');
-  const [fuenteDePeligrosGeologicos, setFuenteDePeligrosGeologicos] = useState('');
-  const [contactoDeLaPersona, setContactoDeLaPersona] = useState('');
+  const [fuentePeligroGeologicos, setFuenteDePeligrosGeologicos] = useState('');
+  const [contactoRegistrado, setContactoDeLaPersona] = useState('');
   const [otrosPeligros1, setOtrosPeligros1] = useState('');
   //fema 5
   const [pregunta1Fema5, setPregunta1Fema5] = useState('');
@@ -75,7 +75,7 @@ export const AppProvider = ({ children }) => {
       mimeType, setAdjuntarFotografica,
       data, setAdjuntarGrafico,
       direccion, setDireccion,
-      zip, setZip,
+      CodigoPostal, setZip,
       otrosIdentificaciones, setOtrasIdentificaciones,
       nomEdificacion, setNombreEdificio,
       uso, setUso,
@@ -123,8 +123,8 @@ export const AppProvider = ({ children }) => {
       interior, setInterior,
       revisionPlanos, setRevisionPlanos,
       fuenteDelTipoDeSuelo, setFuenteDelTipoDeSuelo,
-      fuenteDePeligrosGeologicos, setFuenteDePeligrosGeologicos,
-      contactoDeLaPersona, setContactoDeLaPersona,
+      fuentePeligroGeologicos, setFuenteDePeligrosGeologicos,
+      contactoRegistrado, setContactoDeLaPersona,
       otrosPeligros1, setOtrosPeligros1,
       //fema 5
       pregunta1Fema5, setPregunta1Fema5,

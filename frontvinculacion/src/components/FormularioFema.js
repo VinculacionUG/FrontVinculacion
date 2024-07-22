@@ -18,7 +18,7 @@ const FormularioFema = ({ navigation }) => {
     setAdjuntarGrafico,
     direccion,
     setDireccion,
-    zip,
+    CodigoPostal,
     setZip,
     otrosIdentificaciones,
     setOtrasIdentificaciones,
@@ -41,9 +41,9 @@ const FormularioFema = ({ navigation }) => {
       !mimeType ||
       !data ||
       !direccion ||
-      !zip ||
-      !otrasIdentificaciones ||
-      !nombreEdificio ||
+      !CodigoPostal ||
+      !otrosIdentificaciones ||
+      !nomEdificacion ||
       !tipoUso ||    
       !latitud ||
       !longitud ||
@@ -54,7 +54,7 @@ const FormularioFema = ({ navigation }) => {
         mimeType,
         data,
         direccion,
-        zip,
+        CodigoPostal,
         otrosIdentificaciones,
         nomEdificacion,
         uso,
@@ -71,9 +71,9 @@ const FormularioFema = ({ navigation }) => {
       mimeType,
       data,
       direccion,
-      zip,
-      otrasIdentificaciones,
-      nombreEdificio,
+      CodigoPostal,
+      otrosIdentificaciones,
+      nomEdificacion,
       tipoUso,
       uso,
       setUso,
@@ -122,6 +122,7 @@ const FormularioFema = ({ navigation }) => {
 
 
 useEffect(() => {
+  
   const url = 'https://www.fema.somee.com/Users/TipoUso';
 
   const fetchTipoUso = async () => {
@@ -225,7 +226,7 @@ if (error) {
         <Text style={styles.inputLabel}>ZIP:</Text>
         <TextInput
           style={styles.inputText}
-          value={zip}
+          value={CodigoPostal}
           maxLength={6}
           onChangeText={(text) => {
             const numericValue = text.replace(/[^0-9]/g, '');
