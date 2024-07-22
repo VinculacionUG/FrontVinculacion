@@ -47,15 +47,15 @@ const FormularioFema4 = ({ navigation }) => {
     }
 
     // Continuar con la navegación o el procesamiento de datos
-    console.log('Datos guardados:', {
-      codEvalExterior,
-      codEvalInterior,
-      revisionPlanos,
-      fuenteTipoSuelo,
-      fuentePeligroGeologicos,
-      contactoRegistrado,
-      PeligorsGeologicos,
-    });
+    // console.log('Datos guardados:', {
+    //   codEvalExterior,
+    //   codEvalInterior,
+    //   revisionPlanos,
+    //   fuenteTipoSuelo,
+    //   fuentePeligroGeologicos,
+    //   contactoRegistrado,
+    //   PeligorsGeologicos,
+    // });
     navigation.navigate('FormularioFema5');
   };
 
@@ -102,7 +102,7 @@ const FormularioFema4 = ({ navigation }) => {
         setRevisionExterior(result);
       } catch (error) {
         setError(error);
-        console.log(error);
+        // console.log(error);
       } finally {
         setLoading(false);
       }
@@ -120,7 +120,7 @@ const FormularioFema4 = ({ navigation }) => {
         setRevisionInterior(result);
       } catch (error) {
         setError(error);
-        console.log(error);
+        // console.log(error);
       } finally {
         setLoading(false);
       }
@@ -138,7 +138,7 @@ const FormularioFema4 = ({ navigation }) => {
         setOtrosPeligros(result);
       } catch (error) {
         setError(error);
-        console.log(error);
+        // console.log(error);
       } finally {
         setLoading(false);
       }

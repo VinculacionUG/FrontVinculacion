@@ -132,59 +132,59 @@ const FormularioFema5 = ({ navigation }) => {
     }
 
     try {
-      console.log('Datos guardados:', {
-        mimeType,
-        data,
-        direccion,
-        CodigoPostal,
-        otrosIdentificaciones,
-        nomEdificacion,
-        CodTipoUsoEdificacion,
-        latitud,
-        longitud,
-        fechaEncuesta,
-        horaEncuesta,
-        //Fema 2
-        nroPisosSup,
-        nroPisosInf,
-        anioContruccion,
-        areaTotalPiso,
-        anioCodigo,
-        ampliacion,
-        amplAnioConstruccion,
-        codTipoSuelo,
-        comentarios,
-        femaOcupacions,
-        chk1,
-        chk2,
-        chk3,
-        chk4,
-        chk1N,
-        chk2N,
-        chk3N,
-        chk4N,
-        //fema 3
-        femaPuntuacions,
+      // console.log('Datos guardados:', {
+      //   mimeType,
+      //   data,
+      //   direccion,
+      //   CodigoPostal,
+      //   otrosIdentificaciones,
+      //   nomEdificacion,
+      //   CodTipoUsoEdificacion,
+      //   latitud,
+      //   longitud,
+      //   fechaEncuesta,
+      //   horaEncuesta,
+      //   //Fema 2
+      //   nroPisosSup,
+      //   nroPisosInf,
+      //   anioContruccion,
+      //   areaTotalPiso,
+      //   anioCodigo,
+      //   ampliacion,
+      //   amplAnioConstruccion,
+      //   codTipoSuelo,
+      //   comentarios,
+      //   femaOcupacions,
+      //   chk1,
+      //   chk2,
+      //   chk3,
+      //   chk4,
+      //   chk1N,
+      //   chk2N,
+      //   chk3N,
+      //   chk4N,
+      //   //fema 3
+      //   femaPuntuacions,
 
-        //fema 4
-        codEvalExterior,
-        codEvalInterior,
-        revisionPlanos,
-        fuenteTipoSuelo,
-        fuentePeligroGeologicos,
-        contactoRegistrado,
-        PeligorsGeologicos,
+      //   //fema 4
+      //   codEvalExterior,
+      //   codEvalInterior,
+      //   revisionPlanos,
+      //   fuenteTipoSuelo,
+      //   fuentePeligroGeologicos,
+      //   contactoRegistrado,
+      //   PeligorsGeologicos,
 
-        //fema 5
-        pregunta1Fema5,
-        pregunta2Fema5,
-        inspeccionNivel,
-        nombreContacto, 
-        codUsuarioAct
+      //   //fema 5
+      //   pregunta1Fema5,
+      //   pregunta2Fema5,
+      //   inspeccionNivel,
+      //   nombreContacto, 
+      //   codUsuarioAct
 
-      })
-      // const response = await fetch('https://www.fema.somee.com/api/FemaCinco/guardarDatos', {
-      const response = await fetch('http://localhost:7040/Users/FormularioFEMA', {
+      // })
+      const response = await fetch('https://www.fema.somee.com/Users/FormularioFEMA', {
+      // const response = await fetch('http://localhost:7040/Users/FormularioFEMA', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -239,30 +239,32 @@ const FormularioFema5 = ({ navigation }) => {
           codUsuarioAct
         }),
       });
-
+      // console.log("Esto responde",response.status);
       if (!response.ok) {
         const errorData = await response.json();
-        console.error('Error al guardar los datos:', errorData);
+        // console.error('Error al guardar los datos:', errorData);
         throw new Error('Error al guardar los datos');
+      }else{
+        const result = await response.json();
+        // console.log('Datos guardados con éxito:', result);
+        alert(
+          "¡Formulario guardado con éxito!",
+          "",
+          [
+            {
+              text: "Ok",
+              onPress: () => navigation.navigate('Dashboard'),
+            },
+          ],
+          { cancelable: false }
+        );
+        navigation.navigate('Dashboard');
+        
       }
 
-      const result = await response.json();
-      console.log('Datos guardados con éxito:', result);
-
-      Alert.alert(
-        "¡Formulario guardado con éxito!",
-        "",
-        [
-          {
-            text: "Ok",
-            onPress: () => navigation.navigate('Dashboard'),
-          },
-        ],
-        { cancelable: false }
-      );
     } catch (error) {
-      console.error('Error al guardar los datos:', error);
-      Alert.alert('Error', 'Ocurrió un error al guardar los datos.');
+      // console.error('Error al guardar los datos:', error);
+      alert('Error', 'Ocurrió un error al guardar los datos.');
     }
   };
 
@@ -277,10 +279,10 @@ const FormularioFema5 = ({ navigation }) => {
           setCodUsuarioAct(codigo)
         } else {
           // Manejo de situación donde no se encuentra información de usuario
-          console.log('No se encuentra información de usuario PRUEBA'); //Mensaje de prueba
+          // console.log('No se encuentra información de usuario PRUEBA'); //Mensaje de prueba
         }
       } catch (error) {
-        console.error('Error al obtener datos del usuario:', error.message);
+        // console.error('Error al obtener datos del usuario:', error.message);
         Alert.alert('Error', 'Ha ocurrido un error al obtener los datos del usuario.');
       }
     };
@@ -299,7 +301,7 @@ const FormularioFema5 = ({ navigation }) => {
         setAccionPreguntas(result);
       } catch (error) {
         setError(error);
-        console.log(error);
+        // console.log(error);
       } finally {
         setLoading(false);
       }
@@ -366,7 +368,7 @@ const FormularioFema5 = ({ navigation }) => {
           style={[styles.input, styles.pickerSmall]}
           selectedValue={inspeccionNivel}
           onValueChange={(itemValue) => {
-            console.log('Seleccionado:', itemValue);
+            // console.log('Seleccionado:', itemValue);
             setInspeccionNivel(itemValue);
           }}
         >

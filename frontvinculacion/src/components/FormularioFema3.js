@@ -76,32 +76,32 @@ const FormularioFema3 = ({ route, navigation }) => {
     }
   
     // Continuar con la navegación o el procesamiento de datos
-    console.log('Datos guardados:', {
-      tipoEdificacion,
-      subTipo,
-      resultadoBase,
-      irregularidadVerticalSevera,
-      irregularidadVerticalModerada,
-      plantaIrregular,
-      preCodigoSismico,
-      postCodigoSismico,
-      sueloTipoAB,
-      sueloTipoE1a3,
-      sueloTipoEMayor3,
-      resultadoSmin,
-      resultadoFinal,
-      // resultadoBase,
-      // irregularidadVerticalSevera,
-      // irregularidadVerticalModerada,
-      // plantaIrregular,
-      // preCodigoSismico,
-      // postCodigoSismico,
-      // sueloTipoAB,
-      // sueloTipoE1a3,
-      // sueloTipoEMayor3,
-      // resultadoSmin,
-      // resultadoFinal
-    });
+    // console.log('Datos guardados:', {
+    //   tipoEdificacion,
+    //   subTipo,
+    //   resultadoBase,
+    //   irregularidadVerticalSevera,
+    //   irregularidadVerticalModerada,
+    //   plantaIrregular,
+    //   preCodigoSismico,
+    //   postCodigoSismico,
+    //   sueloTipoAB,
+    //   sueloTipoE1a3,
+    //   sueloTipoEMayor3,
+    //   resultadoSmin,
+    //   resultadoFinal,
+    //   // resultadoBase,
+    //   // irregularidadVerticalSevera,
+    //   // irregularidadVerticalModerada,
+    //   // plantaIrregular,
+    //   // preCodigoSismico,
+    //   // postCodigoSismico,
+    //   // sueloTipoAB,
+    //   // sueloTipoE1a3,
+    //   // sueloTipoEMayor3,
+    //   // resultadoSmin,
+    //   // resultadoFinal
+    // });
     navigation.navigate('FormularioFema4');
   };
 
@@ -255,7 +255,7 @@ const FormularioFema3 = ({ route, navigation }) => {
         //console.log(result);
       } catch (error) {
         setError(error);
-        console.log(error);
+        // console.log(error);
       } finally {
         setLoading(false);
       }
@@ -333,7 +333,7 @@ const FormularioFema3 = ({ route, navigation }) => {
       // Verifica si existe una entrada válida en el mapa para la combinación Tipo de Edificación y Subtipo
       if (!tipoEdificacionMap.hasOwnProperty(key)) {
         resetearValoresMostrados(); 
-        console.warn(`No se encontró una combinación válida para Tipo de Edificación: ${selectedValueTipoEdificacion} y Subtipo: ${subTipo}`);
+        // console.warn(`No se encontró una combinación válida para Tipo de Edificación: ${selectedValueTipoEdificacion} y Subtipo: ${subTipo}`);
         return; // Si no hay una combinación válida, salimos de la función
       }
 
@@ -393,15 +393,17 @@ const FormularioFema3 = ({ route, navigation }) => {
                 updatedCodPuntuacionMap.resultadoSmin = codPuntuacionMatrizSec;
                 break;
               default:
-                console.warn(`Código de puntuación desconocido: ${item.codTipoPuntuacion}`);
+                // console.warn(`Código de puntuación desconocido: ${item.codTipoPuntuacion}`);
             }
           });
           setCodPuntuacionMap(updatedCodPuntuacionMap);
         } else {
-          console.warn('La respuesta de la API no contiene datos');
+          // console.warn('La respuesta de la API no contiene datos');
+          alert('La respuesta de la API no contiene datos')
         }
       } catch (error) {
-        console.error('Error en la solicitud:', error);
+        // console.error('Error en la solicitud:', error);
+        alert('Error en la solicitud')
       }
     };
 
@@ -453,8 +455,8 @@ const FormularioFema3 = ({ route, navigation }) => {
     setResultado(prevResultado => [...prevResultado, selectedItems]); // Añade la nueva selección al resultado
 
   // Aquí puedes hacer lo necesario para guardar la selección, como enviar a una API o almacenarlo en un estado global
-  console.log(newSelection);
-  console.log(femaPuntuacions);
+  // console.log(newSelection);
+  // console.log(femaPuntuacions);
   };
 
   useEffect(() => {

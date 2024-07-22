@@ -50,37 +50,37 @@ const FormularioFema = ({ navigation }) => {
       !fechaEncuesta ||
       !horaEncuesta
     ) {
-      console.log('Datos guardados:', {
-        mimeType,
-        data,
-        direccion,
-        CodigoPostal,
-        otrosIdentificaciones,
-        nomEdificacion,
-        CodTipoUsoEdificacion,
-        latitud,
-        longitud,
-        fechaEncuesta,
-        horaEncuesta,
-      });
+      // console.log('Datos guardados:', {
+      //   mimeType,
+      //   data,
+      //   direccion,
+      //   CodigoPostal,
+      //   otrosIdentificaciones,
+      //   nomEdificacion,
+      //   CodTipoUsoEdificacion,
+      //   latitud,
+      //   longitud,
+      //   fechaEncuesta,
+      //   horaEncuesta,
+      // });
       alert('Por favor complete todos los campos.');
       return;
     }
     // Aquí puedes guardar los datos o hacer lo necesario antes de navegar
-    console.log('Datos guardados:', {
-      mimeType,
-      data,
-      direccion,
-      CodigoPostal,
-      otrosIdentificaciones,
-      nomEdificacion,
-      tipoUso,
-      CodTipoUsoEdificacion,
-      latitud,
-      longitud,
-      fechaEncuesta,
-      horaEncuesta,
-    });
+    // console.log('Datos guardados:', {
+    //   mimeType,
+    //   data,
+    //   direccion,
+    //   CodigoPostal,
+    //   otrosIdentificaciones,
+    //   nomEdificacion,
+    //   tipoUso,
+    //   CodTipoUsoEdificacion,
+    //   latitud,
+    //   longitud,
+    //   fechaEncuesta,
+    //   horaEncuesta,
+    // });
     navigation.navigate('FormularioFema2');
   };
 
@@ -106,8 +106,8 @@ const FormularioFema = ({ navigation }) => {
         Alert.alert('Error', 'Hubo un problema al seleccionar la imagen. Por favor, intenta nuevamente.');
       }
     } catch (error) {
-      console.error('Error al seleccionar imagen: ', error);
-      Alert.alert('Error', 'Hubo un problema al seleccionar la imagen. Por favor, intenta nuevamente.');
+      // console.error('Error al seleccionar imagen: ', error);
+      alert('Error', 'Hubo un problema al seleccionar la imagen. Por favor, intenta nuevamente.');
     }
   };
 
@@ -134,7 +134,7 @@ const FormularioFema = ({ navigation }) => {
         setTipoUso(result);
       } catch (error) {
         setError(error);
-        console.log(error);
+        // console.log(error);
       } finally {
         setLoading(false);
       }
@@ -369,6 +369,7 @@ const FormularioFema = ({ navigation }) => {
           style={styles.inputText}
           value={horaEncuesta}
           onChangeText={(text) => setHora(text)}
+          placeholder="00:00"
         />
       </View>
 
