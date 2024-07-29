@@ -1,0 +1,179 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.vinculaciongrupofema.frontvinculacion"
+4    android:versionCode="1"
+5    android:versionName="1.0.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="23"
+9        android:targetSdkVersion="34" />
+10
+11    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+11-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:5:3-75
+11-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:5:20-73
+12    <uses-permission android:name="android.permission.INTERNET" />
+12-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:2:3-64
+12-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:2:20-62
+13    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+13-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:3:3-77
+13-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:3:20-75
+14    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+14-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:4:3-68
+14-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:4:20-66
+15    <uses-permission android:name="android.permission.VIBRATE" />
+15-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:6:3-63
+15-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:6:20-61
+16    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+16-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:7:3-78
+16-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:7:20-76
+17
+18    <queries>
+18-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:8:3-14:13
+19        <intent>
+19-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:9:5-13:14
+20            <action android:name="android.intent.action.VIEW" />
+20-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:10:7-58
+20-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:10:15-56
+21
+22            <category android:name="android.intent.category.BROWSABLE" />
+22-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:11:7-67
+22-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:11:17-65
+23
+24            <data android:scheme="https" />
+24-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:12:7-37
+24-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:12:13-35
+25        </intent>
+26    </queries>
+27
+28    <permission
+28-->[androidx.core:core:1.9.0] C:\Users\User\.gradle\caches\transforms-4\6621c239d1e00abea0752787fff99403\transformed\core-1.9.0\AndroidManifest.xml:22:5-24:47
+29        android:name="com.vinculaciongrupofema.frontvinculacion.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+29-->[androidx.core:core:1.9.0] C:\Users\User\.gradle\caches\transforms-4\6621c239d1e00abea0752787fff99403\transformed\core-1.9.0\AndroidManifest.xml:23:9-81
+30        android:protectionLevel="signature" />
+30-->[androidx.core:core:1.9.0] C:\Users\User\.gradle\caches\transforms-4\6621c239d1e00abea0752787fff99403\transformed\core-1.9.0\AndroidManifest.xml:24:9-44
+31
+32    <uses-permission android:name="com.vinculaciongrupofema.frontvinculacion.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+32-->[androidx.core:core:1.9.0] C:\Users\User\.gradle\caches\transforms-4\6621c239d1e00abea0752787fff99403\transformed\core-1.9.0\AndroidManifest.xml:26:5-97
+32-->[androidx.core:core:1.9.0] C:\Users\User\.gradle\caches\transforms-4\6621c239d1e00abea0752787fff99403\transformed\core-1.9.0\AndroidManifest.xml:26:22-94
+33
+34    <application
+34-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:15:3-32:17
+35        android:name="com.vinculaciongrupofema.frontvinculacion.MainApplication"
+35-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:15:16-47
+36        android:allowBackup="true"
+36-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:15:162-188
+37        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+37-->[androidx.core:core:1.9.0] C:\Users\User\.gradle\caches\transforms-4\6621c239d1e00abea0752787fff99403\transformed\core-1.9.0\AndroidManifest.xml:28:18-86
+38        android:debuggable="true"
+39        android:extractNativeLibs="false"
+40        android:icon="@mipmap/ic_launcher"
+40-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:15:81-115
+41        android:label="@string/app_name"
+41-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:15:48-80
+42        android:roundIcon="@mipmap/ic_launcher_round"
+42-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:15:116-161
+43        android:theme="@style/AppTheme"
+43-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:15:189-220
+44        android:usesCleartextTraffic="true" >
+44-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\debug\AndroidManifest.xml:6:18-53
+45        <meta-data
+45-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:16:5-83
+46            android:name="expo.modules.updates.ENABLED"
+46-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:16:16-59
+47            android:value="false" />
+47-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:16:60-81
+48        <meta-data
+48-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:17:5-105
+49            android:name="expo.modules.updates.EXPO_UPDATES_CHECK_ON_LAUNCH"
+49-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:17:16-80
+50            android:value="ALWAYS" />
+50-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:17:81-103
+51        <meta-data
+51-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:18:5-99
+52            android:name="expo.modules.updates.EXPO_UPDATES_LAUNCH_WAIT_MS"
+52-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:18:16-79
+53            android:value="0" />
+53-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:18:80-97
+54
+55        <activity
+55-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:19:5-30:16
+56            android:name="com.vinculaciongrupofema.frontvinculacion.MainActivity"
+56-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:19:15-43
+57            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|uiMode"
+57-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:19:44-134
+58            android:exported="true"
+58-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:19:256-279
+59            android:launchMode="singleTask"
+59-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:19:135-166
+60            android:screenOrientation="portrait"
+60-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:19:280-316
+61            android:theme="@style/Theme.App.SplashScreen"
+61-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:19:210-255
+62            android:windowSoftInputMode="adjustResize" >
+62-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:19:167-209
+63            <intent-filter>
+63-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:20:7-23:23
+64                <action android:name="android.intent.action.MAIN" />
+64-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:21:9-60
+64-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:21:17-58
+65
+66                <category android:name="android.intent.category.LAUNCHER" />
+66-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:22:9-68
+66-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:22:19-66
+67            </intent-filter>
+68            <intent-filter>
+68-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:24:7-29:23
+69                <action android:name="android.intent.action.VIEW" />
+69-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:10:7-58
+69-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:10:15-56
+70
+71                <category android:name="android.intent.category.DEFAULT" />
+71-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:26:9-67
+71-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:26:19-65
+72                <category android:name="android.intent.category.BROWSABLE" />
+72-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:11:7-67
+72-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:11:17-65
+73
+74                <data android:scheme="com.vinculaciongrupofema.frontvinculacion" />
+74-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:12:7-37
+74-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:12:13-35
+75            </intent-filter>
+76        </activity>
+77        <activity
+77-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:31:5-106
+78            android:name="com.facebook.react.devsupport.DevSettingsActivity"
+78-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:31:15-79
+79            android:exported="false" />
+79-->C:\Users\User\OneDrive\Escritorio\Nueva carpeta (5)\App-vulneravilidad\frontvinculacion\android\app\src\main\AndroidManifest.xml:31:80-104
+80
+81        <provider
+81-->[androidx.emoji2:emoji2:1.2.0] C:\Users\User\.gradle\caches\transforms-4\1f0c06f94521237f79abc32a5f8de33d\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:24:9-32:20
+82            android:name="androidx.startup.InitializationProvider"
+82-->[androidx.emoji2:emoji2:1.2.0] C:\Users\User\.gradle\caches\transforms-4\1f0c06f94521237f79abc32a5f8de33d\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:25:13-67
+83            android:authorities="com.vinculaciongrupofema.frontvinculacion.androidx-startup"
+83-->[androidx.emoji2:emoji2:1.2.0] C:\Users\User\.gradle\caches\transforms-4\1f0c06f94521237f79abc32a5f8de33d\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:26:13-68
+84            android:exported="false" >
+84-->[androidx.emoji2:emoji2:1.2.0] C:\Users\User\.gradle\caches\transforms-4\1f0c06f94521237f79abc32a5f8de33d\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:27:13-37
+85            <meta-data
+85-->[androidx.emoji2:emoji2:1.2.0] C:\Users\User\.gradle\caches\transforms-4\1f0c06f94521237f79abc32a5f8de33d\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:29:13-31:52
+86                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+86-->[androidx.emoji2:emoji2:1.2.0] C:\Users\User\.gradle\caches\transforms-4\1f0c06f94521237f79abc32a5f8de33d\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:30:17-75
+87                android:value="androidx.startup" />
+87-->[androidx.emoji2:emoji2:1.2.0] C:\Users\User\.gradle\caches\transforms-4\1f0c06f94521237f79abc32a5f8de33d\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:31:17-49
+88            <meta-data
+88-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\User\.gradle\caches\transforms-4\de53634973e45ba7b62012cb8e869aee\transformed\jetified-lifecycle-process-2.4.1\AndroidManifest.xml:31:13-33:52
+89                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+89-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\User\.gradle\caches\transforms-4\de53634973e45ba7b62012cb8e869aee\transformed\jetified-lifecycle-process-2.4.1\AndroidManifest.xml:32:17-78
+90                android:value="androidx.startup" />
+90-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\User\.gradle\caches\transforms-4\de53634973e45ba7b62012cb8e869aee\transformed\jetified-lifecycle-process-2.4.1\AndroidManifest.xml:33:17-49
+91        </provider>
+92
+93        <meta-data
+93-->[com.facebook.soloader:soloader:0.10.5] C:\Users\User\.gradle\caches\transforms-4\c5277b14eec9cc4a12d0fb10c9f8e27e\transformed\jetified-soloader-0.10.5\AndroidManifest.xml:12:9-14:37
+94            android:name="com.facebook.soloader.enabled"
+94-->[com.facebook.soloader:soloader:0.10.5] C:\Users\User\.gradle\caches\transforms-4\c5277b14eec9cc4a12d0fb10c9f8e27e\transformed\jetified-soloader-0.10.5\AndroidManifest.xml:13:13-57
+95            android:value="false" />
+95-->[com.facebook.soloader:soloader:0.10.5] C:\Users\User\.gradle\caches\transforms-4\c5277b14eec9cc4a12d0fb10c9f8e27e\transformed\jetified-soloader-0.10.5\AndroidManifest.xml:14:13-34
+96    </application>
+97
+98</manifest>
