@@ -3,6 +3,7 @@
     "name": "frontvinculacion",
     "slug": "frontvinculacion",
     "version": "1.0.0",
+    "sdkVersion": "48.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -25,10 +26,21 @@
       "package": "com.vinculaciongrupofema.frontvinculacion"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro",
+      "build": {
+        "babel": {
+          "include": [
+            "@expo/vector-icons",
+            "@react-native-picker/picker"
+          ]
+        }
+      }
+
     },
     "plugins": [
-      "expo-secure-store"
+      "expo-secure-store",
+      "expo-font"
     ],
     "extra": {
       "eas": {
