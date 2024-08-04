@@ -31,8 +31,8 @@ const FormularioFema3 = ({ route, navigation }) => {
   const [selectedValue, setSelectedValue] = useState('');
   const [selectedValueTipoEdificacion, setSelectedValueTipoEdificacion] = useState('');
 
-  const [estChecked, setEstChecked] = useState(false);
-  const [dnkChecked, setDnkChecked] = useState(false);
+  const [esEst, setEstChecked] = useState(false);
+  const [esDnk, setDnkChecked] = useState(false);
 
   const [selectedValues, setSelectedValues] = useState([]);
 
@@ -66,9 +66,9 @@ const FormularioFema3 = ({ route, navigation }) => {
       // !sueloTipoE1a3 ||
       // !sueloTipoEMayor3 ||
       // !resultadoSmin ||
-      // !estChecked ||
-      // !dnkChecked ||
-      !(estChecked || dnkChecked) ||
+      // !esEst ||
+      // !esDnk ||
+      !(esEst || esDnk) ||
       !resultadoFinal
     ) {
       alert('Por favor complete todos los campos y presione guardar');
@@ -76,32 +76,32 @@ const FormularioFema3 = ({ route, navigation }) => {
     }
   
     // Continuar con la navegación o el procesamiento de datos
-    console.log('Datos guardados:', {
-      tipoEdificacion,
-      subTipo,
-      resultadoBase,
-      irregularidadVerticalSevera,
-      irregularidadVerticalModerada,
-      plantaIrregular,
-      preCodigoSismico,
-      postCodigoSismico,
-      sueloTipoAB,
-      sueloTipoE1a3,
-      sueloTipoEMayor3,
-      resultadoSmin,
-      resultadoFinal,
-      // resultadoBase,
-      // irregularidadVerticalSevera,
-      // irregularidadVerticalModerada,
-      // plantaIrregular,
-      // preCodigoSismico,
-      // postCodigoSismico,
-      // sueloTipoAB,
-      // sueloTipoE1a3,
-      // sueloTipoEMayor3,
-      // resultadoSmin,
-      // resultadoFinal
-    });
+    // console.log('Datos guardados:', {
+    //   tipoEdificacion,
+    //   subTipo,
+    //   resultadoBase,
+    //   irregularidadVerticalSevera,
+    //   irregularidadVerticalModerada,
+    //   plantaIrregular,
+    //   preCodigoSismico,
+    //   postCodigoSismico,
+    //   sueloTipoAB,
+    //   sueloTipoE1a3,
+    //   sueloTipoEMayor3,
+    //   resultadoSmin,
+    //   resultadoFinal,
+    //   // resultadoBase,
+    //   // irregularidadVerticalSevera,
+    //   // irregularidadVerticalModerada,
+    //   // plantaIrregular,
+    //   // preCodigoSismico,
+    //   // postCodigoSismico,
+    //   // sueloTipoAB,
+    //   // sueloTipoE1a3,
+    //   // sueloTipoEMayor3,
+    //   // resultadoSmin,
+    //   // resultadoFinal
+    // });
     navigation.navigate('FormularioFema4');
   };
 
@@ -155,7 +155,7 @@ const FormularioFema3 = ({ route, navigation }) => {
   };
 
   const {
-    resultado,
+    femaPuntuacions,
     setResultado
   } = useContext(AppContext);
 
@@ -255,7 +255,7 @@ const FormularioFema3 = ({ route, navigation }) => {
         //console.log(result);
       } catch (error) {
         setError(error);
-        console.log(error);
+        // console.log(error);
       } finally {
         setLoading(false);
       }
@@ -333,7 +333,7 @@ const FormularioFema3 = ({ route, navigation }) => {
       // Verifica si existe una entrada válida en el mapa para la combinación Tipo de Edificación y Subtipo
       if (!tipoEdificacionMap.hasOwnProperty(key)) {
         resetearValoresMostrados(); 
-        console.warn(`No se encontró una combinación válida para Tipo de Edificación: ${selectedValueTipoEdificacion} y Subtipo: ${subTipo}`);
+        // console.warn(`No se encontró una combinación válida para Tipo de Edificación: ${selectedValueTipoEdificacion} y Subtipo: ${subTipo}`);
         return; // Si no hay una combinación válida, salimos de la función
       }
 
@@ -393,15 +393,17 @@ const FormularioFema3 = ({ route, navigation }) => {
                 updatedCodPuntuacionMap.resultadoSmin = codPuntuacionMatrizSec;
                 break;
               default:
-                console.warn(`Código de puntuación desconocido: ${item.codTipoPuntuacion}`);
+                // console.warn(`Código de puntuación desconocido: ${item.codTipoPuntuacion}`);
             }
           });
           setCodPuntuacionMap(updatedCodPuntuacionMap);
         } else {
-          console.warn('La respuesta de la API no contiene datos');
+          // console.warn('La respuesta de la API no contiene datos');
+          alert('La respuesta de la API no contiene datos')
         }
       } catch (error) {
-        console.error('Error en la solicitud:', error);
+        // console.error('Error en la solicitud:', error);
+        alert('Error en la solicitud')
       }
     };
 
@@ -430,17 +432,17 @@ const FormularioFema3 = ({ route, navigation }) => {
       { id: 10, value: 'Suelo Tipo EMayor3', isChecked: includeSueloTipoEMayor3, data: sueloTipoEMayor3, codPuntuacionMatrizSec: codPuntuacionMap.sueloTipoEMayor3 },
       { id: 11, value: 'Resultado Smin', isChecked: includeResultadoSmin, data: resultadoSmin, codPuntuacionMatrizSec: codPuntuacionMap.resultadoSmin },
       { id: 12, value: 'Resultado Final', data: resultadoFinal },
-      { id: 13, value: 'Selección Final', data: estChecked ? 'EST' : dnkChecked ? 'DNK' : 'Ninguno' }
+      { id: 13, value: 'Selección Final', data: esEst ? 'EST' : esDnk ? 'DNK' : 'Ninguno' }
     ];
   
     // Filtrar los elementos que están marcados
     const selectedItems = codPuntuacionMatrizSec
       .filter(item => item.isChecked)
       .map(item => ({
-        codPuntuacionMatrizSec: item.codPuntuacionMatrizSec, // Incluye el codPuntuacionMatrizSec
+        codPuntuacionMatriz: item.codPuntuacionMatrizSec, // Incluye el codPuntuacionMatrizSec
         resultadoFinal,
-      estChecked,
-      dnkChecked,
+      esEst,
+      esDnk,
       }));
   
     const newSelection = {
@@ -453,8 +455,8 @@ const FormularioFema3 = ({ route, navigation }) => {
     setResultado(prevResultado => [...prevResultado, selectedItems]); // Añade la nueva selección al resultado
 
   // Aquí puedes hacer lo necesario para guardar la selección, como enviar a una API o almacenarlo en un estado global
-  console.log(newSelection);
-  console.log(resultado);
+  // console.log(newSelection);
+  // console.log(femaPuntuacions);
   };
 
   useEffect(() => {
@@ -742,7 +744,7 @@ const FormularioFema3 = ({ route, navigation }) => {
 
       <View style={styles.checkboxContainer}>
         <CheckBox
-          value={estChecked}
+          value={esEst}
           onValueChange={(newValue) => {
             if (newValue) setDnkChecked(false);
             setEstChecked(newValue);
@@ -750,7 +752,7 @@ const FormularioFema3 = ({ route, navigation }) => {
         />
         <Text style={styles.checkboxLabel}>EST</Text>
         <CheckBox
-          value={dnkChecked}
+          value={esDnk}
           onValueChange={(newValue) => {
             if (newValue) setEstChecked(false);
             setDnkChecked(newValue);

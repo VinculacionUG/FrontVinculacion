@@ -1,66 +1,86 @@
-import React, { useContext, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Image, Alert } from 'react-native';
+import React, { useEffect, useState, useContext } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Image, Alert, ActivityIndicator } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
+import { Picker } from '@react-native-picker/picker';
 import { AppContext } from './AppContext';
 
 const FormularioFema = ({ navigation }) => {
+  const [tipoUso, setTipoUso] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [selectedValuetipoUso, setSelectedValueTipoUso] = useState('');
+
   const {
-    adjuntarFotografica,
+    mimeType,
     setAdjuntarFotografica,
-    adjuntarGrafico,
+    data,
     setAdjuntarGrafico,
     direccion,
     setDireccion,
-    zip,
+    CodigoPostal,
     setZip,
-    otrasIdentificaciones,
+    otrosIdentificaciones,
     setOtrasIdentificaciones,
-    nombreEdificio,
+    nomEdificacion,
     setNombreEdificio,
-    uso,
+    CodTipoUsoEdificacion,
     setUso,
     latitud,
     setLatitud,
     longitud,
     setLongitud,
-    fecha,
+    fechaEncuesta,
     setFecha,
-    hora,
+    horaEncuesta,
     setHora,
   } = useContext(AppContext);
 
   const handleNext = () => {
     if (
-      !adjuntarFotografica ||
-      !adjuntarGrafico ||
+      !mimeType ||
+      !data ||
       !direccion ||
-      !zip ||
-      !otrasIdentificaciones ||
-      !nombreEdificio ||
-      !uso ||
+      !CodigoPostal ||
+      !otrosIdentificaciones ||
+      !nomEdificacion ||
+      !tipoUso ||
       !latitud ||
       !longitud ||
-      !fecha ||
-      !hora
+      !fechaEncuesta ||
+      !horaEncuesta
     ) {
+      // console.log('Datos guardados:', {
+      //   mimeType,
+      //   data,
+      //   direccion,
+      //   CodigoPostal,
+      //   otrosIdentificaciones,
+      //   nomEdificacion,
+      //   CodTipoUsoEdificacion,
+      //   latitud,
+      //   longitud,
+      //   fechaEncuesta,
+      //   horaEncuesta,
+      // });
       alert('Por favor complete todos los campos.');
       return;
     }
     // Aquí puedes guardar los datos o hacer lo necesario antes de navegar
-    console.log('Datos guardados:', {
-      adjuntarFotografica,
-      adjuntarGrafico,
-      direccion,
-      zip,
-      otrasIdentificaciones,
-      nombreEdificio,
-      uso,
-      latitud,
-      longitud,
-      fecha,
-      hora,
-    });
+    // console.log('Datos guardados:', {
+    //   mimeType,
+    //   data,
+    //   direccion,
+    //   CodigoPostal,
+    //   otrosIdentificaciones,
+    //   nomEdificacion,
+    //   tipoUso,
+    //   CodTipoUsoEdificacion,
+    //   latitud,
+    //   longitud,
+    //   fechaEncuesta,
+    //   horaEncuesta,
+    // });
     navigation.navigate('FormularioFema2');
   };
 
@@ -86,8 +106,8 @@ const FormularioFema = ({ navigation }) => {
         Alert.alert('Error', 'Hubo un problema al seleccionar la imagen. Por favor, intenta nuevamente.');
       }
     } catch (error) {
-      console.error('Error al seleccionar imagen: ', error);
-      Alert.alert('Error', 'Hubo un problema al seleccionar la imagen. Por favor, intenta nuevamente.');
+      // console.error('Error al seleccionar imagen: ', error);
+      alert('Error', 'Hubo un problema al seleccionar la imagen. Por favor, intenta nuevamente.');
     }
   };
 
@@ -97,9 +117,55 @@ const FormularioFema = ({ navigation }) => {
     return uriParts[uriParts.length - 1];
   };
 
+
+
+
+  useEffect(() => {
+
+    const url = 'https://www.fema.somee.com/Users/TipoUso';
+
+    const fetchTipoUso = async () => {
+      try {
+        const response = await fetch(url, { method: 'GET' });
+        if (!response.ok) {
+          throw new Error('Error en la red');
+        }
+        const result = await response.json();
+        setTipoUso(result);
+      } catch (error) {
+        setError(error);
+        // console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchTipoUso();
+
+
+  }, []);
+
+
+  const handleUsoValueChange = (itemValue) => {
+    setSelectedValueTipoUso(itemValue);
+    setUso(itemValue); // Actualiza la variable CodTipoUsoEdificacion
+  };
+
+  if (loading) {
+    return <ActivityIndicator size="large" color="#0000ff" />;
+  }
+  if (error) {
+    return (
+      <View>
+        <Text>Error: {error.message}</Text>
+      </View>
+    );
+  }
+
+
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      
+
       <TouchableOpacity style={styles.goBackButton} onPress={() => navigation.goBack()}>
         <MaterialCommunityIcons name="arrow-left" size={24} color="#001f3f" />
       </TouchableOpacity>
@@ -113,13 +179,13 @@ const FormularioFema = ({ navigation }) => {
             <Text style={styles.uploadButtonText}>Subir</Text>
           </TouchableOpacity>
           <View style={styles.fileNameContainer}>
-            {adjuntarFotografica ? (
+            {mimeType ? (
               <>
-                {/* <Text style={styles.fileNameText}>{adjuntarFotografica}</Text>, */}
+                {/* <Text style={styles.fileNameText}>{mimeType}</Text>, */}
                 <Text style={styles.fileNameText}>Imagen Seleccionada: </Text>
-                <Image source={{ uri: adjuntarFotografica }} style={styles.image} />
+                <Image source={{ uri: mimeType }} style={styles.image} />
               </>
-            )  : (
+            ) : (
               <Text>No se eligió ningún archivo</Text>
             )}
           </View>
@@ -133,11 +199,11 @@ const FormularioFema = ({ navigation }) => {
             <Text style={styles.uploadButtonText}>Subir</Text>
           </TouchableOpacity>
           <View style={styles.fileNameContainer}>
-            {adjuntarGrafico ? (
+            {data ? (
               <>
-                {/* <Text style={styles.fileNameText}>{adjuntarGrafico}</Text> */}
+                {/* <Text style={styles.fileNameText}>{data}</Text> */}
                 <Text style={styles.fileNameText}>Gráfico Seleccionado: </Text>
-                <Image source={{ uri: adjuntarGrafico }} style={styles.image} />
+                <Image source={{ uri: data }} style={styles.image} />
               </>
             ) : (
               <Text>No se eligió ningún archivo</Text>
@@ -159,7 +225,7 @@ const FormularioFema = ({ navigation }) => {
         <Text style={styles.inputLabel}>ZIP:</Text>
         <TextInput
           style={styles.inputText}
-          value={zip}
+          value={CodigoPostal}
           maxLength={6}
           onChangeText={(text) => {
             const numericValue = text.replace(/[^0-9]/g, '');
@@ -172,7 +238,7 @@ const FormularioFema = ({ navigation }) => {
         <Text style={styles.inputLabel}>Otras Identificaciones:</Text>
         <TextInput
           style={styles.input}
-          value={otrasIdentificaciones}
+          value={otrosIdentificaciones}
           onChangeText={(text) => setOtrasIdentificaciones(text)}
         />
       </View>
@@ -181,19 +247,39 @@ const FormularioFema = ({ navigation }) => {
         <Text style={styles.inputLabel}>Nombre del Edificio:</Text>
         <TextInput
           style={styles.input}
-          value={nombreEdificio}
+          value={nomEdificacion}
           onChangeText={(text) => setNombreEdificio(text)}
         />
       </View>
+
+
+      {/*
 
       <View style={styles.inputContainer}>
         <Text style={styles.inputLabel}>Uso:</Text>
         <TextInput
           style={styles.input}
-          value={uso}
+          value={CodTipoUsoEdificacion}
           onChangeText={(text) => setUso(text)}
         />
       </View>
+*/}
+
+
+      <View style={styles.inputContainer}>
+        <Text style={styles.inputLabel}>Uso:</Text>
+        <Picker
+          style={[styles.input]}
+          selectedValue={selectedValuetipoUso}
+          onValueChange={handleUsoValueChange} // Utiliza el nuevo método
+        >
+          <Picker.Item label="Seleccione" value="" />
+          {tipoUso.map((item, index) => (
+            <Picker.Item label={item.descripcion} value={item.codTipoUsoEdificacion} key={index} />
+          ))}
+        </Picker>
+      </View>
+
 
       <View style={styles.inputContainerRow}>
         <View style={styles.dateInputContainer}>
@@ -222,18 +308,18 @@ const FormularioFema = ({ navigation }) => {
             placeholder="MM"
             //maxLength={2}
             keyboardType="numeric"
-            value={fecha.month}
+            value={fechaEncuesta.month}
             //onChangeText={(text) => setFecha(prevState => ({ ...prevState, month: text }))}
             onChangeText={(text) => {
               const numericValue = text.replace(/[^a-zA-Z0-9]/g, ''); // Filtrar los caracteres no numéricos
               const intValue = parseInt(numericValue, 10); // Convertir el valor a un número entero
-                if (
-                  (numericValue === '' || (intValue >= 1 && intValue <= 12)) &&  // Verificar si el valor está dentro del rango permitido (1 - 31)
-                  numericValue.length <= 2                                       // Filtrar la cantidad de números
-                ) {
+              if (
+                (numericValue === '' || (intValue >= 1 && intValue <= 12)) &&  // Verificar si el valor está dentro del rango permitido (1 - 31)
+                numericValue.length <= 2                                       // Filtrar la cantidad de números
+              ) {
                 //setDay(numericValue);
                 setFecha(prevState => ({ ...prevState, month: text }))                                       // Actualizar el estado con el valor filtrado
-               }
+              }
             }}
           />
           <TextInput
@@ -241,18 +327,18 @@ const FormularioFema = ({ navigation }) => {
             placeholder="DD"
             maxLength={2}
             keyboardType="numeric"
-            value={fecha.day}
+            value={fechaEncuesta.day}
             // onChangeText={(text) => setFecha(prevState => ({ ...prevState, day: text }))}
             onChangeText={(text) => {
               const numericValue = text.replace(/[^a-zA-Z0-9]/g, ''); // Filtrar los caracteres no numéricos
               const intValue = parseInt(numericValue, 10); // Convertir el valor a un número entero
-                if (
-                  (numericValue === '' || (intValue >= 1 && intValue <= 31)) &&  // Verificar si el valor está dentro del rango permitido (1 - 31)
-                  numericValue.length <= 2                                       // Filtrar la cantidad de números
-                ) {
+              if (
+                (numericValue === '' || (intValue >= 1 && intValue <= 31)) &&  // Verificar si el valor está dentro del rango permitido (1 - 31)
+                numericValue.length <= 2                                       // Filtrar la cantidad de números
+              ) {
                 //setDay(numericValue);
                 setFecha(prevState => ({ ...prevState, day: text }))                                            // Actualizar el estado con el valor filtrado
-               }
+              }
             }}
           />
           <TextInput
@@ -260,18 +346,18 @@ const FormularioFema = ({ navigation }) => {
             placeholder="AAAA"
             maxLength={4}
             keyboardType="numeric"
-            value={fecha.year}
+            value={fechaEncuesta.year}
             //onChangeText={(text) => setFecha(prevState => ({ ...prevState, year: text }))}
             onChangeText={(text) => {
               const numericValue = text.replace(/[^a-zA-Z0-9]/g, ''); // Filtrar los caracteres no numéricos
               const intValue = parseInt(numericValue, 10); // Convertir el valor a un número entero
-                if (
-                  (numericValue === '' || (intValue >= 1 && intValue <= 3000)) &&  // Verificar si el valor está dentro del rango permitido (1 - 31)
-                  numericValue.length <= 4                                       // Filtrar la cantidad de números
-                ) {
+              if (
+                (numericValue === '' || (intValue >= 1 && intValue <= 3000)) &&  // Verificar si el valor está dentro del rango permitido (1 - 31)
+                numericValue.length <= 4                                       // Filtrar la cantidad de números
+              ) {
                 //setDay(numericValue);
                 setFecha(prevState => ({ ...prevState, year: text }))                                          // Actualizar el estado con el valor filtrado
-               }
+              }
             }}
           />
         </View>
@@ -281,8 +367,9 @@ const FormularioFema = ({ navigation }) => {
         <Text style={styles.inputLabel}>Hora:</Text>
         <TextInput
           style={styles.inputText}
-          value={hora}
+          value={horaEncuesta}
           onChangeText={(text) => setHora(text)}
+          placeholder="00:00"
         />
       </View>
 
@@ -434,4 +521,3 @@ const styles = StyleSheet.create({
 });
 
 export default FormularioFema;
-
