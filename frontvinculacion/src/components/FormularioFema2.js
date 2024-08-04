@@ -6,6 +6,7 @@ import { AppContext } from './AppContext';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const FormularioFema2 = ({ navigation }) => {
+  const [tipoocupacion1, setTipoocupacion1] = useState('');
   const [tipoocupacion, setTipoocupacion] = useState([]);
   const [tipoSuelo, setTipoSuelo] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
@@ -15,59 +16,57 @@ const FormularioFema2 = ({ navigation }) => {
   const [error, setError] = useState(null);
 
   const {
-    numeroPiso,
+    nroPisosSup,
     setNumeroPiso,
-    inf,
+    nroPisosInf,
     setInf,
-    anoConstruccion,
+    anioContruccion,
     setAnoConstruccion,
-    ocupacion,
-    setOcupacion,
-    tiposuelo1,
-    setTiposuelo1,
-    tipoocupacion1,
-    setTipoocupacion1,
-    areaTotalDePiso,
+    areaTotalPiso,
     setAreaTotalDePiso,
-    anoCodigo,
+    anioCodigo,
     setAnoCodigo,
     ampliacion,
     setAmpliacion,
-    anoDeContruccion,
+    amplAnioConstruccion,
     setAnoDeContruccion,
-    comentario,
+    codTipoSuelo,
+    setTiposuelo1,
+    femaOcupacions,
+    setOcupacion,
+    comentarios,
     setComentario,
   } = useContext(AppContext);
 
   const handleNext = () => {
-    if (!numeroPiso || !inf || !anoConstruccion || !areaTotalDePiso || !anoCodigo || !ampliacion || !anoDeContruccion ||
+    if (!nroPisosSup || !nroPisosInf || !anioContruccion || !areaTotalPiso || !anioCodigo || !ampliacion || !amplAnioConstruccion ||
       !selectedValuetipoocupacion || !selectedValuetipoSuelo || selectedCheckboxes.length === 0 ) {
       alert('Por favor complete todos los campos.');
       return;
     }
 
-    // Replicar tiposuelo1 tantas veces como elementos seleccionados
+    // Replicar codTipoSuelo tantas veces como elementos seleccionados
     const replicatedTiposuelo = new Array(selectedCheckboxes.length).fill(tipoocupacion1);
 
     // Combinar selectedCheckboxes y replicatedTiposuelo en un solo array
     const ocupacionArray = selectedCheckboxes.map((checkbox, index) => ({
-      ocupacion: checkbox,
-      tiposuelo: replicatedTiposuelo[index]
+      codOcupacion: checkbox,
+      codTipoOcupacion: replicatedTiposuelo[index]
     }));
 
     setOcupacion(ocupacionArray);
 
     console.log('Datos guardados:', {
-      numeroPiso,
-      inf,
-      anoConstruccion,
-      areaTotalDePiso,
-      anoCodigo,
+      nroPisosSup,
+      nroPisosInf,
+      anioContruccion,
+      areaTotalPiso,
+      anioCodigo,
       ampliacion,
-      anoDeContruccion,
-      tiposuelo1,
-      comentario,
-      ocupacion: ocupacionArray
+      amplAnioConstruccion,
+      codTipoSuelo,
+      comentarios,
+      femaOcupacions: ocupacionArray
     });
 
     navigation.navigate('FormularioFema3');
@@ -152,7 +151,7 @@ const FormularioFema2 = ({ navigation }) => {
     );
   }
 
-  const selectedDescriptions = ocupacion
+  const selectedDescriptions = femaOcupacions
     .filter(checkbox => selectedCheckboxes.includes(checkbox.codOcupacion))
     .map(checkbox => checkbox.descripcion);
 
@@ -162,62 +161,74 @@ const FormularioFema2 = ({ navigation }) => {
       <View style={styles.inputContainer}>
         <Text style={styles.inputLabel}>N° de Pisos:</Text>
         <Picker
-          style={styles.smallPicker}
-          selectedValue={numeroPiso}
-          onValueChange={(itemValue) => setNumeroPiso(itemValue)}
-        >
-          <Picker.Item label="Seleccione" value="" />
-          {Array.from({ length: 26 }, (_, i) => (
-            <Picker.Item key={i} label={`${i}`} value={`${i}`} />
-          ))}
+        style={styles.smallPicker}
+        selectedValue={nroPisosSup}
+        onValueChange={(itemValue) => setNumeroPiso(parseInt(itemValue, 10))}
+      >
+        <Picker.Item label="Seleccione" value="" />
+        {Array.from({ length: 26 }, (_, i) => (
+          <Picker.Item key={i} label={`${i}`} value={i} />
+        ))}
         </Picker>
 
-        <Text style={[styles.inputLabel, styles.infLabel]}>Inf:</Text>
+        <Text style={[styles.inputLabel, styles.nroPisosInfLabel]}>Inf:</Text>
         <Picker
-          style={styles.smallPicker}
-          selectedValue={inf}
-          onValueChange={(itemValue) => setInf(itemValue)}
-        >
-          <Picker.Item label="Seleccione" value="" />
-          {Array.from({ length: 6 }, (_, i) => (
-            <Picker.Item key={i} label={`${i}`} value={`${i}`} />
-          ))}
+        style={styles.smallPicker}
+        selectedValue={nroPisosInf}
+        onValueChange={(itemValue) => setInf(parseInt(itemValue, 10))}
+      >
+        <Picker.Item label="Seleccione" value="" />
+        {Array.from({ length: 6 }, (_, i) => (
+          <Picker.Item key={i} label={`${i}`} value={i} />
+        ))}
         </Picker>
       </View>
 
       <View style={styles.inputContainer}>
         <Text style={styles.inputLabel}>Año Construcción:</Text>
         <TextInput
-          style={[styles.input, { width: 50 }]}
-          value={anoConstruccion}
-          maxLength={4}
-          onChangeText={(text) => {
-            const numericValue = text.replace(/[^0-9]/g, '');
-            setAnoConstruccion(numericValue);
-          }}
+        style={[styles.input, { width: 50 }]}
+        value={anioContruccion.toString()}
+        maxLength={4}
+        keyboardType="numeric"
+        onChangeText={(text) => {
+          const numericValue = text.replace(/[^0-9]/g, '');
+          setAnoConstruccion(numericValue ? parseInt(numericValue, 10) : '');
+        }}
         />
         <Text style={[styles.inputLabel, { marginLeft: 10, width: 150 }]}>Área total de piso (m2):</Text>
         <TextInput
-          style={[styles.input, { width: 60 }]}
-          value={areaTotalDePiso}
-          onChangeText={(text) => {
-            const numericValue = text.replace(/[^0-9]/g, '');
-            setAreaTotalDePiso(numericValue);
-          }}
-          maxLength={5}
+  style={[styles.input, { width: 60 }]}
+  value={areaTotalPiso} // Convertir el número decimal a cadena para mostrar en el TextInput
+  keyboardType="decimal-pad" // Usar teclado numérico con punto decimal
+  onChangeText={(text) => {
+    // Permitir solo números y un solo punto decimal
+    const numericValue = text.replace(/[^0-9.]/g, '');
+    // Asegurarse de que haya solo un punto decimal
+    const [integerPart, decimalPart] = numericValue.split('.');
+    const formattedValue = decimalPart
+      ? `${integerPart}.${decimalPart.slice(0, 2)}` // Limitar a dos dígitos decimales
+      : integerPart;
+    // Convertir a número decimal y actualizar el estado
+    setAreaTotalDePiso(formattedValue ? parseFloat(formattedValue) : 0);
+  }}
+  maxLength={5}
         />
       </View>
 
       <View style={styles.inputContainer}>
         <Text style={styles.inputLabel}>Año de código:</Text>
         <TextInput
-          style={[styles.input, { width: 50 }]}
-          value={anoCodigo}
-          onChangeText={(text) => {
-            const numericValue = text.replace(/[^0-9]/g, '');
-            setAnoCodigo(numericValue);
-          }}
-        />
+        style={[styles.input, { width: 50 }]}
+        value={anioCodigo} // Convertir el número entero a cadena para mostrar en el TextInput
+        onChangeText={(text) => {
+          // Permitir solo números
+          const numericValue = text.replace(/[^0-9]/g, '');
+          // Convertir a número entero y actualizar el estado
+          setAnoCodigo(numericValue);
+        }}
+        keyboardType="numeric"
+      />
 
         <Text style={[styles.inputLabel, { marginLeft: 10 }]}>Ampliación:</Text>
         <Picker
@@ -234,22 +245,24 @@ const FormularioFema2 = ({ navigation }) => {
       </View>
 
       <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>Año de Construcción:</Text>
+        <Text style={styles.inputLabel}>Año Construcción (Ampliación):</Text>
         <TextInput
-          style={styles.inputText}
-          value={anoDeContruccion}
-          onChangeText={(text) => {
-            const numericValue = text.replace(/[^0-9]/g, '');
-            setAnoDeContruccion(numericValue);
-          }}
-          maxLength={4}
+        style={styles.inputText}
+        value={amplAnioConstruccion.toString()} // Convertir el número entero a cadena para mostrar en el TextInput
+        onChangeText={(text) => {
+          const numericValue = text.replace(/[^0-9]/g, '');
+          // Convertir a número entero y actualizar el estado
+          setAnoDeContruccion(numericValue ? parseInt(numericValue, 10) : 0);
+        }}
+        keyboardType="numeric"
+        maxLength={4}
         />
       </View>
 
       <Text style={[styles.subtitle, styles.centerText]}>Ocupación:</Text>
 
       <View style={styles.checkboxGrid}>
-        {ocupacion.map((checkbox) => (
+        {femaOcupacions.map((checkbox) => (
           <View key={checkbox.codOcupacion} style={styles.checkboxContainer}>
             <CheckBox
               title={checkbox.descripcion}
@@ -276,8 +289,8 @@ const FormularioFema2 = ({ navigation }) => {
           style={styles.smallPicker}
           selectedValue={selectedValuetipoocupacion}
           onValueChange={(itemValue) => {
-            setSelectedValueTipoOcupacion(itemValue);
-            setTipoocupacion1(itemValue);
+            setSelectedValueTipoOcupacion(parseInt(itemValue, 10)); // Convertir el valor a número entero
+            setTipoocupacion1(parseInt(itemValue, 10));
           }}
         >
           <Picker.Item label="Seleccione" value="" />
@@ -293,8 +306,8 @@ const FormularioFema2 = ({ navigation }) => {
           style={styles.smallPicker}
           selectedValue={selectedValuetipoSuelo}
           onValueChange={(itemValue) => {
-            setSelectedValueTipoSuelo(itemValue);
-            setTiposuelo1(itemValue);
+            setSelectedValueTipoSuelo(parseInt(itemValue, 10)); // Convertir el valor a número entero
+            setTiposuelo1(parseInt(itemValue, 10)); // Actualizar el estado como número entero
           }}
         >
           <Picker.Item label="Seleccione" value="" />
@@ -312,7 +325,7 @@ const FormularioFema2 = ({ navigation }) => {
           style={[styles.input, styles.multilineText]}
           multiline
           numberOfLines={4}
-          value={comentario}
+          value={comentarios}
           onChangeText={(text) => setComentario(text)}
         />
       </View>
@@ -353,7 +366,7 @@ const styles = StyleSheet.create({
     marginRight: 4, // Espacio de 4 píxeles para los 2 mm
     fontWeight: 'normal',
   },
-  infLabel: {
+  nroPisosInfLabel: {
     marginLeft: 20, // Espacio de 4 píxeles entre el primer selector y el texto "Inf:"
   },
   input: {
