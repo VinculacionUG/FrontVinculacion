@@ -285,6 +285,7 @@ const FormularioFema5 = ({ navigation }) => {
             setInspeccionNivel(itemValue);
           }}
         >
+          <Picker.Item label="  " value="" />
           <Picker.Item label="Si" value="si" />
           <Picker.Item label="No" value="no" />
         </Picker>
