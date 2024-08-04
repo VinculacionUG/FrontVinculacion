@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
-import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
+//import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -77,7 +79,8 @@ const SignIn = () => {
     <View style={styles.container}>
       
       <TouchableOpacity style={styles.goBackButton} onPress={() => navigation.goBack()}>
-        <MaterialCommunityIcons name="arrow-left" size={24} color="white" />
+        <MaterialCommunityIcons name="chevron-left" size={24} color="white" />
+        {/* <MaterialCommunityIcons name="arrow-left" size={24} color="white" /> */}
       </TouchableOpacity>
 
       <MaterialIcons name="description" size={60} color="white" style={styles.icon} />
