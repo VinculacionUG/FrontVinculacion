@@ -17,6 +17,7 @@ const FormularioFema5 = ({ navigation }) => {
   const pregunta1 = accionPreguntas1.find(item => item.codAccionPregunta === 1);
   const pregunta2 = accionPreguntas2.find(item => item.codAccionPregunta === 5);
   const [nombreContacto, setUserName] = useState('');
+  const [codUsuarioAct, setCodUsuarioAct] = useState('');
 
   const {
     //Fema 1
@@ -26,7 +27,7 @@ const FormularioFema5 = ({ navigation }) => {
     CodigoPostal,
     otrosIdentificaciones,
     nomEdificacion,
-    uso,
+    CodTipoUsoEdificacion,
     latitud,
     longitud,
     fechaEncuesta,
@@ -54,13 +55,13 @@ const FormularioFema5 = ({ navigation }) => {
     femaPuntuacions,
 
     //fema 4
-    exterior,
-    interior,
+    codEvalExterior,
+    codEvalInterior,
     revisionPlanos,
-    fuenteDelTipoDeSuelo,
+    fuenteTipoSuelo,
     fuentePeligroGeologicos,
     contactoRegistrado,
-    otrosPeligros1,
+    PeligorsGeologicos,
     //Fema 5
     pregunta1Fema5, setPregunta1Fema5,
     pregunta2Fema5, setPregunta2Fema5,
@@ -131,58 +132,59 @@ const FormularioFema5 = ({ navigation }) => {
     }
 
     try {
-      console.log('Datos guardados:', {
-        mimeType,
-        data,
-        direccion,
-        CodigoPostal,
-        otrosIdentificaciones,
-        nomEdificacion,
-        uso,
-        latitud,
-        longitud,
-        fechaEncuesta,
-        horaEncuesta,
-        //Fema 2
-        nroPisosSup,
-        nroPisosInf,
-        anioContruccion,
-        areaTotalPiso,
-        anioCodigo,
-        ampliacion,
-        amplAnioConstruccion,
-        codTipoSuelo,
-        comentarios,
-        femaOcupacions,
-        chk1,
-        chk2,
-        chk3,
-        chk4,
-        chk1N,
-        chk2N,
-        chk3N,
-        chk4N,
-        //fema 3
-        femaPuntuacions,
+      // console.log('Datos guardados:', {
+      //   mimeType,
+      //   data,
+      //   direccion,
+      //   CodigoPostal,
+      //   otrosIdentificaciones,
+      //   nomEdificacion,
+      //   CodTipoUsoEdificacion,
+      //   latitud,
+      //   longitud,
+      //   fechaEncuesta,
+      //   horaEncuesta,
+      //   //Fema 2
+      //   nroPisosSup,
+      //   nroPisosInf,
+      //   anioContruccion,
+      //   areaTotalPiso,
+      //   anioCodigo,
+      //   ampliacion,
+      //   amplAnioConstruccion,
+      //   codTipoSuelo,
+      //   comentarios,
+      //   femaOcupacions,
+      //   chk1,
+      //   chk2,
+      //   chk3,
+      //   chk4,
+      //   chk1N,
+      //   chk2N,
+      //   chk3N,
+      //   chk4N,
+      //   //fema 3
+      //   femaPuntuacions,
 
-        //fema 4
-        exterior,
-        interior,
-        revisionPlanos,
-        fuenteDelTipoDeSuelo,
-        fuentePeligroGeologicos,
-        contactoRegistrado,
-        otrosPeligros1,
+      //   //fema 4
+      //   codEvalExterior,
+      //   codEvalInterior,
+      //   revisionPlanos,
+      //   fuenteTipoSuelo,
+      //   fuentePeligroGeologicos,
+      //   contactoRegistrado,
+      //   PeligorsGeologicos,
 
-        //fema 5
-        pregunta1Fema5,
-        pregunta2Fema5,
-        inspeccionNivel,
-        nombreContacto
+      //   //fema 5
+      //   pregunta1Fema5,
+      //   pregunta2Fema5,
+      //   inspeccionNivel,
+      //   nombreContacto, 
+      //   codUsuarioAct
 
-      })
-      // const response = await fetch('https://www.fema.somee.com/api/FemaCinco/guardarDatos', {
-      const response = await fetch('http://localhost:7040/Users/FormularioFEMA', {
+      // })
+      const response = await fetch('https://www.fema.somee.com/Users/FormularioFEMA', {
+      // const response = await fetch('http://localhost:7040/Users/FormularioFEMA', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -194,7 +196,7 @@ const FormularioFema5 = ({ navigation }) => {
           CodigoPostal,
           otrosIdentificaciones,
           nomEdificacion,
-          uso,
+          CodTipoUsoEdificacion,
           latitud,
           longitud,
           fechaEncuesta,
@@ -222,44 +224,47 @@ const FormularioFema5 = ({ navigation }) => {
           femaPuntuacions,
 
           //fema 4
-          exterior,
-          interior,
+          codEvalExterior,
+          codEvalInterior,
           revisionPlanos,
-          fuenteDelTipoDeSuelo,
+          fuenteTipoSuelo,
           fuentePeligroGeologicos,
           contactoRegistrado,
-          otrosPeligros1,
+          PeligorsGeologicos,
           //Fema 5
           pregunta1Fema5,
           pregunta2Fema5,
           inspeccionNivel,
-          nombreContacto
+          nombreContacto,
+          codUsuarioAct
         }),
       });
-
+      // console.log("Esto responde",response.status);
       if (!response.ok) {
         const errorData = await response.json();
-        console.error('Error al guardar los datos:', errorData);
+        // console.error('Error al guardar los datos:', errorData);
         throw new Error('Error al guardar los datos');
+      }else{
+        const result = await response.json();
+        // console.log('Datos guardados con éxito:', result);
+        alert(
+          "¡Formulario guardado con éxito!",
+          "",
+          [
+            {
+              text: "Ok",
+              onPress: () => navigation.navigate('Dashboard'),
+            },
+          ],
+          { cancelable: false }
+        );
+        navigation.navigate('Dashboard');
+        
       }
 
-      const result = await response.json();
-      console.log('Datos guardados con éxito:', result);
-
-      Alert.alert(
-        "¡Formulario guardado con éxito!",
-        "",
-        [
-          {
-            text: "Ok",
-            onPress: () => navigation.navigate('Dashboard'),
-          },
-        ],
-        { cancelable: false }
-      );
     } catch (error) {
-      console.error('Error al guardar los datos:', error);
-      Alert.alert('Error', 'Ocurrió un error al guardar los datos.');
+      // console.error('Error al guardar los datos:', error);
+      alert('Error', 'Ocurrió un error al guardar los datos.');
     }
   };
 
@@ -269,19 +274,19 @@ const FormularioFema5 = ({ navigation }) => {
         const userData = await AsyncStorage.getItem('userData');
         if (userData) {
           const { nombre, apellido } = JSON.parse(userData);
+          const codigo = "123456789"
           setUserName(`${nombre} ${apellido}`);
+          setCodUsuarioAct(codigo)
         } else {
           // Manejo de situación donde no se encuentra información de usuario
-          console.log('No se encuentra información de usuario PRUEBA'); //Mensaje de prueba
+          // console.log('No se encuentra información de usuario PRUEBA'); //Mensaje de prueba
         }
       } catch (error) {
-        console.error('Error al obtener datos del usuario:', error.message);
+        // console.error('Error al obtener datos del usuario:', error.message);
         Alert.alert('Error', 'Ha ocurrido un error al obtener los datos del usuario.');
       }
     };
-
     fetchUserData();
-
 
     const url = 'https://www.fema.somee.com/api/FemaCinco/accionPreguntas';
     const fetchAccionPreguntas = async () => {
@@ -296,7 +301,7 @@ const FormularioFema5 = ({ navigation }) => {
         setAccionPreguntas(result);
       } catch (error) {
         setError(error);
-        console.log(error);
+        // console.log(error);
       } finally {
         setLoading(false);
       }
@@ -363,7 +368,7 @@ const FormularioFema5 = ({ navigation }) => {
           style={[styles.input, styles.pickerSmall]}
           selectedValue={inspeccionNivel}
           onValueChange={(itemValue) => {
-            console.log('Seleccionado:', itemValue);
+            // console.log('Seleccionado:', itemValue);
             setInspeccionNivel(itemValue);
           }}
         >
@@ -380,7 +385,7 @@ const FormularioFema5 = ({ navigation }) => {
         <Text style={styles.contextDataText}>ZIP: {CodigoPostal}</Text>
         <Text style={styles.contextDataText}>Otras Identificaciones: {otrasIdentificaciones}</Text>
         <Text style={styles.contextDataText}>Nombre del Edificio: {nombreEdificio}</Text>
-        <Text style={styles.contextDataText}>Uso: {uso}</Text>
+        <Text style={styles.contextDataText}>Uso: {CodTipoUsoEdificacion}</Text>
         <Text style={styles.contextDataText}>Latitud: {latitud}</Text>
         <Text style={styles.contextDataText}>Longitud: {longitud}</Text>
         <Text style={styles.contextDataText}>Fecha: {fecha.year}-{fecha.month}-{fecha.day}</Text>
@@ -408,13 +413,13 @@ const FormularioFema5 = ({ navigation }) => {
         <Text style={styles.contextDataText}>Tipo de Suelo: {tipoSuelo}</Text>
         <Text style={styles.contextDataText}>Comentario: {comentarios}</Text>
         <Text style={styles.contextDataText}>Resultado: {femaPuntuacions}</Text>
-        <Text style={styles.contextDataText}>Exterior: {exterior}</Text>
-        <Text style={styles.contextDataText}>Interior: {interior}</Text>
+        <Text style={styles.contextDataText}>Exterior: {codEvalExterior}</Text>
+        <Text style={styles.contextDataText}>Interior: {codEvalInterior}</Text>
         <Text style={styles.contextDataText}>Revisión de Planos: {revisionPlanos}</Text>
-        <Text style={styles.contextDataText}>Fuente del Tipo de Suelo: {fuenteDelTipoDeSuelo}</Text>
+        <Text style={styles.contextDataText}>Fuente del Tipo de Suelo: {fuenteTipoSuelo}</Text>
         <Text style={styles.contextDataText}>Fuente de Peligros Geológicos: {fuentePeligroGeologicos}</Text>
         <Text style={styles.contextDataText}>Contacto de la Persona: {contactoRegistrado}</Text>
-        <Text style={styles.contextDataText}>Otros Peligros 1: {otrosPeligros1}</Text> */}
+        <Text style={styles.contextDataText}>Otros Peligros 1: {PeligorsGeologicos}</Text> */}
       </View>
 
       {/* Botones de Navegación */}

@@ -7,6 +7,20 @@ import { AppContext } from './AppContext';
 
 const FormularioFema3 = ({ route, navigation }) => {
 
+  const [tipoEdificacion, setTipoEdificacion] = useState([]);
+  const [subTipo, setSubTipo] = useState('');
+  const [resultadoBase, setResultadoBase] = useState('');
+  const [irregularidadVerticalSevera, setIrregularidadVerticalSevera] = useState('');
+  const [irregularidadVerticalModerada, setIrregularidadVerticalModerada] = useState('');
+  const [plantaIrregular, setPlantaIrregular] = useState('');
+  const [preCodigoSismico, setPreCodigoSismico] = useState('');
+  const [postCodigoSismico, setPostCodigoSismico] = useState('');
+  const [sueloTipoAB, setSueloTipoAB] = useState('');
+  const [sueloTipoE1a3, setSueloTipoE1a3] = useState('');
+  const [sueloTipoEMayor3, setSueloTipoEMayor3] = useState('');
+  const [resultadoSmin, setResultadoSmin] = useState('');
+  const [resultadoFinal, setResultadoFinal] = useState('');
+
   //const [selectedValueTipoEdificacion, setSelectedValueTipoEdificacion] = useState('');
   //const [subTipo, setSubTipo] = useState('');
   const [subTipos, setSubTipos] = useState([]);
@@ -17,8 +31,8 @@ const FormularioFema3 = ({ route, navigation }) => {
   const [selectedValue, setSelectedValue] = useState('');
   const [selectedValueTipoEdificacion, setSelectedValueTipoEdificacion] = useState('');
 
-  const [estChecked, setEstChecked] = useState(false);
-  const [dnkChecked, setDnkChecked] = useState(false);
+  const [esEst, setEstChecked] = useState(false);
+  const [esDnk, setDnkChecked] = useState(false);
 
   const [selectedValues, setSelectedValues] = useState([]);
 
@@ -37,44 +51,6 @@ const FormularioFema3 = ({ route, navigation }) => {
   const [isChecked, setIsChecked] = useState(false);
   const [codPuntuacionMatrizSec, setCodPuntuacionMatrizSec] = useState('');
 
-  // Agrupa las funciones de estado para cada categoría
-  const handleIrregularidadPress = (stateSetter, otherStateSetters, currentState) => handleInputPress('Irregularidad', stateSetter, otherStateSetters, currentState);
-  const handleCodigoSismicoPress = (stateSetter, otherStateSetters, currentState) => handleInputPress('CodigoSismico', stateSetter, otherStateSetters, currentState);
-  const handleSueloTipoPress = (stateSetter, otherStateSetters, currentState) => handleInputPress('SueloTipo', stateSetter, otherStateSetters, currentState);
-  // const handlePlantaIrregularPress = (stateSetter, otherStateSetters, currentState) => handleInputPress('SueloTipo', stateSetter, otherStateSetters, currentState);
-
-  const [guardado, setGuardado] = useState(false);
-
-  const {
-    tipoEdificacion,
-    setTipoEdificacion,
-    subTipo,
-    setSubTipo,
-    resultadoBase,
-    setResultadoBase,
-    irregularidadVerticalSevera,
-    setIrregularidadVerticalSevera,
-    irregularidadVerticalModerada,
-    setIrregularidadVerticalModerada,
-    plantaIrregular,
-    setPlantaIrregular,
-    preCodigoSismico,
-    setPreCodigoSismico,
-    postCodigoSismico,
-    setPostCodigoSismico,
-    sueloTipoAB,
-    setSueloTipoAB,
-    sueloTipoE1a3,
-    setSueloTipoE1a3,
-    sueloTipoEMayor3,
-    setSueloTipoEMayor3,
-    resultadoSmin,
-    setResultadoSmin,
-    resultadoFinal,
-    setResultadoFinal,
-    //setSelectedValueTipoEdificacion
-  } = useContext(AppContext);
-
   const handleNext = () => {
     //Validación de campos obligatorios
     if (
@@ -90,10 +66,9 @@ const FormularioFema3 = ({ route, navigation }) => {
       // !sueloTipoE1a3 ||
       // !sueloTipoEMayor3 ||
       // !resultadoSmin ||
-      // !estChecked ||
-      // !dnkChecked ||
-      !(estChecked || dnkChecked) ||
-      !guardado ||
+      // !esEst ||
+      // !esDnk ||
+      !(esEst || esDnk) ||
       !resultadoFinal
     ) {
       alert('Por favor complete todos los campos y presione guardar');
@@ -101,32 +76,32 @@ const FormularioFema3 = ({ route, navigation }) => {
     }
   
     // Continuar con la navegación o el procesamiento de datos
-    console.log('Datos guardados:', {
-      tipoEdificacion,
-      subTipo,
-      resultadoBase,
-      irregularidadVerticalSevera,
-      irregularidadVerticalModerada,
-      plantaIrregular,
-      preCodigoSismico,
-      postCodigoSismico,
-      sueloTipoAB,
-      sueloTipoE1a3,
-      sueloTipoEMayor3,
-      resultadoSmin,
-      resultadoFinal,
-      // resultadoBase,
-      // irregularidadVerticalSevera,
-      // irregularidadVerticalModerada,
-      // plantaIrregular,
-      // preCodigoSismico,
-      // postCodigoSismico,
-      // sueloTipoAB,
-      // sueloTipoE1a3,
-      // sueloTipoEMayor3,
-      // resultadoSmin,
-      // resultadoFinal
-    });
+    // console.log('Datos guardados:', {
+    //   tipoEdificacion,
+    //   subTipo,
+    //   resultadoBase,
+    //   irregularidadVerticalSevera,
+    //   irregularidadVerticalModerada,
+    //   plantaIrregular,
+    //   preCodigoSismico,
+    //   postCodigoSismico,
+    //   sueloTipoAB,
+    //   sueloTipoE1a3,
+    //   sueloTipoEMayor3,
+    //   resultadoSmin,
+    //   resultadoFinal,
+    //   // resultadoBase,
+    //   // irregularidadVerticalSevera,
+    //   // irregularidadVerticalModerada,
+    //   // plantaIrregular,
+    //   // preCodigoSismico,
+    //   // postCodigoSismico,
+    //   // sueloTipoAB,
+    //   // sueloTipoE1a3,
+    //   // sueloTipoEMayor3,
+    //   // resultadoSmin,
+    //   // resultadoFinal
+    // });
     navigation.navigate('FormularioFema4');
   };
 
@@ -175,44 +150,12 @@ const FormularioFema3 = ({ route, navigation }) => {
   };
 
 
-  // const handleInputPress = (setCheckboxState, currentCheckboxState) => {
-  //   setCheckboxState(!currentCheckboxState); // Cambia el estado del checkbox
-  // };
-
-  const handleInputPress = (group, setGroupState, setOtherStates, currentState) => {
-    // Desmarca las opciones de otros grupos
-    setOtherStates.forEach(setState => setState(false));
-    setGroupState(!currentState); // Cambia el estado del checkbox actual
+  const handleInputPress = (setCheckboxState, currentCheckboxState) => {
+    setCheckboxState(!currentCheckboxState); // Cambia el estado del checkbox
   };
 
-  // const handleInputPress = (setCheckboxState, currentCheckboxState, section) => {
-  //   // Cambia el estado del checkbox
-  //     setCheckboxState(!currentCheckboxState);
-    
-  //     // Actualiza el estado de selección única basado en la sección
-  //     if (section === 'irregularidad') {
-  //       if (currentCheckboxState) {
-  //         setSelectedIrregularidad(null);
-  //       } else {
-  //         setSelectedIrregularidad(value);
-  //       }
-  //     } else if (section === 'codigoSismico') {
-  //       if (currentCheckboxState) {
-  //         setSelectedCodigoSismico(null);
-  //       } else {
-  //         setSelectedCodigoSismico(value);
-  //       }
-  //     } else if (section === 'sueloTipo') {
-  //       if (currentCheckboxState) {
-  //         setSelectedSueloTipo(null);
-  //       } else {
-  //         setSelectedSueloTipo(value);
-  //       }
-  //     }
-  // };
-
   const {
-    resultado,
+    femaPuntuacions,
     setResultado
   } = useContext(AppContext);
 
@@ -254,13 +197,11 @@ const FormularioFema3 = ({ route, navigation }) => {
 
   const calcularResultadoFinal = () => {
 
-    let suma = parseFloat(resultadoBase+resultadoSmin);
+    let suma = parseFloat(resultadoBase);
 
-    // Agrega resultadoSmin solo si includeResultadoSmin es verdadero
-    // if (includeResultadoSmin) {
-    //   suma += parseFloat(resultadoSmin);
+    // if (includeResultadoBase) {
+    //   suma += parseFloat(resultadoBase);
     // }
-
     if (includeIrregularidadSevera) {
       suma += parseFloat(irregularidadVerticalSevera);
     }
@@ -285,12 +226,11 @@ const FormularioFema3 = ({ route, navigation }) => {
     if (includeSueloTipoEMayor3) {
       suma += parseFloat(sueloTipoEMayor3);
     }
-    // if (includeResultadoSmin) {
-    //   suma += parseFloat(resultadoSmin);
-    // }
+    if (includeResultadoSmin) {
+      suma += parseFloat(resultadoSmin);
+    }
 
-    // const resultadoFinal = suma.toFixed(2); // Redondea a 2 decimales si es necesario
-    const resultadoFinal = isNaN(suma) ? '' : suma.toFixed(2);
+    const resultadoFinal = suma.toFixed(2); // Redondea a 2 decimales si es necesario
     setResultadoFinal(resultadoFinal.toString());
   };
 
@@ -315,7 +255,7 @@ const FormularioFema3 = ({ route, navigation }) => {
         //console.log(result);
       } catch (error) {
         setError(error);
-        console.log(error);
+        // console.log(error);
       } finally {
         setLoading(false);
       }
@@ -393,7 +333,7 @@ const FormularioFema3 = ({ route, navigation }) => {
       // Verifica si existe una entrada válida en el mapa para la combinación Tipo de Edificación y Subtipo
       if (!tipoEdificacionMap.hasOwnProperty(key)) {
         resetearValoresMostrados(); 
-        console.warn(`No se encontró una combinación válida para Tipo de Edificación: ${selectedValueTipoEdificacion} y Subtipo: ${subTipo}`);
+        // console.warn(`No se encontró una combinación válida para Tipo de Edificación: ${selectedValueTipoEdificacion} y Subtipo: ${subTipo}`);
         return; // Si no hay una combinación válida, salimos de la función
       }
 
@@ -453,15 +393,17 @@ const FormularioFema3 = ({ route, navigation }) => {
                 updatedCodPuntuacionMap.resultadoSmin = codPuntuacionMatrizSec;
                 break;
               default:
-                console.warn(`Código de puntuación desconocido: ${item.codTipoPuntuacion}`);
+                // console.warn(`Código de puntuación desconocido: ${item.codTipoPuntuacion}`);
             }
           });
           setCodPuntuacionMap(updatedCodPuntuacionMap);
         } else {
-          console.warn('La respuesta de la API no contiene datos');
+          // console.warn('La respuesta de la API no contiene datos');
+          alert('La respuesta de la API no contiene datos')
         }
       } catch (error) {
-        console.error('Error en la solicitud:', error);
+        // console.error('Error en la solicitud:', error);
+        alert('Error en la solicitud')
       }
     };
 
@@ -475,97 +417,47 @@ const FormularioFema3 = ({ route, navigation }) => {
   }, [selectedValueTipoEdificacion, subTipo]);
 
   const handleSaveSelection = () => {
-    //Validación de campos obligatorios
-    if (
-      !tipoEdificacion ||
-      !subTipo ||
-      !resultadoBase ||
-      // !irregularidadVerticalSevera ||
-      // !irregularidadVerticalModerada ||
-      // !plantaIrregular ||
-      // !preCodigoSismico ||
-      // !postCodigoSismico ||
-      // !sueloTipoAB ||
-      // !sueloTipoE1a3 ||
-      // !sueloTipoEMayor3 ||
-      // !resultadoSmin ||
-      // !estChecked ||
-      // !dnkChecked ||
-      !(estChecked || dnkChecked) ||
-      !resultadoFinal
-    ) {
-      alert('Por favor complete todos los campos y presione guardar');
-      return;
-    }
     // Aquí defines los elementos con su correspondiente valor en codPuntuacionMatrizSec
-    const selectedItems = [
+    const codPuntuacionMatrizSec = [
       { id: 0, value: 'Tipo de Edificación', data: selectedValueTipoEdificacion },
       { id: 1, value: 'Sub Tipo', data: subTipo },
       { id: 2, value: 'Resultado Base', data: resultadoBase },
-      { id: 3, value: 'Irregularidad Vertical Severa', isChecked: includeIrregularidadSevera, data: irregularidadVerticalSevera },
-      { id: 4, value: 'Irregularidad Vertical Moderada', isChecked: includeIrregularidadModerada, data: irregularidadVerticalModerada },
-      { id: 5, value: 'Planta Irregular', isChecked: includePlantaIrregular, data: plantaIrregular },
-      { id: 6, value: 'Pre Código Sismico', isChecked: includePreCodigoSismico, data: preCodigoSismico },
-      { id: 7, value: 'Post Código Sismico', isChecked: includePostCodigoSismico, data: postCodigoSismico },
-      { id: 8, value: 'Suelo Tipo AB', isChecked: includeSueloTipoAB, data: sueloTipoAB },
-      { id: 9, value: 'Suelo Tipo E1a3', isChecked: includeSueloTipoE1a3, data: sueloTipoE1a3 },
-      { id: 10, value: 'Suelo Tipo EMayor3', isChecked: includeSueloTipoEMayor3, data: sueloTipoEMayor3 },
-      { id: 11, value: 'Resultado Smin', isChecked: includeResultadoSmin, data: resultadoSmin },
+      { id: 3, value: 'Irregularidad Vertical Severa', isChecked: includeIrregularidadSevera, data: irregularidadVerticalSevera, codPuntuacionMatrizSec: codPuntuacionMap.irregularidadVerticalSevera },
+      { id: 4, value: 'Irregularidad Vertical Moderada', isChecked: includeIrregularidadModerada, data: irregularidadVerticalModerada, codPuntuacionMatrizSec: codPuntuacionMap.irregularidadVerticalModerada },
+      { id: 5, value: 'Planta Irregular', isChecked: includePlantaIrregular, data: plantaIrregular, codPuntuacionMatrizSec: codPuntuacionMap.plantaIrregular },
+      { id: 6, value: 'Pre Código Sismico', isChecked: includePreCodigoSismico, data: preCodigoSismico, codPuntuacionMatrizSec: codPuntuacionMap.preCodigoSismico },
+      { id: 7, value: 'Post Código Sismico', isChecked: includePostCodigoSismico, data: postCodigoSismico, codPuntuacionMatrizSec: codPuntuacionMap.postCodigoSismico },
+      { id: 8, value: 'Suelo Tipo AB', isChecked: includeSueloTipoAB, data: sueloTipoAB, codPuntuacionMatrizSec: codPuntuacionMap.sueloTipoAB },
+      { id: 9, value: 'Suelo Tipo E1a3', isChecked: includeSueloTipoE1a3, data: sueloTipoE1a3, codPuntuacionMatrizSec: codPuntuacionMap.sueloTipoE1a3 },
+      { id: 10, value: 'Suelo Tipo EMayor3', isChecked: includeSueloTipoEMayor3, data: sueloTipoEMayor3, codPuntuacionMatrizSec: codPuntuacionMap.sueloTipoEMayor3 },
+      { id: 11, value: 'Resultado Smin', isChecked: includeResultadoSmin, data: resultadoSmin, codPuntuacionMatrizSec: codPuntuacionMap.resultadoSmin },
       { id: 12, value: 'Resultado Final', data: resultadoFinal },
-      { id: 13, value: 'Selección Final', data: estChecked ? 'EST' : dnkChecked ? 'DNK' : 'Ninguno' }
+      { id: 13, value: 'Selección Final', data: esEst ? 'EST' : esDnk ? 'DNK' : 'Ninguno' }
     ];
+  
+    // Filtrar los elementos que están marcados
+    const selectedItems = codPuntuacionMatrizSec
+      .filter(item => item.isChecked)
+      .map(item => ({
+        codPuntuacionMatriz: item.codPuntuacionMatrizSec, // Incluye el codPuntuacionMatrizSec
+        resultadoFinal,
+      esEst,
+      esDnk,
+      }));
+  
+    const newSelection = {
+      // tipoEdificacion: selectedValueTipoEdificacion,
+      // subTipo,
+      selectedItems  // Guardar solo los elementos seleccionados con sus datos
+    };
+  
+    setSelectedValues([...selectedValues, newSelection]); // Agrega la nueva selección al array
+    setResultado(prevResultado => [...prevResultado, selectedItems]); // Añade la nueva selección al resultado
 
-    // Filtrar solo los elementos que están marcados como seleccionados
-    const filteredSelectedItems = selectedItems.filter(item => {
-      if (item.isChecked !== undefined) {
-        return item.isChecked;
-      }
-      return true; // Si no tiene la propiedad isChecked, se considera siempre seleccionado
-    });
-
-    // Mapear solo los datos que están seleccionados
-    const mappedSelectedItems = filteredSelectedItems.map(item => ({
-      id: item.id,
-      value: item.value,
-      data: item.data
-    }));
-
-    setResultado(prevResultado => [...prevResultado, selectedItems]);
-    setGuardado(true); // Setear guardado a true al guardar la selección
-    console.log('Selección guardada:', selectedItems);
-    alert('¡Guardado exitosamente!');
-    Alert.alert('Éxito', '¡Guardado exitosamente!', [{ text: 'OK' }]);
+  // Aquí puedes hacer lo necesario para guardar la selección, como enviar a una API o almacenarlo en un estado global
+  // console.log(newSelection);
+  // console.log(femaPuntuacions);
   };
-
-  useEffect(() => {
-    // Calculate resultadoFinal whenever any of the included values change
-    let suma = parseFloat(resultadoBase);
-    if (includeIrregularidadSevera) suma += parseFloat(irregularidadVerticalSevera);
-    if (includeIrregularidadModerada) suma += parseFloat(irregularidadVerticalModerada);
-    if (includePlantaIrregular) suma += parseFloat(plantaIrregular);
-    if (includePreCodigoSismico) suma += parseFloat(preCodigoSismico);
-    if (includePostCodigoSismico) suma += parseFloat(postCodigoSismico);
-    if (includeSueloTipoAB) suma += parseFloat(sueloTipoAB);
-    if (includeSueloTipoE1a3) suma += parseFloat(sueloTipoE1a3);
-    if (includeSueloTipoEMayor3) suma += parseFloat(sueloTipoEMayor3);
-    if (includeResultadoSmin) suma += parseFloat(resultadoSmin);
-
-    // const resultadoFinal = suma.toFixed(2);
-    const resultadoFinal = isNaN(suma) ? '' : suma.toFixed(2);
-    setResultadoFinal(resultadoFinal);
-  }, [
-    resultadoBase,
-    includeIrregularidadSevera, irregularidadVerticalSevera,
-    includeIrregularidadModerada, irregularidadVerticalModerada,
-    includePlantaIrregular, plantaIrregular,
-    includePreCodigoSismico, preCodigoSismico,
-    includePostCodigoSismico, postCodigoSismico,
-    includeSueloTipoAB, sueloTipoAB,
-    includeSueloTipoE1a3, sueloTipoE1a3,
-    includeSueloTipoEMayor3, sueloTipoEMayor3,
-    includeResultadoSmin, resultadoSmin,
-  ]);
-
 
   useEffect(() => {
     calcularResultadoFinal();
@@ -619,7 +511,6 @@ const FormularioFema3 = ({ route, navigation }) => {
           selectedValue={selectedValueTipoEdificacion}
           onValueChange={(itemValue) => {
             setSelectedValueTipoEdificacion(itemValue);
-            //setSubTipo(''); // Reiniciar el subtipo seleccionado cuando cambia el tipo de edificación
           }}
         >
           <Picker.Item label="Seleccione..." value="" enabled={false}/>
@@ -646,7 +537,7 @@ const FormularioFema3 = ({ route, navigation }) => {
           <Text style={styles.resultLabel}>RESULTADO BASE:</Text>
           {/* <CheckBox value={includeResultadoBase} onValueChange={handleChangeCheckboxResultadoBase} /> */}
           <TextInput
-            style={[styles.resultInput1, { marginRight: 17, backgroundColor: '#ebebeb' }]}
+            style={[styles.resultInput1, { marginRight: 17, backgroundColor: '#d4edda' }]}
             value={resultadoBase}
             onChangeText={setResultadoBase}
             keyboardType="numeric"
@@ -657,7 +548,7 @@ const FormularioFema3 = ({ route, navigation }) => {
         <View style={styles.squareContainer}>
           <View style={styles.resultContainer}>
             <Text style={styles.resultLabel}>Irregularidad Vertical Severa:</Text>
-            <TouchableOpacity onPress={() => handleIrregularidadPress(setIncludeIrregularidadSevera, [setIncludeIrregularidadModerada], includeIrregularidadSevera)}>
+            <TouchableOpacity onPress={() => handleInputPress(setIncludeIrregularidadSevera, includeIrregularidadSevera)}>
               <TextInput
                 style={[
                   styles.resultInput,
@@ -670,13 +561,13 @@ const FormularioFema3 = ({ route, navigation }) => {
             </TouchableOpacity>
             <CheckBox
               value={includeIrregularidadSevera}
-              onValueChange={() => handleIrregularidadPress(setIncludeIrregularidadSevera, [setIncludeIrregularidadModerada], includeIrregularidadSevera)}
+              onValueChange={() => handleInputPress(setIncludeIrregularidadSevera, includeIrregularidadSevera)}
               style={{ display: 'none' }} // Hiding the checkbox
             />
           </View>
           <View style={styles.resultContainer}>
             <Text style={styles.resultLabel}>Irregularidad Vertical Moderada:</Text>
-            <TouchableOpacity onPress={() => handleIrregularidadPress(setIncludeIrregularidadModerada, [setIncludeIrregularidadSevera], includeIrregularidadModerada)}>
+            <TouchableOpacity onPress={() => handleInputPress(setIncludeIrregularidadModerada, includeIrregularidadModerada)}>
               <TextInput
                 style={[
                   styles.resultInput,
@@ -689,7 +580,7 @@ const FormularioFema3 = ({ route, navigation }) => {
             </TouchableOpacity>
             <CheckBox
               value={includeIrregularidadModerada}
-              onValueChange={() => handleIrregularidadPress(setIncludeIrregularidadModerada, [setIncludeIrregularidadSevera], includeIrregularidadModerada)}
+              onValueChange={() => handleInputPress(setIncludeIrregularidadModerada, includeIrregularidadModerada)}
               style={{ display: 'none' }}
             />
           </View>
@@ -698,10 +589,7 @@ const FormularioFema3 = ({ route, navigation }) => {
         <View style={styles.squareContainer}>
           <View style={styles.resultContainer}>
             <Text style={styles.resultLabel}>Planta Irregular:</Text>
-            {/* <TouchableOpacity onPress={() => handlePlantaIrregularPress(setIncludePlantaIrregular, includePlantaIrregular)}> */}
-            <TouchableOpacity onPress={() => {
-              setIncludePlantaIrregular(!includePlantaIrregular); // Solo cambia el estado de Planta Irregular  
-            }}>
+            <TouchableOpacity onPress={() => handleInputPress(setIncludePlantaIrregular, includePlantaIrregular)}>
               <TextInput
                 style={[
                   styles.resultInput,
@@ -714,10 +602,7 @@ const FormularioFema3 = ({ route, navigation }) => {
             </TouchableOpacity>
             <CheckBox
               value={includePlantaIrregular}
-              onValueChange={() => {
-                setIncludePlantaIrregular(!includePlantaIrregular); // Solo cambia el estado de Planta Irregular
-              }}
-              // onValueChange={() => handlePlantaIrregularPress(setIncludePlantaIrregular, includePlantaIrregular)}
+              onValueChange={() => handleInputPress(setIncludePlantaIrregular, includePlantaIrregular)}
               style={{ display: 'none' }}
             />
           </View>
@@ -726,7 +611,7 @@ const FormularioFema3 = ({ route, navigation }) => {
         <View style={styles.squareContainer}>
           <View style={styles.resultContainer}>
             <Text style={styles.resultLabel}>Pre Código Sismico:</Text>
-            <TouchableOpacity onPress={() => handleCodigoSismicoPress(setIncludePreCodigoSismico, [setIncludePostCodigoSismico], includePreCodigoSismico)}>
+            <TouchableOpacity onPress={() => handleInputPress(setIncludePreCodigoSismico, includePreCodigoSismico)}>
               <TextInput
                 style={[
                   styles.resultInput,
@@ -739,13 +624,13 @@ const FormularioFema3 = ({ route, navigation }) => {
             </TouchableOpacity>
             <CheckBox
               value={includePreCodigoSismico}
-              onValueChange={() => handleCodigoSismicoPress(setIncludePreCodigoSismico, [setIncludePostCodigoSismico], includePreCodigoSismico)}
+              onValueChange={() => handleInputPress(setIncludePreCodigoSismico, includePreCodigoSismico)}
               style={{ display: 'none' }}
             />
           </View>
           <View style={styles.resultContainer}>
             <Text style={styles.resultLabel}>Post Código Sismico:</Text>
-            <TouchableOpacity onPress={() => handleCodigoSismicoPress(setIncludePostCodigoSismico, [setIncludePreCodigoSismico], includePostCodigoSismico)}>
+            <TouchableOpacity onPress={() => handleInputPress(setIncludePostCodigoSismico, includePostCodigoSismico)}>
               <TextInput
                 style={[
                   styles.resultInput,
@@ -758,7 +643,7 @@ const FormularioFema3 = ({ route, navigation }) => {
             </TouchableOpacity>
             <CheckBox
               value={includePostCodigoSismico}
-              onValueChange={() => handleCodigoSismicoPress(setIncludePostCodigoSismico, [setIncludePreCodigoSismico], includePostCodigoSismico)}
+              onValueChange={() => handleInputPress(setIncludePostCodigoSismico, includePostCodigoSismico)}
               style={{ display: 'none' }}
             />
           </View>
@@ -767,7 +652,7 @@ const FormularioFema3 = ({ route, navigation }) => {
         <View style={styles.squareContainer}>
           <View style={styles.resultContainer}>
             <Text style={styles.resultLabel}>Suelo Tipo AB:</Text>
-            <TouchableOpacity onPress={() => handleSueloTipoPress(setIncludeSueloTipoAB, [setIncludeSueloTipoE1a3, setIncludeSueloTipoEMayor3], includeSueloTipoAB)}>
+            <TouchableOpacity onPress={() => handleInputPress(setIncludeSueloTipoAB, includeSueloTipoAB)}>
               <TextInput
                 style={[
                   styles.resultInput,
@@ -780,13 +665,13 @@ const FormularioFema3 = ({ route, navigation }) => {
             </TouchableOpacity>
             <CheckBox
               value={includeSueloTipoAB}
-              onValueChange={() => handleSueloTipoPress(setIncludeSueloTipoAB, [setIncludeSueloTipoE1a3, setIncludeSueloTipoEMayor3], includeSueloTipoAB)}
+              onValueChange={() => handleInputPress(setIncludeSueloTipoAB, includeSueloTipoAB)}
               style={{ display: 'none' }}
             />
           </View>
           <View style={styles.resultContainer}>
             <Text style={styles.resultLabel}>Suelo Tipo E1a3:</Text>
-            <TouchableOpacity onPress={() => handleSueloTipoPress(setIncludeSueloTipoE1a3, [setIncludeSueloTipoAB, setIncludeSueloTipoEMayor3], includeSueloTipoE1a3)}>
+            <TouchableOpacity onPress={() => handleInputPress(setIncludeSueloTipoE1a3, includeSueloTipoE1a3)}>
               <TextInput
                 style={[
                   styles.resultInput,
@@ -799,13 +684,13 @@ const FormularioFema3 = ({ route, navigation }) => {
             </TouchableOpacity>
             <CheckBox
               value={includeSueloTipoE1a3}
-              onValueChange={() => handleSueloTipoPress(setIncludeSueloTipoE1a3, [setIncludeSueloTipoAB, setIncludeSueloTipoEMayor3], includeSueloTipoE1a3)}
+              onValueChange={() => handleInputPress(setIncludeSueloTipoE1a3, includeSueloTipoE1a3)}
               style={{ display: 'none' }}
             />
           </View>
           <View style={styles.resultContainer}>
             <Text style={styles.resultLabel}>Suelo Tipo EMayor3:</Text>
-            <TouchableOpacity onPress={() => handleSueloTipoPress(setIncludeSueloTipoEMayor3, [setIncludeSueloTipoAB, setIncludeSueloTipoE1a3], includeSueloTipoEMayor3)}>
+            <TouchableOpacity onPress={() => handleInputPress(setIncludeSueloTipoEMayor3, includeSueloTipoEMayor3)}>
               <TextInput
                 style={[
                   styles.resultInput,
@@ -818,7 +703,7 @@ const FormularioFema3 = ({ route, navigation }) => {
             </TouchableOpacity>
             <CheckBox
               value={includeSueloTipoEMayor3}
-              onValueChange={() => handleSueloTipoPress(setIncludeSueloTipoEMayor3, [setIncludeSueloTipoAB, setIncludeSueloTipoE1a3], includeSueloTipoEMayor3)}
+              onValueChange={() => handleInputPress(setIncludeSueloTipoEMayor3, includeSueloTipoEMayor3)}
               style={{ display: 'none' }}
             />
           </View>
@@ -826,44 +711,40 @@ const FormularioFema3 = ({ route, navigation }) => {
 
         <View style={styles.resultContainer}>
           <Text style={styles.resultLabel}>Resultado Smin:</Text>
-          {/* <TouchableOpacity onPress={() => handleInputPress(setIncludeResultadoSmin, includeResultadoSmin)}>*/}
+          <TouchableOpacity onPress={() => handleInputPress(setIncludeResultadoSmin, includeResultadoSmin)}>
             <TextInput
               style={[
-                styles.resultInput, {backgroundColor: '#ebebeb' }
+                styles.resultInput,
+                includeResultadoSmin && { borderColor: 'green', borderWidth: 2, backgroundColor: '#d4edda' }
               ]}
               value={resultadoSmin}
               onChangeText={setResultadoSmin}
               editable={false}
             />
-          {/* </TouchableOpacity>
+          </TouchableOpacity>
           <CheckBox
             value={includeResultadoSmin}
             onValueChange={() => handleInputPress(setIncludeResultadoSmin, includeResultadoSmin)}
             style={{ display: 'none' }}
-          />*/}
+          />
         </View>
-
-        
       </View>
 
-        
-
       <View style={styles.resultContainer}>
-        {/* <TouchableOpacity style={[styles.calculateButton, { backgroundColor: 'transparent' }]} onPress={calcularResultadoFinal}>
-          <Text style={[styles.calculateButtonText, { color: 'transparent' }]}>Calcular</Text>
-        </TouchableOpacity> */}
-        <Text style={[styles.resultLabel, { fontWeight: 'bold' }]}>Resultado Final:</Text>
+        <TouchableOpacity style={styles.calculateButton} onPress={calcularResultadoFinal}>
+          <Text style={styles.calculateButtonText}>Calcular</Text>
+        </TouchableOpacity>
+        <Text style={[styles.resultLabel, { marginLeft: 50 }]}>Resultado Final:</Text>
         <TextInput
-          style={[styles.resultInput, {borderWidth: 2, marginRight: 35 }]}
+          style={[styles.resultInput, { marginRight: 35 }]}
           value={resultadoFinal}
           onChangeText={setResultadoFinal}
-          editable={false}
         />
       </View>
 
       <View style={styles.checkboxContainer}>
         <CheckBox
-          value={estChecked}
+          value={esEst}
           onValueChange={(newValue) => {
             if (newValue) setDnkChecked(false);
             setEstChecked(newValue);
@@ -871,7 +752,7 @@ const FormularioFema3 = ({ route, navigation }) => {
         />
         <Text style={styles.checkboxLabel}>EST</Text>
         <CheckBox
-          value={dnkChecked}
+          value={esDnk}
           onValueChange={(newValue) => {
             if (newValue) setEstChecked(false);
             setDnkChecked(newValue);
@@ -879,7 +760,9 @@ const FormularioFema3 = ({ route, navigation }) => {
         />
         <Text style={styles.checkboxLabel}>DNK</Text>
         <TouchableOpacity style={styles.saveButton}>
-          <Text style={styles.saveButtonText} onPress={handleSaveSelection}>Guardar</Text>
+          <Text style={styles.saveButtonText}
+            onPress={handleSaveSelection}
+          >Guardar</Text>
         </TouchableOpacity>
       </View>
 

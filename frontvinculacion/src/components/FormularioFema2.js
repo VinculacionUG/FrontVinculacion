@@ -56,18 +56,18 @@ const FormularioFema2 = ({ navigation }) => {
 
     setOcupacion(ocupacionArray);
 
-    console.log('Datos guardados:', {
-      nroPisosSup,
-      nroPisosInf,
-      anioContruccion,
-      areaTotalPiso,
-      anioCodigo,
-      ampliacion,
-      amplAnioConstruccion,
-      codTipoSuelo,
-      comentarios,
-      femaOcupacions: ocupacionArray
-    });
+    // console.log('Datos guardados:', {
+    //   nroPisosSup,
+    //   nroPisosInf,
+    //   anioContruccion,
+    //   areaTotalPiso,
+    //   anioCodigo,
+    //   ampliacion,
+    //   amplAnioConstruccion,
+    //   codTipoSuelo,
+    //   comentarios,
+    //   femaOcupacions: ocupacionArray
+    // });
 
     navigation.navigate('FormularioFema3');
   };

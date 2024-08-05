@@ -15,47 +15,47 @@ const FormularioFema4 = ({ navigation }) => {
   const [selectedValuerevisionInterior, setSelectedValueRevisionInterior] = useState('');
 
   const {
-    exterior,
+    codEvalExterior,
     setExterior,
-    interior,
+    codEvalInterior,
     setInterior,
     revisionPlanos,
     setRevisionPlanos,
-    fuenteDelTipoDeSuelo,
+    fuenteTipoSuelo,
     setFuenteDelTipoDeSuelo,
     fuentePeligroGeologicos,
     setFuenteDePeligrosGeologicos,
     contactoRegistrado,
     setContactoDeLaPersona,
-    otrosPeligros1,
+    PeligorsGeologicos,
     setOtrosPeligros1,
   } = useContext(AppContext);
 
   const handleNext = () => {
     // Validación de campos obligatorios
     if (
-      !exterior ||
-      !interior ||
+      !codEvalExterior ||
+      !codEvalInterior ||
       !revisionPlanos ||
-      !fuenteDelTipoDeSuelo ||
+      !fuenteTipoSuelo ||
       !fuentePeligroGeologicos ||
       !contactoRegistrado ||
-      !otrosPeligros1
+      !PeligorsGeologicos
     ) {
       alert('Por favor complete todos los campos.');
       return;
     }
 
     // Continuar con la navegación o el procesamiento de datos
-    console.log('Datos guardados:', {
-      exterior,
-      interior,
-      revisionPlanos,
-      fuenteDelTipoDeSuelo,
-      fuentePeligroGeologicos,
-      contactoRegistrado,
-      otrosPeligros1,
-    });
+    // console.log('Datos guardados:', {
+    //   codEvalExterior,
+    //   codEvalInterior,
+    //   revisionPlanos,
+    //   fuenteTipoSuelo,
+    //   fuentePeligroGeologicos,
+    //   contactoRegistrado,
+    //   PeligorsGeologicos,
+    // });
     navigation.navigate('FormularioFema5');
   };
 
@@ -63,30 +63,30 @@ const FormularioFema4 = ({ navigation }) => {
   const handleCheckboxChange = (codOtrosPeligorsSec) => {
     const peligroAsignado = asignarPeligro(codOtrosPeligorsSec);
     setSelectedCheckbox(codOtrosPeligorsSec);
-    setOtrosPeligros1(peligroAsignado); // Actualiza la variable otrosPeligros1
+    setOtrosPeligros1(peligroAsignado); // Actualiza la variable PeligorsGeologicos
   };
 
   function asignarPeligro(codigoPeligro) {
-    let otrosPeligros1;
+    let PeligorsGeologicos;
 
     switch (codigoPeligro) {
       case 1:
-        otrosPeligros1 = 1;
+        PeligorsGeologicos = 1;
         break;
       case 2:
-        otrosPeligros1 = 2;
+        PeligorsGeologicos = 2;
         break;
       case 3:
-        otrosPeligros1 = 3;
+        PeligorsGeologicos = 3;
         break;
       case 4:
-        otrosPeligros1 = 4;
+        PeligorsGeologicos = 4;
         break;
       default:
-        otrosPeligros1 = 'Código de peligro no válido';
+        PeligorsGeologicos = 'Código de peligro no válido';
     }
 
-    return otrosPeligros1;
+    return PeligorsGeologicos;
   }
 
   useEffect(() => {
@@ -102,7 +102,7 @@ const FormularioFema4 = ({ navigation }) => {
         setRevisionExterior(result);
       } catch (error) {
         setError(error);
-        console.log(error);
+        // console.log(error);
       } finally {
         setLoading(false);
       }
@@ -120,7 +120,7 @@ const FormularioFema4 = ({ navigation }) => {
         setRevisionInterior(result);
       } catch (error) {
         setError(error);
-        console.log(error);
+        // console.log(error);
       } finally {
         setLoading(false);
       }
@@ -138,7 +138,7 @@ const FormularioFema4 = ({ navigation }) => {
         setOtrosPeligros(result);
       } catch (error) {
         setError(error);
-        console.log(error);
+        // console.log(error);
       } finally {
         setLoading(false);
       }
@@ -148,12 +148,12 @@ const FormularioFema4 = ({ navigation }) => {
 
   const handleExteriorValueChange = (itemValue) => {
     setSelectedValueRevisionExterior(itemValue);
-    setExterior(itemValue !== '' ? parseInt(itemValue) : ''); // Actualiza la variable exterior
+    setExterior(itemValue !== '' ? parseInt(itemValue) : ''); // Actualiza la variable codEvalExterior
   };
 
   const handleInteriorValueChange = (itemValue) => {
     setSelectedValueRevisionInterior(itemValue);
-    setInterior(itemValue !== '' ? parseInt(itemValue) : ''); // Actualiza la variable interior
+    setInterior(itemValue !== '' ? parseInt(itemValue) : ''); // Actualiza la variable codEvalInterior
   };
 
   if (loading) {
@@ -221,7 +221,7 @@ const FormularioFema4 = ({ navigation }) => {
         <Text style={styles.inputLabel}>Fuente del tipo de suelo:</Text>
         <TextInput
           style={styles.input}
-          value={fuenteDelTipoDeSuelo}
+          value={fuenteTipoSuelo}
           onChangeText={(text) => setFuenteDelTipoDeSuelo(text)}
         />
       </View>
