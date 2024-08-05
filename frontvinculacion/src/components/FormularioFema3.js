@@ -74,7 +74,7 @@ const FormularioFema3 = ({ route, navigation }) => {
       alert('Por favor complete todos los campos y presione guardar');
       return;
     }
-  
+
     // Continuar con la navegación o el procesamiento de datos
     // console.log('Datos guardados:', {
     //   tipoEdificacion,
@@ -302,7 +302,7 @@ const FormularioFema3 = ({ route, navigation }) => {
       resetearValoresMostrados(); // Resetear los valores mostrados al comenzar la carga de nueva información
       if (!selectedValueTipoEdificacion || !subTipo || subTipo === 'Seleccione') {
         // Si falta alguno de los valores o subTipo es 'Seleccione', reseteamos los valores mostrados
-        resetearValoresMostrados(); 
+        resetearValoresMostrados();
         return;
       }
 
@@ -332,7 +332,7 @@ const FormularioFema3 = ({ route, navigation }) => {
 
       // Verifica si existe una entrada válida en el mapa para la combinación Tipo de Edificación y Subtipo
       if (!tipoEdificacionMap.hasOwnProperty(key)) {
-        resetearValoresMostrados(); 
+        resetearValoresMostrados();
         // console.warn(`No se encontró una combinación válida para Tipo de Edificación: ${selectedValueTipoEdificacion} y Subtipo: ${subTipo}`);
         return; // Si no hay una combinación válida, salimos de la función
       }
@@ -344,13 +344,13 @@ const FormularioFema3 = ({ route, navigation }) => {
         const response = await fetch(url3);
         if (!response.ok) throw new Error(`Error en la red ${response.status} ${response.statusText}`);
         const result = await response.json();
-    
+
         if (Array.isArray(result) && result.length > 0) {
           const updatedCodPuntuacionMap = { ...codPuntuacionMap };
           result.forEach((item) => {
             const valor = item.valor ?? '0';
             const codPuntuacionMatrizSec = item.codPuntuacionMatrizSec;
-    
+
             switch (item.codTipoPuntuacion) {
               case 9:
                 setResultadoBase(valor);
@@ -393,7 +393,7 @@ const FormularioFema3 = ({ route, navigation }) => {
                 updatedCodPuntuacionMap.resultadoSmin = codPuntuacionMatrizSec;
                 break;
               default:
-                // console.warn(`Código de puntuación desconocido: ${item.codTipoPuntuacion}`);
+              // console.warn(`Código de puntuación desconocido: ${item.codTipoPuntuacion}`);
             }
           });
           setCodPuntuacionMap(updatedCodPuntuacionMap);
@@ -434,29 +434,30 @@ const FormularioFema3 = ({ route, navigation }) => {
       { id: 12, value: 'Resultado Final', data: resultadoFinal },
       { id: 13, value: 'Selección Final', data: esEst ? 'EST' : esDnk ? 'DNK' : 'Ninguno' }
     ];
-  
+
     // Filtrar los elementos que están marcados
     const selectedItems = codPuntuacionMatrizSec
       .filter(item => item.isChecked)
       .map(item => ({
         codPuntuacionMatriz: item.codPuntuacionMatrizSec, // Incluye el codPuntuacionMatrizSec
         resultadoFinal,
-      esEst,
-      esDnk,
+        esEst,
+        esDnk,
       }));
-  
+
     const newSelection = {
       // tipoEdificacion: selectedValueTipoEdificacion,
       // subTipo,
       selectedItems  // Guardar solo los elementos seleccionados con sus datos
     };
-  
+
     setSelectedValues([...selectedValues, newSelection]); // Agrega la nueva selección al array
     setResultado(prevResultado => [...prevResultado, selectedItems]); // Añade la nueva selección al resultado
 
-  // Aquí puedes hacer lo necesario para guardar la selección, como enviar a una API o almacenarlo en un estado global
-  // console.log(newSelection);
-  // console.log(femaPuntuacions);
+    // Aquí puedes hacer lo necesario para guardar la selección, como enviar a una API o almacenarlo en un estado global
+    // console.log(newSelection);
+    // console.log(femaPuntuacions);
+    resetearValoresMostrados();
   };
 
   useEffect(() => {
@@ -513,7 +514,7 @@ const FormularioFema3 = ({ route, navigation }) => {
             setSelectedValueTipoEdificacion(itemValue);
           }}
         >
-          <Picker.Item label="Seleccione..." value="" enabled={false}/>
+          <Picker.Item label="Seleccione..." value="" enabled={false} />
           {tipoEdificacion.map((item) => (
             <Picker.Item key={item.codTipoEdificacion} label={item.descripcion} value={item.descripcion} />
           ))}
@@ -524,7 +525,7 @@ const FormularioFema3 = ({ route, navigation }) => {
           selectedValue={subTipo}
           onValueChange={(itemValue) => setSubTipo(itemValue)}
         >
-          <Picker.Item label="Seleccione..." value=""/>
+          <Picker.Item label="Seleccione..." value="" />
           {subTipos.map((subTipoItem, index) => (
             <Picker.Item key={index} label={subTipoItem} value={subTipoItem} />
           ))}
