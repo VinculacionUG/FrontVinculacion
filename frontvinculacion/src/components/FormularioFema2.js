@@ -159,7 +159,7 @@ const FormularioFema2 = ({ navigation }) => {
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Formulario FEMA P-154</Text>
       <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>N° de Pisos:</Text>
+        <Text style={styles.inputLabel}>N° de Pisos Sup:</Text>
         <Picker
         style={styles.smallPicker}
         selectedValue={nroPisosSup}
