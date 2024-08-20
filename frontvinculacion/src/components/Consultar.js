@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const Consultar = ({ navigation }) => {
@@ -8,20 +8,21 @@ const Consultar = ({ navigation }) => {
   const [edificiosEncontrados, setEdificiosEncontrados] = useState([]);
   const [mostrarResultados, setMostrarResultados] = useState(false);
   const [datosFema, setDatosFema] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const url = 'https://www.fema.somee.com/Users/FormularioFEMAHistAll';
 
   const fetchDatosFema = async () => {
+    setLoading(true);
     try {
       const response = await fetch(url, { method: 'GET' });
       if (!response.ok) {
         throw new Error('Error en la red');
       }
       const result = await response.json();
-      // console.log('Datos recibidos de FormularioFEMAHistAll: ', result);
       setDatosFema(result);
+      setMostrarResultados(result.length > 0);
     } catch (error) {
       setError(error);
       console.log(error);
@@ -34,32 +35,46 @@ const Consultar = ({ navigation }) => {
     fetchDatosFema();
   }, []);
 
-  // Función para buscar el edificio en la base de datos por nombre
   const buscarEdificioPorNombre = async () => {
-    const resultados = datosFema.filter(edificio =>
-      edificio.nomEdificacion.toLowerCase().includes(busquedaNombre.toLowerCase())
-    );
-    setEdificiosEncontrados(resultados);
-    setMostrarResultados(true);
+    setLoading(true);
+    try {
+      const resultados = datosFema.filter(edificio =>
+        edificio.nomEdificacion.toLowerCase().includes(busquedaNombre.toLowerCase())
+      );
+      
+      setMostrarResultados(resultados.length > 0);
+      setEdificiosEncontrados(resultados);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // Función para buscar el edificio en la base de datos por código
   const buscarEdificioPorCodigo = async () => {
-    const resultados = datosFema.filter(edificio =>
-      edificio.otrosIdentificaciones.includes(busquedaCodigo)
-    );
-    setEdificiosEncontrados(resultados);
-    setMostrarResultados(true);
+    setLoading(true);
+    try {
+      const resultados = datosFema.filter(edificio =>
+        edificio.otrosIdentificaciones.includes(busquedaCodigo)
+      );
+      
+      setMostrarResultados(resultados.length > 0);
+      setEdificiosEncontrados(resultados);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      {loading && (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#0000ff" />
+        </View>
+      )}
       <TouchableOpacity style={styles.goBackButton} onPress={() => navigation.goBack()}>
         <MaterialCommunityIcons name="arrow-left" size={24} color="#001f3f" />
       </TouchableOpacity>
       <Text style={styles.title}>Consultar FEMA P-154</Text>
 
-      {/* Texto y búsqueda por nombre del edificio */}
       <View style={styles.searchContainer}>
         <TextInput
           style={styles.input}
@@ -69,23 +84,18 @@ const Consultar = ({ navigation }) => {
         />
         <TouchableOpacity
           style={[styles.searchButton, styles.transparentButton]}
-          onPress={() => {
-            buscarEdificioPorNombre();
-            setMostrarResultados(true);
-          }}
+          onPress={() => buscarEdificioPorNombre()}
         >
           <MaterialCommunityIcons name="magnify" size={24} color="black" />
         </TouchableOpacity>
       </View>
 
-      {/* Texto y búsqueda por código del formulario */}
       <View style={styles.searchContainer}>
         <TextInput
           style={styles.input}
           placeholder="Código del formulario"
           value={busquedaCodigo}
           onChangeText={(text) => {
-            // Filtrar entrada para permitir solo números
             const numericText = text.replace(/[^0-9]/g, '');
             setBusquedaCodigo(numericText);
           }}
@@ -93,34 +103,26 @@ const Consultar = ({ navigation }) => {
         />
         <TouchableOpacity
           style={[styles.searchButton, styles.transparentButton]}
-          onPress={() => {
-            buscarEdificioPorCodigo();
-            setMostrarResultados(true);
-          }}
+          onPress={() => buscarEdificioPorCodigo()}
         >
           <MaterialCommunityIcons name="magnify" size={24} color="black" />
         </TouchableOpacity>
       </View>
 
-      {/* Mostrar detalles de los edificios encontrados si hay resultados */}
-      <ScrollView contentContainerStyle={styles.contener}>
+      <ScrollView contentContainerStyle={styles.resultContainer}>
         {mostrarResultados && (
-
           <View style={styles.edificiosEncontradosContainer}>
             {edificiosEncontrados.map((edificio, index) => (
               <View key={index} style={styles.edificioEncontrado}>
                 <MaterialCommunityIcons name="file-document" size={24} color="black" />
                 <View>
                   <Text style={styles.formularioTitle}>FEMA P-154</Text>
-                  <Text style={styles.formularioFecha}>{" " + edificio.fechaEncuesta}</Text>
-                  <Text style={styles.formularioFecha}>{" " + edificio.nomEncuestador}</Text>
+                  <Text style={styles.formularioFecha}>
+                    {new Date(edificio.fechaEncuesta).toISOString().split('T')[0]}
+                  </Text>
+                  <Text style={styles.formularioFecha}>{edificio.horaEncuesta}</Text>
+                  <Text style={styles.formularioFecha}>{edificio.nomEncuestador}</Text>
                 </View>
-                {/* <TouchableOpacity
-                  style={[styles.editButton, styles.transparentButton]}
-                // onPress={() => navigation.navigate('Editar2', { edificio })}
-                >
-                  <MaterialCommunityIcons name="pencil" size={24} color="black" />
-                </TouchableOpacity> */}
               </View>
             ))}
           </View>
@@ -129,9 +131,8 @@ const Consultar = ({ navigation }) => {
     </ScrollView>
   );
 };
-
 const styles = StyleSheet.create({
-  contener:{
+  contener: {
     display: "flex",
     width: "100%",
     alignitems: "center",
@@ -152,7 +153,7 @@ const styles = StyleSheet.create({
   },
   searchContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignitems: 'center',
     justifyContent: 'space-between',
     marginBottom: 16,
   },
@@ -193,8 +194,8 @@ const styles = StyleSheet.create({
     padding: 8,
     borderWidth: 1,
     borderColor: 'gray',
-    borderRadius: 10, 
-    marginBottom: 8, 
+    borderRadius: 10,
+    marginBottom: 8,
   },
   formularioTitle: {
     fontSize: 20,
@@ -216,6 +217,14 @@ const styles = StyleSheet.create({
     top: 20,
     left: 20,
     zIndex: 1, // Asegura que la flecha esté sobre otros elementos
+  },
+
+  loadingContainer: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1000,
   },
 });
 
