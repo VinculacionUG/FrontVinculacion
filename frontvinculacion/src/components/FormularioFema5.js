@@ -19,6 +19,13 @@ const FormularioFema5 = ({ navigation }) => {
   const [nombreContacto, setUserName] = useState('');
   const [codUsuarioAct, setCodUsuarioAct] = useState('');
 
+   const formatFechaEncuesta = (fechaEncuesta) => {
+    const year = fechaEncuesta.year;
+    const month = fechaEncuesta.month.padStart(2, '0'); // Asegura que el mes siempre tenga 2 dígitos
+    const day = fechaEncuesta.day.padStart(2, '0'); // Asegura que el día siempre tenga 2 dígitos
+    return `${year}-${month}-${day}`;
+  };
+
   const {
     //Fema 1
     mimeType,
@@ -183,8 +190,9 @@ const FormularioFema5 = ({ navigation }) => {
       //   codUsuarioAct
 
       // })
-      const response = await fetch('https://www.fema.somee.com/Users/FormularioFEMA', {
-      // const response = await fetch('http://localhost:7040/Users/FormularioFEMA', {
+      const formattedFechaEncuesta = formatFechaEncuesta(fechaEncuesta);
+      // const response = await fetch('https://www.fema.somee.com/Users/FormularioFEMA', {
+      const response = await fetch('http://localhost:7040/Users/FormularioFEMA', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -199,7 +207,7 @@ const FormularioFema5 = ({ navigation }) => {
           CodTipoUsoEdificacion,
           latitud,
           longitud,
-          fechaEncuesta,
+          fechaEncuesta: formattedFechaEncuesta,
           horaEncuesta,
           //Fema 2
           nroPisosSup,
